@@ -50,9 +50,8 @@ namespace CODClone.Player
         private void Awake()
         {
             _controller = GetComponent<CharacterController>();
-            _input = inputProviderBehaviour as IInputProvider;
-            if (_input == null)
-                _input = GetComponent<IInputProvider>();
+            _input = inputProviderBehaviour as IInputProvider
+                ?? InputProviderLookup.FindOnSelf(this);
             _targetHeight = standingHeight;
         }
 

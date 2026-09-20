@@ -32,8 +32,7 @@ namespace CODClone.Weapons
         private void Awake()
         {
             _input = inputProviderBehaviour as IInputProvider
-                ?? GetComponentInParent<IInputProvider>() as MonoBehaviour as IInputProvider;
-            if (_input == null) _input = GetComponentInParent<PlayerInputProvider>();
+                ?? InputProviderLookup.FindOnSelfOrParents(this);
             _playerCam = GetComponentInParent<PlayerCamera>();
             if (playerCamera == null && _playerCam != null)
                 playerCamera = _playerCam.GetComponentInChildren<Camera>();

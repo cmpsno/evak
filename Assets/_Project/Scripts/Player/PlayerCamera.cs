@@ -43,8 +43,8 @@ namespace CODClone.Player
             _cam = GetComponentInChildren<Camera>();
             if (_cam == null) _cam = GetComponent<Camera>();
             _yawBody = transform; // this pivot's parent should be the capsule; yaw applied to capsule
-            _input = inputProviderBehaviour as IInputProvider ?? GetComponentInParent<IInputProvider>() as MonoBehaviour as IInputProvider;
-            if (_input == null) _input = GetComponentInParent<PlayerInputProvider>();
+            _input = inputProviderBehaviour as IInputProvider
+                ?? InputProviderLookup.FindOnSelfOrParents(this);
             _movement = GetComponentInParent<PlayerMovement>();
             _baseFov = _cam.fieldOfView;
             _baseLocalPos = _cam.transform.localPosition;

@@ -19,4 +19,25 @@ namespace CODClone.Core
         bool ReloadPressed { get; }
         bool ADSHeld { get; }
     }
+
+    /// <summary>
+    /// Unity's GetComponent&lt;T&gt; requires T : Component, so interfaces need
+    /// a manual scan. Use these helpers instead of GetComponent&lt;IInputProvider&gt;.
+    /// </summary>
+    public static class InputProviderLookup
+    {
+        public static IInputProvider FindOnSelf(Component c)
+        {
+            foreach (var mb in c.GetComponents<MonoBehaviour>())
+                if (mb is IInputProvider p) return p;
+            return null;
+        }
+
+        public static IInputProvider FindOnSelfOrParents(Component c)
+        {
+            foreach (var mb in c.GetComponentsInParent<MonoBehaviour>(true))
+                if (mb is IInputProvider p) return p;
+            return null;
+        }
+    }
 }

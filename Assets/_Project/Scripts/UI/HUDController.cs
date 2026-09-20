@@ -1,6 +1,5 @@
 using UnityEngine;
 using UnityEngine.UI;
-using TMPro;
 
 namespace CODClone.HUD
 {
@@ -16,14 +15,14 @@ namespace CODClone.HUD
         public float adsSpreadPx = 4f;
 
         [Header("Ammo")]
-        public TMP_Text ammoText;
+        public Text ammoText;
 
         [Header("Hitmarker")]
         public Image hitmarker;
         public float hitmarkerTime = 0.12f;
 
         [Header("Reload")]
-        public TMP_Text reloadText;
+        public Text reloadText;
 
         private float _hitmarkerTimer;
         private bool _ads;
