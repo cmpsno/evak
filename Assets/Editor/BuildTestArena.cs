@@ -89,9 +89,24 @@ public static class BuildTestArena
         var urp = AssetDatabase.LoadAssetAtPath<UniversalRenderPipelineAsset>(UrpAssetPath);
         if (urp == null)
         {
+            // A bare CreateInstance<UniversalRenderPipelineAsset>() has no renderer
+            // data -> CreatePipeline() NREs. Wire a real UniversalRendererData first.
+            const string rendererPath = "Assets/_Project/Settings/URPRenderer.asset";
+            var rendererData = AssetDatabase.LoadAssetAtPath<UniversalRendererData>(rendererPath);
+            if (rendererData == null)
+            {
+                rendererData = ScriptableObject.CreateInstance<UniversalRendererData>();
+                AssetDatabase.CreateAsset(rendererData, rendererPath);
+            }
             urp = ScriptableObject.CreateInstance<UniversalRenderPipelineAsset>();
+            var so = new SerializedObject(urp);
+            var listProp = so.FindProperty("m_RendererDataList");
+            listProp.arraySize = 1;
+            listProp.GetArrayElementAtIndex(0).objectReferenceValue = rendererData;
+            so.FindProperty("m_DefaultRendererIndex").intValue = 0;
+            so.ApplyModifiedProperties();
             AssetDatabase.CreateAsset(urp, UrpAssetPath);
-            Debug.Log("[BuildTestArena] Created URP pipeline asset.");
+            Debug.Log("[BuildTestArena] Created URP pipeline asset with renderer data.");
         }
         GraphicsSettings.renderPipelineAsset = urp;
         QualitySettings.renderPipeline = urp;
@@ -343,8 +358,10 @@ public static class BuildTestArena
         canvasGO.AddComponent<GraphicRaycaster>();
 
         var hud = canvasGO.AddComponent<HUDController>();
-        var font = Resources.GetBuiltinResource<Font>("Arial.ttf")
-                   ?? Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
+        // NOTE: Resources.GetBuiltinResource<Font>("Arial.ttf") THROWS
+        // ArgumentException in 2022.3 ("no longer a valid built in font").
+        // LegacyRuntime.ttf is the valid builtin here.
+        var font = Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
 
         // Crosshair: small centered square
         var crossGO = new GameObject("Crosshair");

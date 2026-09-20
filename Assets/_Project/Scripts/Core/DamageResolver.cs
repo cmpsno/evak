@@ -20,9 +20,15 @@ namespace CODClone.Core
             Vector3 hitPoint, Vector3 hitNormal, GameObject source)
         {
             if (targetObject == null) return;
-            var damageable = targetObject.GetComponent<IDamageable>();
-            if (damageable != null)
-                ResolveHit(damageable, amount, hitPoint, hitNormal, source);
+            // GetComponent<T>() requires T : Component, so interfaces need a manual scan.
+            foreach (var mb in targetObject.GetComponents<MonoBehaviour>())
+            {
+                if (mb is IDamageable damageable)
+                {
+                    ResolveHit(damageable, amount, hitPoint, hitNormal, source);
+                    return;
+                }
+            }
         }
     }
 }
