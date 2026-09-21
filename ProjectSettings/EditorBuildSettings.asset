@@ -8,4 +8,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/_Project/Scenes/TestArena.unity
     guid: b5adea0ec93ee1fd3bbdfdc11fde88c6
+  - enabled: 1
+    path: Assets/_Project/Scenes/SocialClub.unity
+    guid: 2549de47b4e349122947692eeca1bc43
   m_configObjects: {}

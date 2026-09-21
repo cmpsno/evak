@@ -1,5 +1,6 @@
 using UnityEngine;
 using CODClone.Core;
+using CODClone.UI;
 
 namespace CODClone.Player
 {
@@ -58,6 +59,17 @@ namespace CODClone.Player
         private void FixedUpdate()
         {
             if (_input == null) return;
+
+            // Ep1: dialogue freezes the player (gravity still applies).
+            if (DialogueUI.Instance != null && DialogueUI.Instance.IsDialogueOpen)
+            {
+                _velocity.x = 0f;
+                _velocity.z = 0f;
+                _velocity.y += gravity * Time.fixedDeltaTime;
+                _controller.Move(_velocity * Time.fixedDeltaTime);
+                CurrentState = MovementState.Idle;
+                return;
+            }
 
             UpdateTimers();
             UpdateGroundState();

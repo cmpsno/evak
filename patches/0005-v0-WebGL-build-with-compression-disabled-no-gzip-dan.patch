@@ -1,7 +1,7 @@
 From b704a56a63488d3e61e0161b9dca5b4f27aed963 Mon Sep 17 00:00:00 2001
 From: marvin <marvin@local>
 Date: Sun, 20 Sep 2026 20:43:02 -0400
-Subject: [PATCH 5/5] v0: WebGL build with compression disabled (no gzip dance)
+Subject: [PATCH 5/7] v0: WebGL build with compression disabled (no gzip dance)
 
 ---
  Assets/Editor/BuildTestArena.cs | 3 +++

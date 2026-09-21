@@ -21,6 +21,10 @@ namespace CODClone.Core
         [SerializeField] private string fireAction = "Fire";
         [SerializeField] private string reloadAction = "Reload";
         [SerializeField] private string adsAction = "ADS";
+        [SerializeField] private string interactAction = "Interact";
+        [SerializeField] private string choice1Action = "Choice1";
+        [SerializeField] private string choice2Action = "Choice2";
+        [SerializeField] private string choice3Action = "Choice3";
 
         private PlayerInput _playerInput;
 
@@ -33,6 +37,10 @@ namespace CODClone.Core
         public bool FireHeld => ReadButtonHeld(fireAction);
         public bool ReloadPressed => ReadButtonPressed(reloadAction);
         public bool ADSHeld => ReadButtonHeld(adsAction);
+        public bool InteractPressed => ReadButtonPressed(interactAction);
+        public bool Choice1Pressed => ReadButtonPressed(choice1Action);
+        public bool Choice2Pressed => ReadButtonPressed(choice2Action);
+        public bool Choice3Pressed => ReadButtonPressed(choice3Action);
 
         private void Awake()
         {

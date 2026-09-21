@@ -1,7 +1,7 @@
 From 7f97a4a95c3097040f845b0b8556f659c014bd31 Mon Sep 17 00:00:00 2001
 From: marvin <marvin@local>
 Date: Sun, 20 Sep 2026 20:11:52 -0400
-Subject: [PATCH 4/5] v0: WebGL pointer lock on click (mouse-look fix)
+Subject: [PATCH 4/7] v0: WebGL pointer lock on click (mouse-look fix)
 
 ---
  Assets/Editor/BuildTestArena.cs               |    1 +

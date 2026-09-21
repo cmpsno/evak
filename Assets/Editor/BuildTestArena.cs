@@ -78,7 +78,7 @@ public static class BuildTestArena
 
     // ---------------------------------------------------------------- setup
 
-    static void EnsureTag(string tag)
+    public static void EnsureTag(string tag)
     {
         foreach (var t in InternalEditorUtility.tags)
             if (t == tag) return;
@@ -86,7 +86,7 @@ public static class BuildTestArena
         Debug.Log("[BuildTestArena] Added tag: " + tag);
     }
 
-    static void EnsureUrpAsset()
+    public static void EnsureUrpAsset()
     {
         Directory.CreateDirectory("Assets/_Project/Settings");
         var urp = AssetDatabase.LoadAssetAtPath<UniversalRenderPipelineAsset>(UrpAssetPath);
@@ -115,7 +115,7 @@ public static class BuildTestArena
         QualitySettings.renderPipeline = urp;
     }
 
-    static void SetInputHandlerToInputSystem()
+    public static void SetInputHandlerToInputSystem()
     {
         var objs = AssetDatabase.LoadAllAssetsAtPath("ProjectSettings/ProjectSettings.asset");
         if (objs == null || objs.Length == 0) return;
@@ -129,7 +129,7 @@ public static class BuildTestArena
         }
     }
 
-    static InputActionAsset CreateInputActions()
+    public static InputActionAsset CreateInputActions()
     {
         var asset = ScriptableObject.CreateInstance<InputActionAsset>();
         var map = asset.AddActionMap("Player");
@@ -154,6 +154,11 @@ public static class BuildTestArena
         AddButton(map, "Fire", "<Mouse>/leftButton", "<Gamepad>/rightTrigger");
         AddButton(map, "Reload", "<Keyboard>/r", "<Gamepad>/buttonWest");
         AddButton(map, "ADS", "<Mouse>/rightButton", "<Gamepad>/leftTrigger");
+        AddButton(map, "Interact", "<Keyboard>/e", "<Gamepad>/buttonNorth");
+        // Dialogue choice selection (desktop keys; mobile uses on-screen buttons)
+        AddButton(map, "Choice1", "<Keyboard>/1", "<Keyboard>/numpad1");
+        AddButton(map, "Choice2", "<Keyboard>/2", "<Keyboard>/numpad2");
+        AddButton(map, "Choice3", "<Keyboard>/3", "<Keyboard>/numpad3");
 
         Directory.CreateDirectory("Assets/_Project/Data");
         // Write JSON, not via AssetDatabase.CreateAsset: the .inputactions importer
@@ -175,7 +180,7 @@ public static class BuildTestArena
         foreach (var p in paths) a.AddBinding(p);
     }
 
-    static WeaponData CreateRifleAsset()
+    public static WeaponData CreateRifleAsset()
     {
         var rifle = ScriptableObject.CreateInstance<WeaponData>();
         rifle.weaponName = "AR-1 Rifle";
@@ -202,13 +207,13 @@ public static class BuildTestArena
 
     // ---------------------------------------------------------------- scene
 
-    static Material MakeMat(string name, Color c)
+    public static Material MakeMat(string name, Color c)
     {
         var shader = Shader.Find("Universal Render Pipeline/Lit") ?? Shader.Find("Standard");
         return new Material(shader) { name = name, color = c };
     }
 
-    static void BuildLighting()
+    public static void BuildLighting()
     {
         var lightGO = new GameObject("Directional Light");
         var light = lightGO.AddComponent<Light>();
@@ -296,7 +301,7 @@ public static class BuildTestArena
         t.GetComponent<Renderer>().sharedMaterial = mat;
     }
 
-    static GameObject BuildPlayer(InputActionAsset inputAsset, WeaponData rifle)
+    public static GameObject BuildPlayer(InputActionAsset inputAsset, WeaponData rifle)
     {
         var player = new GameObject("Player");
         player.transform.position = new Vector3(0f, 0.05f, -8f);
@@ -439,7 +444,7 @@ public static class BuildTestArena
         return hud;
     }
 
-    static void SetField(Object target, string fieldName, Object value)
+    public static void SetField(Object target, string fieldName, Object value)
     {
         var so = new SerializedObject(target);
         var prop = so.FindProperty(fieldName);

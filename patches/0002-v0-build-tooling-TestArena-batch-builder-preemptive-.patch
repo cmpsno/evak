@@ -1,7 +1,7 @@
 From e4546a47694e213f68663aff5aff347ffc97a363 Mon Sep 17 00:00:00 2001
 From: marvin <marvin@local>
 Date: Sun, 20 Sep 2026 16:20:40 +0000
-Subject: [PATCH 2/5] v0 build tooling: TestArena batch builder + preemptive
+Subject: [PATCH 2/7] v0 build tooling: TestArena batch builder + preemptive
  compile fixes
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8

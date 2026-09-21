@@ -18,6 +18,11 @@ namespace CODClone.Core
         bool FireHeld { get; }
         bool ReloadPressed { get; }
         bool ADSHeld { get; }
+        bool InteractPressed { get; }
+        // Dialogue choice shortcuts (1/2/3). Mobile uses the on-screen buttons.
+        bool Choice1Pressed { get; }
+        bool Choice2Pressed { get; }
+        bool Choice3Pressed { get; }
     }
 
     /// <summary>
