@@ -9,18 +9,18 @@ Architecture:            x86_64
 Available memory:        7935 MB
 [Licensing::Module] Trying to connect to existing licensing client channel...
 [Licensing::IpcConnector] Channel LicenseClient-root doesn't exist
-[Licensing::Module] Successfully launched the LicensingClient (PId: 6240)
-[Licensing::IpcConnector] Successfully connected to: "LicenseClient-root" at "2026-09-21T03:32:01.494406Z"
+[Licensing::Module] Successfully launched the LicensingClient (PId: 6562)
+[Licensing::IpcConnector] Successfully connected to: "LicenseClient-root" at "2026-09-21T03:33:33.385405Z"
 [SignatureVerifier] Application signature verification not supported on this platform.
 [Licensing::Client] Handshaking with LicensingClient:
   Version:                 1.16.2+bdef8f5
-  Session Id:              e796fde9723440bab4ed30ac86a0e7c1
-  Correlation Id:          8ff315c0cfe8d7437b38088f456997bf
-  External correlation Id: 1783955797072918782
+  Session Id:              7007a057833f4a9a96477a772c87d89f
+  Correlation Id:          6677aff3ead9d50c01a46574dd7fc3e7
+  External correlation Id: 3491978690254007396
   Machine Id:              fe5f7XZ/1CQzW/AhDon7PebSsfU=
-[Licensing::Module] Successfully connected to LicensingClient on channel: "LicenseClient-root" (connect: 2.94s, validation: 0.30s, handshake: 0.00s)
-[Licensing::IpcConnector] Successfully connected to: "LicenseClient-root-notifications" at "2026-09-21T03:32:01.794801Z"
-[Licensing::Module] Connected to LicensingClient (PId: 6240, launch time: 0.01, total connection time: 3.24s)
+[Licensing::Module] Successfully connected to LicensingClient on channel: "LicenseClient-root" (connect: 0.90s, validation: 0.14s, handshake: 0.00s)
+[Licensing::IpcConnector] Successfully connected to: "LicenseClient-root-notifications" at "2026-09-21T03:33:33.527027Z"
+[Licensing::Module] Connected to LicensingClient (PId: 6562, launch time: 0.00, total connection time: 1.04s)
 [Licensing::Module] Error: Access token is unavailable; failed to update
 [Licensing::Client] Error: Code 500 while processing request (status: Unable to update licenses. Errors: No ULF license found.,Token not found in cache)
 [Licensing::Client] Error: Code 500 while updating license in client (status: Unable to update licenses. Errors: No ULF license found.,Token not found in cache)
@@ -74,16 +74,16 @@ Successfully changed project path to: /home/hatch/workspace/cod-mobile
     "memorysetup-temp-allocator-size-cloud-worker=32768"
     "memorysetup-temp-allocator-size-gi-baking-worker=262144"
     "memorysetup-temp-allocator-size-gfx=262144"
-Player connection [130244693120000]  Target information:
+Player connection [127007569609728]  Target information:
 
-Player connection [130244693120000]  * "[IP] 198.19.0.2 [Port] 55504 [Flags] 2 [Guid] 1977444165 [EditorId] 1977444165 [Version] 1048832 [Id] LinuxEditor(16,198.19.0.2) [Debug] 1 [PackageName] LinuxEditor [ProjectName] Editor" 
+Player connection [127007569609728]  * "[IP] 198.19.0.2 [Port] 55504 [Flags] 2 [Guid] 96748028 [EditorId] 96748028 [Version] 1048832 [Id] LinuxEditor(16,198.19.0.2) [Debug] 1 [PackageName] LinuxEditor [ProjectName] Editor" 
 
-Player connection [130244693120000] Host joined multi-casting on [225.0.0.222:54997]...
-Player connection [130244693120000] Host joined alternative multi-casting on [225.0.0.222:34997]...
+Player connection [127007569609728] Host joined multi-casting on [225.0.0.222:54997]...
+Player connection [127007569609728] Host joined alternative multi-casting on [225.0.0.222:34997]...
 Input System module state changed to: Initialized.
 [PhysX] Initialized MultithreadedTaskDispatcher with 2 workers.
 Error opening a HTTP REST server port between 38000 and 38100
-[Package Manager] UpmClient::Connect -- Connected to IPC stream "Upm-6235" after 2.0 seconds.
+[Package Manager] UpmClient::Connect -- Connected to IPC stream "Upm-6557" after 0.4 seconds.
 [Package Manager] Restoring resolved packages state from cache
 [Licensing::Client] Successfully resolved entitlement details
 [Package Manager] Registered 59 packages:
@@ -170,8 +170,8 @@ FMOD failed to initialize the output device.: "Error initializing output device.
 FMOD initialized on nosound output
 [Subsystems] No new subsystems found in resolved package list.
 Package Manager log level set to [2]
-[Package Manager] Done registering packages in 0.17 seconds
-Refreshing native plugins compatible for Editor in 20.17 ms, found 0 plugins.
+[Package Manager] Done registering packages in 0.07 seconds
+Refreshing native plugins compatible for Editor in 5.89 ms, found 0 plugins.
 Preloading 0 native plugins for Editor in 0.00 ms.
 Initialize engine version: 2022.3.62f3 (96770f904ca7)
 [Subsystems] Discovering subsystems at path /home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/Resources/UnitySubsystems
@@ -188,7 +188,7 @@ Initialize mono
 Mono path[0] = '/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/Managed'
 Mono path[1] = '/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/MonoBleedingEdge/lib/mono/unityjit-linux'
 Mono config path = '/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/MonoBleedingEdge/etc'
-Using monoOptions --debugger-agent=transport=dt_socket,embedding=1,server=y,suspend=n,address=127.0.0.1:56235
+Using monoOptions --debugger-agent=transport=dt_socket,embedding=1,server=y,suspend=n,address=127.0.0.1:56557
 Using cacheserver namespaces - metadata:defaultmetadata, artifacts:defaultartifacts
 Using cacheserver namespaces - metadata:defaultmetadata, artifacts:defaultartifacts
 ImportWorker Server TCP listen port: 0
@@ -196,41 +196,41 @@ Begin MonoManager ReloadAssembly
 Registering precompiled unity dll's ...
 Register platform support module: /home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/PlaybackEngines/WebGLSupport/UnityEditor.WebGL.Extensions.dll
 Register platform support module: /home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/PlaybackEngines/LinuxStandaloneSupport/UnityEditor.LinuxStandalone.Extensions.dll
-Registered in 0.073175 seconds.
-- Loaded All Assemblies, in  1.427 seconds
+Registered in 0.038899 seconds.
+- Loaded All Assemblies, in  0.662 seconds
 Native extension for LinuxStandalone target not found
 Native extension for WebGL target not found
 Mono: successfully reloaded assembly
-- Finished resetting the current domain, in  0.824 seconds
-Domain Reload Profiling: 2252ms
-	BeginReloadAssembly (299ms)
+- Finished resetting the current domain, in  0.387 seconds
+Domain Reload Profiling: 1049ms
+	BeginReloadAssembly (129ms)
 		ExecutionOrderSort (0ms)
 		DisableScriptedObjects (0ms)
 		BackupInstance (0ms)
 		ReleaseScriptingObjects (0ms)
-		CreateAndSetChildDomain (5ms)
-	RebuildCommonClasses (131ms)
-	RebuildNativeTypeToScriptingClass (22ms)
-	initialDomainReloadingComplete (382ms)
-	LoadAllAssembliesAndSetupDomain (592ms)
-		LoadAssemblies (296ms)
+		CreateAndSetChildDomain (2ms)
+	RebuildCommonClasses (79ms)
+	RebuildNativeTypeToScriptingClass (10ms)
+	initialDomainReloadingComplete (204ms)
+	LoadAllAssembliesAndSetupDomain (240ms)
+		LoadAssemblies (125ms)
 		RebuildTransferFunctionScriptingTraits (0ms)
-		AnalyzeDomain (584ms)
-			TypeCache.Refresh (578ms)
-				TypeCache.ScanAssembly (513ms)
-			ScanForSourceGeneratedMonoScriptInfo (2ms)
+		AnalyzeDomain (237ms)
+			TypeCache.Refresh (235ms)
+				TypeCache.ScanAssembly (218ms)
+			ScanForSourceGeneratedMonoScriptInfo (1ms)
 			ResolveRequiredComponents (1ms)
-	FinalizeReload (825ms)
+	FinalizeReload (387ms)
 		ReleaseScriptCaches (0ms)
 		RebuildScriptCaches (0ms)
-		SetupLoadedEditorAssemblies (686ms)
+		SetupLoadedEditorAssemblies (314ms)
 			LogAssemblyErrors (0ms)
-			InitializePlatformSupportModulesInManaged (22ms)
-			SetLoadedEditorAssemblies (9ms)
+			InitializePlatformSupportModulesInManaged (19ms)
+			SetLoadedEditorAssemblies (8ms)
 			RefreshPlugins (0ms)
-			BeforeProcessingInitializeOnLoad (4ms)
-			ProcessInitializeOnLoadAttributes (502ms)
-			ProcessInitializeOnLoadMethodAttributes (149ms)
+			BeforeProcessingInitializeOnLoad (3ms)
+			ProcessInitializeOnLoadAttributes (216ms)
+			ProcessInitializeOnLoadMethodAttributes (68ms)
 			AfterProcessingInitializeOnLoad (0ms)
 			EditorAssembliesLoaded (0ms)
 		ExecutionOrderSort2 (0ms)
@@ -253,7 +253,7 @@ Application.AssetDatabase Initial Refresh Start
 [40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
       Executed endpoint 'gRPC - /UnityILPP.PostProcessing/Ping'
 [40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Hosting.Diagnostics[2]
-      Request finished HTTP/2 POST http://ilpp/UnityILPP.PostProcessing/Ping application/grpc - - 200 - application/grpc 169.4763ms
+      Request finished HTTP/2 POST http://ilpp/UnityILPP.PostProcessing/Ping application/grpc - - 200 - application/grpc 81.5321ms
 Starting: /home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/bee_backend --ipc --defer-dag-verification --dagfile="Library/Bee/2000b0aE.dag" --continue-on-failure --profile="Library/Bee/backend1.traceevents" ScriptAssemblies
 WorkingDir: /home/hatch/workspace/cod-mobile
 DisplayProgressbar: Compiling Scripts
@@ -270,34 +270,10 @@ DisplayProgressbar: Compiling Scripts
 [40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
       Executed endpoint 'gRPC - /UnityILPP.PostProcessing/ConfigurePostProcessors'
 [40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Hosting.Diagnostics[2]
-      Request finished HTTP/2 POST http://ilpp/UnityILPP.PostProcessing/ConfigurePostProcessors application/grpc - - 200 - application/grpc 79.4281ms
-[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Hosting.Diagnostics[1]
-      Request starting HTTP/2 POST http://ilpp/UnityILPP.PostProcessing/PostProcessAssembly application/grpc -
-[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
-      Executing endpoint 'gRPC - /UnityILPP.PostProcessing/PostProcessAssembly'
-[40m[32minfo[39m[22m[49m: Unity.ILPP.Runner.PostProcessingPipeline[0]
-      Processing assembly Library/Bee/artifacts/2000b0aE.dag/Assembly-CSharp.dll, with 103 defines and 261 references
-[40m[32minfo[39m[22m[49m: Unity.ILPP.Runner.PostProcessingPipeline[0]
-      processors: zzzUnity.Burst.CodeGen.BurstILPostProcessor
-[40m[32minfo[39m[22m[49m: Unity.ILPP.Runner.PostProcessingPipeline[0]
-      running zzzUnity.Burst.CodeGen.BurstILPostProcessor
-[40m[32minfo[39m[22m[49m: Unity.ILPP.Runner.PostProcessingAssemblyLoadContext[0]
-      Resolved Unity.Burst.Cecil.Rocks, Version=0.11.4.0, Culture=neutral, PublicKeyToken=50cebf1cceb9d05e with Library/PackageCache/com.unity.burst@1.8.21/Unity.Burst.CodeGen/Unity.Burst.Cecil.Rocks.dll
-[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
-      Executed endpoint 'gRPC - /UnityILPP.PostProcessing/PostProcessAssembly'
-[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Hosting.Diagnostics[2]
-      Request finished HTTP/2 POST http://ilpp/UnityILPP.PostProcessing/PostProcessAssembly application/grpc - - 200 - application/grpc 952.9105ms
-ExitCode: 3 Duration: 10s
-[634/914    0s] ILPP-Configuration Library/ilpp-configuration.nevergeneratedoutput
-[906/914    5s] Csc Library/Bee/artifacts/2000b0aE.dag/Assembly-CSharp.dll (+2 others)
-Assets/_Project/Scripts/Interaction/InteractableNPC.cs(17,41): warning CS0414: The field 'InteractableNPC.repeatLine' is assigned but its value is never used
-[907/914    1s] ILPostProcess Library/Bee/artifacts/2000b0aE.dag/post-processed/Assembly-CSharp.dll (+pdb)
-Processing assembly Library/Bee/artifacts/2000b0aE.dag/Assembly-CSharp.dll, with 103 defines and 261 references
-processors: zzzUnity.Burst.CodeGen.BurstILPostProcessor
-running zzzUnity.Burst.CodeGen.BurstILPostProcessor
-[908/914    0s] CopyFiles Library/ScriptAssemblies/Assembly-CSharp.dll
-[909/914    0s] CopyFiles Library/ScriptAssemblies/Assembly-CSharp.pdb
-[910/914    3s] Csc Library/Bee/artifacts/2000b0aE.dag/Assembly-CSharp-Editor.dll (+2 others)
+      Request finished HTTP/2 POST http://ilpp/UnityILPP.PostProcessing/ConfigurePostProcessors application/grpc - - 200 - application/grpc 76.0709ms
+ExitCode: 3 Duration: 3s552ms
+[672/914    0s] ILPP-Configuration Library/ilpp-configuration.nevergeneratedoutput
+[910/914    1s] Csc Library/Bee/artifacts/2000b0aE.dag/Assembly-CSharp-Editor.dll (+2 others)
 ##### CommandLine
 "/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/NetCoreRuntime/dotnet" exec "/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/DotNetSdkRoslyn/csc.dll" /nostdlib /noconfig /shared "@Library/Bee/artifacts/2000b0aE.dag/Assembly-CSharp-Editor.rsp" "@Library/Bee/artifacts/2000b0aE.dag/Assembly-CSharp-Editor.rsp2"
 ##### Contents of Library/Bee/artifacts/2000b0aE.dag/Assembly-CSharp-Editor.rsp
@@ -708,18 +684,17 @@ DOTNET_MULTILEVEL_LOOKUP=0
 ##### ExitCode
 1
 ##### Output
-Assets/Editor/BuildSocialClub.cs(11,16): error CS0234: The type or namespace name 'UI' does not exist in the namespace 'CODClone' (are you missing an assembly reference?)
-*** Tundra build failed (10.84 seconds), 6 items updated, 914 evaluated
+Assets/Editor/BuildSocialClub.cs(164,24): error CS0246: The type or namespace name 'InteractableNPC' could not be found (are you missing a using directive or an assembly reference?)
+*** Tundra build failed (3.52 seconds), 2 items updated, 914 evaluated
 ## Script Compilation Error for: Csc Library/Bee/artifacts/2000b0aE.dag/Assembly-CSharp-Editor.dll (+2 others)
 ## CmdLine: "/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/NetCoreRuntime/dotnet" exec "/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/DotNetSdkRoslyn/csc.dll" /nostdlib /noconfig /shared "@Library/Bee/artifacts/2000b0aE.dag/Assembly-CSharp-Editor.rsp" "@Library/Bee/artifacts/2000b0aE.dag/Assembly-CSharp-Editor.rsp2"
 ## Output:
-Assets/Editor/BuildSocialClub.cs(11,16): error CS0234: The type or namespace name 'UI' does not exist in the namespace 'CODClone' (are you missing an assembly reference?)
+Assets/Editor/BuildSocialClub.cs(164,24): error CS0246: The type or namespace name 'InteractableNPC' could not be found (are you missing a using directive or an assembly reference?)
 
 Total cache size 84474764
 Total cache size after purge 84474764
-Assets/_Project/Scripts/Interaction/InteractableNPC.cs(17,41): warning CS0414: The field 'InteractableNPC.repeatLine' is assigned but its value is never used
-Assets/Editor/BuildSocialClub.cs(11,16): error CS0234: The type or namespace name 'UI' does not exist in the namespace 'CODClone' (are you missing an assembly reference?)
-AssetDatabase: script compilation time: 13.092903s
+Assets/Editor/BuildSocialClub.cs(164,24): error CS0246: The type or namespace name 'InteractableNPC' could not be found (are you missing a using directive or an assembly reference?)
+AssetDatabase: script compilation time: 4.443753s
 Scripts have compiler errors.
 [40m[32minfo[39m[22m[49m: Microsoft.Hosting.Lifetime[0]
       Application is shutting down...

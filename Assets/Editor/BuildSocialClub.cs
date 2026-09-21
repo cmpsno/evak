@@ -9,6 +9,7 @@ using UnityEngine.UI;
 using CODClone.Core;
 using CODClone.Interaction;
 using Campusano.Dialogue;
+using Campusano.Interaction;
 using Campusano.Missions;
 using Campusano.Objectives;
 using Campusano.Persistence;
