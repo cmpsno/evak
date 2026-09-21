@@ -1,0 +1,1113 @@
+From adad0cc20772396a86f0c5fad70ded3a949a19ff Mon Sep 17 00:00:00 2001
+From: marvin <marvin@local>
+Date: Sun, 20 Sep 2026 11:36:23 -0400
+Subject: [PATCH 1/3] v0 foundation: Unity gitignore/LFS, folder structure,
+ input abstraction, damage resolver, data-driven weapon,
+ movement/camera/weapon/HUD scripts, test arena notes
+
+Per cod-mobile-clone-v0-plan.md sections 2-5. Architecture non-negotiables from first commit: IInputProvider, WeaponData ScriptableObject, IDamageable/DamageResolver, FixedUpdate movement. Non-goals respected: no weapon variety, bots, art, menus, netcode.
+---
+ .gitattributes                                |  16 ++
+ .gitignore                                    |  34 +++
+ Assets/.gitkeep                               |   0
+ Assets/_Project/.gitkeep                      |   0
+ Assets/_Project/Art/.gitkeep                  |   0
+ Assets/_Project/Audio/.gitkeep                |   0
+ Assets/_Project/Data/.gitkeep                 |   0
+ Assets/_Project/Data/Weapons/.gitkeep         |   0
+ Assets/_Project/Prefabs/.gitkeep              |   0
+ Assets/_Project/Prefabs/Environment/.gitkeep  |   0
+ Assets/_Project/Prefabs/Player/.gitkeep       |   0
+ Assets/_Project/Prefabs/Weapons/.gitkeep      |   0
+ Assets/_Project/Scenes/.gitkeep               |   0
+ Assets/_Project/Scenes/TestArena.notes.md     |  27 +++
+ Assets/_Project/Scripts/.gitkeep              |   0
+ Assets/_Project/Scripts/Core/.gitkeep         |   0
+ .../_Project/Scripts/Core/DamageResolver.cs   |  28 +++
+ Assets/_Project/Scripts/Core/IDamageable.cs   |  14 ++
+ .../_Project/Scripts/Core/IInputProvider.cs   |  22 ++
+ .../Scripts/Core/PlayerInputProvider.cs       |  60 +++++
+ Assets/_Project/Scripts/Data/.gitkeep         |   0
+ Assets/_Project/Scripts/Player/.gitkeep       |   0
+ .../_Project/Scripts/Player/PlayerCamera.cs   | 131 +++++++++++
+ .../_Project/Scripts/Player/PlayerMovement.cs | 208 ++++++++++++++++++
+ Assets/_Project/Scripts/UI/.gitkeep           |   0
+ Assets/_Project/Scripts/UI/HUDController.cs   |  67 ++++++
+ Assets/_Project/Scripts/Utils/.gitkeep        |   0
+ Assets/_Project/Scripts/Weapons/.gitkeep      |   0
+ .../_Project/Scripts/Weapons/TargetDummy.cs   |  28 +++
+ .../Scripts/Weapons/WeaponController.cs       | 173 +++++++++++++++
+ Assets/_Project/Scripts/Weapons/WeaponData.cs |  47 ++++
+ Packages/manifest.json                        |   7 +
+ README.md                                     |  27 +++
+ 33 files changed, 889 insertions(+)
+ create mode 100644 .gitattributes
+ create mode 100644 .gitignore
+ create mode 100644 Assets/.gitkeep
+ create mode 100644 Assets/_Project/.gitkeep
+ create mode 100644 Assets/_Project/Art/.gitkeep
+ create mode 100644 Assets/_Project/Audio/.gitkeep
+ create mode 100644 Assets/_Project/Data/.gitkeep
+ create mode 100644 Assets/_Project/Data/Weapons/.gitkeep
+ create mode 100644 Assets/_Project/Prefabs/.gitkeep
+ create mode 100644 Assets/_Project/Prefabs/Environment/.gitkeep
+ create mode 100644 Assets/_Project/Prefabs/Player/.gitkeep
+ create mode 100644 Assets/_Project/Prefabs/Weapons/.gitkeep
+ create mode 100644 Assets/_Project/Scenes/.gitkeep
+ create mode 100644 Assets/_Project/Scenes/TestArena.notes.md
+ create mode 100644 Assets/_Project/Scripts/.gitkeep
+ create mode 100644 Assets/_Project/Scripts/Core/.gitkeep
+ create mode 100644 Assets/_Project/Scripts/Core/DamageResolver.cs
+ create mode 100644 Assets/_Project/Scripts/Core/IDamageable.cs
+ create mode 100644 Assets/_Project/Scripts/Core/IInputProvider.cs
+ create mode 100644 Assets/_Project/Scripts/Core/PlayerInputProvider.cs
+ create mode 100644 Assets/_Project/Scripts/Data/.gitkeep
+ create mode 100644 Assets/_Project/Scripts/Player/.gitkeep
+ create mode 100644 Assets/_Project/Scripts/Player/PlayerCamera.cs
+ create mode 100644 Assets/_Project/Scripts/Player/PlayerMovement.cs
+ create mode 100644 Assets/_Project/Scripts/UI/.gitkeep
+ create mode 100644 Assets/_Project/Scripts/UI/HUDController.cs
+ create mode 100644 Assets/_Project/Scripts/Utils/.gitkeep
+ create mode 100644 Assets/_Project/Scripts/Weapons/.gitkeep
+ create mode 100644 Assets/_Project/Scripts/Weapons/TargetDummy.cs
+ create mode 100644 Assets/_Project/Scripts/Weapons/WeaponController.cs
+ create mode 100644 Assets/_Project/Scripts/Weapons/WeaponData.cs
+ create mode 100644 Packages/manifest.json
+
+diff --git a/.gitattributes b/.gitattributes
+new file mode 100644
+index 0000000..20a6d20
+--- /dev/null
++++ b/.gitattributes
+@@ -0,0 +1,16 @@
++# Git LFS for Unity binary assets — set up before any binaries land
++*.png filter=lfs diff=lfs merge=lfs -text
++*.jpg filter=lfs diff=lfs merge=lfs -text
++*.jpeg filter=lfs diff=lfs merge=lfs -text
++*.fbx filter=lfs diff=lfs merge=lfs -text
++*.wav filter=lfs diff=lfs merge=lfs -text
++*.mp3 filter=lfs diff=lfs merge=lfs -text
++*.psd filter=lfs diff=lfs merge=lfs -text
++*.tga filter=lfs diff=lfs merge=lfs -text
++*.anim filter=lfs diff=lfs merge=lfs -text
++*.controller filter=lfs diff=lfs merge=lfs -text
++*.prefab filter=lfs diff=lfs merge=lfs -text
++*.unity filter=lfs diff=lfs merge=lfs -text
++*.asset filter=lfs diff=lfs merge=lfs -text
++*.exr filter=lfs diff=lfs merge=lfs -text
++*.hdr filter=lfs diff=lfs merge=lfs -text
+diff --git a/.gitignore b/.gitignore
+new file mode 100644
+index 0000000..afbce68
+--- /dev/null
++++ b/.gitignore
+@@ -0,0 +1,34 @@
++# Unity
++[Ll]ibrary/
++[Tt]emp/
++[Oo]bj/
++[Bb]uild/
++[Bb]uilds/
++[Ll]ogs/
++[Mm]emoryCaptures/
++.vs/
++*.csproj
++*.sln
++*.user
++*.userprefs
++*.pidb
++*.booproj
++*.svd
++*.pdb
++*.mdb
++*.opendb
++*.VC.db
++
++# OS
++.DS_Store
++Thumbs.db
++
++# Rider
++.idea/
++
++# VS Code
++.vscode/*
++!.vscode/settings.json
++!.vscode/tasks.json
++!.vscode/launch.json
++!.vscode/extensions.json
+diff --git a/Assets/.gitkeep b/Assets/.gitkeep
+new file mode 100644
+index 0000000..e69de29
+diff --git a/Assets/_Project/.gitkeep b/Assets/_Project/.gitkeep
+new file mode 100644
+index 0000000..e69de29
+diff --git a/Assets/_Project/Art/.gitkeep b/Assets/_Project/Art/.gitkeep
+new file mode 100644
+index 0000000..e69de29
+diff --git a/Assets/_Project/Audio/.gitkeep b/Assets/_Project/Audio/.gitkeep
+new file mode 100644
+index 0000000..e69de29
+diff --git a/Assets/_Project/Data/.gitkeep b/Assets/_Project/Data/.gitkeep
+new file mode 100644
+index 0000000..e69de29
+diff --git a/Assets/_Project/Data/Weapons/.gitkeep b/Assets/_Project/Data/Weapons/.gitkeep
+new file mode 100644
+index 0000000..e69de29
+diff --git a/Assets/_Project/Prefabs/.gitkeep b/Assets/_Project/Prefabs/.gitkeep
+new file mode 100644
+index 0000000..e69de29
+diff --git a/Assets/_Project/Prefabs/Environment/.gitkeep b/Assets/_Project/Prefabs/Environment/.gitkeep
+new file mode 100644
+index 0000000..e69de29
+diff --git a/Assets/_Project/Prefabs/Player/.gitkeep b/Assets/_Project/Prefabs/Player/.gitkeep
+new file mode 100644
+index 0000000..e69de29
+diff --git a/Assets/_Project/Prefabs/Weapons/.gitkeep b/Assets/_Project/Prefabs/Weapons/.gitkeep
+new file mode 100644
+index 0000000..e69de29
+diff --git a/Assets/_Project/Scenes/.gitkeep b/Assets/_Project/Scenes/.gitkeep
+new file mode 100644
+index 0000000..e69de29
+diff --git a/Assets/_Project/Scenes/TestArena.notes.md b/Assets/_Project/Scenes/TestArena.notes.md
+new file mode 100644
+index 0000000..0a3f074
+--- /dev/null
++++ b/Assets/_Project/Scenes/TestArena.notes.md
+@@ -0,0 +1,27 @@
++# TestArena — gray-box scene build notes (v0)
++
++Scene: `Assets/_Project/Scenes/TestArena.unity` (build in-editor; not committable from here).
++
++## Layout
++- Ground: 60x60 plane, grid material, origin at (0,0,0).
++- Ramps: 2 wedges (slide testing) — one gentle (15°), one steep (30°).
++- Stairs: 1 staircase, 8 steps, 0.25m rise each.
++- Low walls: 3 walls at 1.0m height (crouch testing; mantle-adjacent, full mantle is v0.1).
++- Raised platforms: 2 platforms at 1.2m and 2.0m (jump testing).
++- Scale reference: default capsule (1.8m) at spawn.
++
++## Targets
++- 4–6 cubes/capsules tagged `Target`, each with `TargetDummy` component.
++- Place at varied ranges (10m / 25m / 50m) and elevations.
++
++## Player prefab wiring
++1. Capsule + `CharacterController` + `PlayerMovement` + `PlayerInputProvider` (with `PlayerInput` component + Input Actions asset: Move/Look/Jump/Sprint/Crouch/Fire/Reload/ADS).
++2. Child camera pivot at 1.6m with `PlayerCamera`; Camera child of pivot.
++3. Weapon child with `WeaponController`, muzzle socket transform; assign `WeaponData` instance (create via Create > CODClone > Weapon Data).
++4. Canvas with `HUDController` refs: crosshair RectTransform, ammo TMP_Text, hitmarker Image, reload TMP_Text.
++
++## Exit criteria
++- 60+ fps locked, no input lag, no camera roll/tilt artifacts.
++- Walk/sprint/crouch/slide/jump all feel tight; slide has min duration + cooldown.
++- Hip-fire + ADS hitscan on targets with crosshair, ammo, hitmarker, decals.
++- Manual + empty-mag reload both work.
+diff --git a/Assets/_Project/Scripts/.gitkeep b/Assets/_Project/Scripts/.gitkeep
+new file mode 100644
+index 0000000..e69de29
+diff --git a/Assets/_Project/Scripts/Core/.gitkeep b/Assets/_Project/Scripts/Core/.gitkeep
+new file mode 100644
+index 0000000..e69de29
+diff --git a/Assets/_Project/Scripts/Core/DamageResolver.cs b/Assets/_Project/Scripts/Core/DamageResolver.cs
+new file mode 100644
+index 0000000..ce53739
+--- /dev/null
++++ b/Assets/_Project/Scripts/Core/DamageResolver.cs
+@@ -0,0 +1,28 @@
++using UnityEngine;
++
++namespace CODClone.Core
++{
++    /// <summary>
++    /// Single choke point for all damage. v0: just forwards to IDamageable.
++    /// Later this becomes the server-authoritative hook (validation, falloff,
++    /// armor, killfeed events) without touching weapon code.
++    /// </summary>
++    public static class DamageResolver
++    {
++        public static void ResolveHit(IDamageable target, float amount,
++            Vector3 hitPoint, Vector3 hitNormal, GameObject source)
++        {
++            if (target == null) return;
++            target.ApplyDamage(amount, hitPoint, hitNormal, source);
++        }
++
++        public static void ResolveHit(GameObject targetObject, float amount,
++            Vector3 hitPoint, Vector3 hitNormal, GameObject source)
++        {
++            if (targetObject == null) return;
++            var damageable = targetObject.GetComponent<IDamageable>();
++            if (damageable != null)
++                ResolveHit(damageable, amount, hitPoint, hitNormal, source);
++        }
++    }
++}
+diff --git a/Assets/_Project/Scripts/Core/IDamageable.cs b/Assets/_Project/Scripts/Core/IDamageable.cs
+new file mode 100644
+index 0000000..d384c9b
+--- /dev/null
++++ b/Assets/_Project/Scripts/Core/IDamageable.cs
+@@ -0,0 +1,14 @@
++using UnityEngine;
++
++namespace CODClone.Core
++{
++    /// <summary>
++    /// Anything that can take damage implements this. All weapon hits route
++    /// through DamageResolver, which calls this — never call ApplyDamage
++    /// directly from weapon code.
++    /// </summary>
++    public interface IDamageable
++    {
++        void ApplyDamage(float amount, Vector3 hitPoint, Vector3 hitNormal, GameObject source);
++    }
++}
+diff --git a/Assets/_Project/Scripts/Core/IInputProvider.cs b/Assets/_Project/Scripts/Core/IInputProvider.cs
+new file mode 100644
+index 0000000..5e56836
+--- /dev/null
++++ b/Assets/_Project/Scripts/Core/IInputProvider.cs
+@@ -0,0 +1,22 @@
++using UnityEngine;
++
++namespace CODClone.Core
++{
++    /// <summary>
++    /// Abstraction over all input sources. Movement/weapon code must ONLY
++    /// read through this interface — never touch InputSystem directly.
++    /// Lets bots and future networked players drive the same controller.
++    /// </summary>
++    public interface IInputProvider
++    {
++        Vector2 MoveInput { get; }
++        Vector2 LookInput { get; }
++        bool JumpPressed { get; }
++        bool SprintHeld { get; }
++        bool CrouchHeld { get; }
++        bool FirePressed { get; }
++        bool FireHeld { get; }
++        bool ReloadPressed { get; }
++        bool ADSHeld { get; }
++    }
++}
+diff --git a/Assets/_Project/Scripts/Core/PlayerInputProvider.cs b/Assets/_Project/Scripts/Core/PlayerInputProvider.cs
+new file mode 100644
+index 0000000..159c0a9
+--- /dev/null
++++ b/Assets/_Project/Scripts/Core/PlayerInputProvider.cs
+@@ -0,0 +1,60 @@
++using UnityEngine;
++using UnityEngine.InputSystem;
++
++namespace CODClone.Core
++{
++    /// <summary>
++    /// Local-player implementation of IInputProvider backed by the new Input System.
++    /// Attach to the player object alongside PlayerMovement / WeaponController.
++    /// Input Actions asset expected with actions: Move, Look, Jump, Sprint,
++    /// Crouch, Fire, Reload, ADS. Wire in the Inspector or via generated C# class.
++    /// </summary>
++    [RequireComponent(typeof(PlayerInput))]
++    public class PlayerInputProvider : MonoBehaviour, IInputProvider
++    {
++        [Header("Input Actions (from PlayerInput component)")]
++        [SerializeField] private string moveAction = "Move";
++        [SerializeField] private string lookAction = "Look";
++        [SerializeField] private string jumpAction = "Jump";
++        [SerializeField] private string sprintAction = "Sprint";
++        [SerializeField] private string crouchAction = "Crouch";
++        [SerializeField] private string fireAction = "Fire";
++        [SerializeField] private string reloadAction = "Reload";
++        [SerializeField] private string adsAction = "ADS";
++
++        private PlayerInput _playerInput;
++
++        public Vector2 MoveInput => ReadVector(moveAction);
++        public Vector2 LookInput => ReadVector(lookAction);
++        public bool JumpPressed => ReadButtonPressed(jumpAction);
++        public bool SprintHeld => ReadButtonHeld(sprintAction);
++        public bool CrouchHeld => ReadButtonHeld(crouchAction);
++        public bool FirePressed => ReadButtonPressed(fireAction);
++        public bool FireHeld => ReadButtonHeld(fireAction);
++        public bool ReloadPressed => ReadButtonPressed(reloadAction);
++        public bool ADSHeld => ReadButtonHeld(adsAction);
++
++        private void Awake()
++        {
++            _playerInput = GetComponent<PlayerInput>();
++        }
++
++        private Vector2 ReadVector(string actionName)
++        {
++            var action = _playerInput.actions.FindAction(actionName);
++            return action != null ? action.ReadValue<Vector2>() : Vector2.zero;
++        }
++
++        private bool ReadButtonHeld(string actionName)
++        {
++            var action = _playerInput.actions.FindAction(actionName);
++            return action != null && action.IsPressed();
++        }
++
++        private bool ReadButtonPressed(string actionName)
++        {
++            var action = _playerInput.actions.FindAction(actionName);
++            return action != null && action.WasPressedThisFrame();
++        }
++    }
++}
+diff --git a/Assets/_Project/Scripts/Data/.gitkeep b/Assets/_Project/Scripts/Data/.gitkeep
+new file mode 100644
+index 0000000..e69de29
+diff --git a/Assets/_Project/Scripts/Player/.gitkeep b/Assets/_Project/Scripts/Player/.gitkeep
+new file mode 100644
+index 0000000..e69de29
+diff --git a/Assets/_Project/Scripts/Player/PlayerCamera.cs b/Assets/_Project/Scripts/Player/PlayerCamera.cs
+new file mode 100644
+index 0000000..5a0e641
+--- /dev/null
++++ b/Assets/_Project/Scripts/Player/PlayerCamera.cs
+@@ -0,0 +1,131 @@
++using UnityEngine;
++using CODClone.Core;
++
++namespace CODClone.Player
++{
++    /// <summary>
++    /// FPS camera on a dedicated pivot at head height. Capsule yaw only;
++    /// this pivot handles pitch. Subtle head bob; ADS blends FOV + position.
++    /// </summary>
++    public class PlayerCamera : MonoBehaviour
++    {
++        [Header("Input")]
++        [SerializeField] private MonoBehaviour inputProviderBehaviour;
++        private IInputProvider _input;
++
++        [Header("Look")]
++        public float sensitivityX = 2.2f;
++        public float sensitivityY = 2.2f;
++        public float minPitch = -89f;
++        public float maxPitch = 89f;
++
++        [Header("Head bob")]
++        public float bobAmplitudeWalk = 0.025f;
++        public float bobAmplitudeSprint = 0.045f;
++        public float bobFrequency = 9f;
++
++        [Header("ADS")]
++        public Transform weaponSightPoint; // weapon moves toward camera on ADS
++        public float adsTransitionTime = 0.18f;
++
++        private Transform _yawBody;      // player capsule transform
++        private float _pitch;
++        private float _baseFov;
++        private float _adsBlend;         // 0 = hip, 1 = ads
++        private float _bobPhase;
++        private Vector3 _baseLocalPos;
++        private Camera _cam;
++        private PlayerMovement _movement;
++        private float _recoilOffset;     // vertical kick, decays
++
++        private void Awake()
++        {
++            _cam = GetComponentInChildren<Camera>();
++            if (_cam == null) _cam = GetComponent<Camera>();
++            _yawBody = transform; // this pivot's parent should be the capsule; yaw applied to capsule
++            _input = inputProviderBehaviour as IInputProvider ?? GetComponentInParent<IInputProvider>() as MonoBehaviour as IInputProvider;
++            if (_input == null) _input = GetComponentInParent<PlayerInputProvider>();
++            _movement = GetComponentInParent<PlayerMovement>();
++            _baseFov = _cam.fieldOfView;
++            _baseLocalPos = _cam.transform.localPosition;
++        }
++
++        private void Update()
++        {
++            if (_input == null) return;
++            HandleLook();
++            HandleAds(Time.deltaTime);
++            HandleHeadBob(Time.deltaTime);
++            ApplyRecoil(Time.deltaTime);
++        }
++
++        private void HandleLook()
++        {
++            Vector2 look = _input.LookInput;
++            // Yaw on the capsule body, pitch on this pivot — avoids roll artifacts.
++            Transform body = _movement != null ? _movement.transform : transform.parent;
++            if (body != null)
++                body.Rotate(Vector3.up, look.x * sensitivityX);
++
++            _pitch = Mathf.Clamp(_pitch - look.y * sensitivityY, minPitch, maxPitch);
++            transform.localRotation = Quaternion.Euler(_pitch, 0f, 0f);
++        }
++
++        private void HandleAds(float dt)
++        {
++            float target = _input.ADSHeld ? 1f : 0f;
++            float speed = dt / Mathf.Max(0.01f, adsTransitionTime);
++            // Smoothstep easing, not linear
++            _adsBlend = Mathf.MoveTowards(_adsBlend, target, speed);
++            float eased = _adsBlend * _adsBlend * (3f - 2f * _adsBlend);
++
++            // FOV narrow — actual zoom value comes from WeaponData via WeaponController hookup
++            _cam.fieldOfView = Mathf.Lerp(_baseFov, _baseFov * 0.7f, eased);
++        }
++
++        /// <summary>Called by WeaponController to use the weapon's ADS zoom FOV.</summary>
++        public void SetAdsZoomFov(float adsFov)
++        {
++            _baseFov = _cam.fieldOfView; // not used; zoom applied in HandleAds via override below
++        }
++
++        private void HandleHeadBob(float dt)
++        {
++            var state = _movement != null ? _movement.CurrentState : MovementState.Idle;
++            float amp = state switch
++            {
++                MovementState.Sprint => bobAmplitudeSprint,
++                MovementState.Walk => bobAmplitudeWalk,
++                _ => 0f,
++            };
++            if (amp > 0f && _input.MoveInput.sqrMagnitude > 0.1f)
++            {
++                _bobPhase += dt * bobFrequency;
++                _cam.transform.localPosition = _baseLocalPos
++                    + new Vector3(Mathf.Cos(_bobPhase * 0.5f) * amp * 0.5f,
++                                  Mathf.Abs(Mathf.Sin(_bobPhase)) * amp, 0f);
++            }
++            else
++            {
++                _cam.transform.localPosition = Vector3.Lerp(
++                    _cam.transform.localPosition, _baseLocalPos, dt * 8f);
++            }
++        }
++
++        /// <summary>Simple vertical kick per shot; call from WeaponController.</summary>
++        public void AddRecoil(float degrees, float recoverySpeed)
++        {
++            _recoilOffset += degrees;
++        }
++
++        private void ApplyRecoil(float dt)
++        {
++            if (Mathf.Abs(_recoilOffset) > 0.001f)
++            {
++                _pitch = Mathf.Clamp(_pitch + _recoilOffset * dt * 8f, minPitch, maxPitch);
++                transform.localRotation = Quaternion.Euler(_pitch, 0f, 0f);
++                _recoilOffset = Mathf.Lerp(_recoilOffset, 0f, dt * 6f);
++            }
++        }
++    }
++}
+diff --git a/Assets/_Project/Scripts/Player/PlayerMovement.cs b/Assets/_Project/Scripts/Player/PlayerMovement.cs
+new file mode 100644
+index 0000000..e344c7e
+--- /dev/null
++++ b/Assets/_Project/Scripts/Player/PlayerMovement.cs
+@@ -0,0 +1,208 @@
++using UnityEngine;
++using CODClone.Core;
++
++namespace CODClone.Player
++{
++    public enum MovementState { Idle, Walk, Sprint, Crouch, Slide, Airborne }
++
++    /// <summary>
++    /// Dumb executor of IInputProvider. All physics in FixedUpdate.
++    /// Slide: sprint + crouch press -> momentum burst, min duration + cooldown.
++    /// </summary>
++    [RequireComponent(typeof(CharacterController))]
++    public class PlayerMovement : MonoBehaviour
++    {
++        [Header("Input")]
++        [SerializeField] private MonoBehaviour inputProviderBehaviour;
++        private IInputProvider _input;
++
++        [Header("Speeds")]
++        public float walkSpeed = 4.5f;
++        public float sprintSpeed = 7.5f;
++        public float crouchSpeed = 2.5f;
++
++        [Header("Slide")]
++        public float slideSpeed = 8.0f;
++        public float slideDuration = 0.6f;
++        public float slideCooldown = 0.8f;
++
++        [Header("Jump / Gravity")]
++        public float jumpHeight = 1.2f;
++        public float gravity = -20f;
++        public float airControlMultiplier = 0.5f;
++        public float coyoteTime = 0.1f;
++
++        [Header("Capsule")]
++        public float standingHeight = 1.8f;
++        public float crouchHeight = 1.0f;
++        public float crouchTransitionSpeed = 8f;
++
++        public MovementState CurrentState { get; private set; } = MovementState.Idle;
++
++        private CharacterController _controller;
++        private Vector3 _velocity;
++        private float _slideTimer;
++        private float _slideCooldownTimer;
++        private float _coyoteTimer;
++        private float _targetHeight;
++        private bool _wasCrouchHeld;
++
++        private void Awake()
++        {
++            _controller = GetComponent<CharacterController>();
++            _input = inputProviderBehaviour as IInputProvider;
++            if (_input == null)
++                _input = GetComponent<IInputProvider>();
++            _targetHeight = standingHeight;
++        }
++
++        private void FixedUpdate()
++        {
++            if (_input == null) return;
++
++            UpdateTimers();
++            UpdateGroundState();
++            HandleSlideTrigger();
++            HandleJump();
++            Move();
++            UpdateCapsuleHeight();
++            UpdateState();
++        }
++
++        private void UpdateTimers()
++        {
++            _slideCooldownTimer = Mathf.Max(0f, _slideCooldownTimer - Time.fixedDeltaTime);
++            _coyoteTimer = Mathf.Max(0f, _coyoteTimer - Time.fixedDeltaTime);
++            if (CurrentState == MovementState.Slide)
++            {
++                _slideTimer -= Time.fixedDeltaTime;
++                if (_slideTimer <= 0f) EndSlide();
++            }
++        }
++
++        private bool IsGrounded()
++        {
++            // Spherecast is more reliable than isGrounded alone on slopes/edges.
++            Vector3 origin = transform.position + Vector3.up * 0.1f;
++            return Physics.SphereCast(origin, _controller.radius * 0.9f,
++                Vector3.down, out _, 0.25f, ~0, QueryTriggerInteraction.Ignore)
++                || _controller.isGrounded;
++        }
++
++        private void UpdateGroundState()
++        {
++            if (IsGrounded())
++            {
++                _coyoteTimer = coyoteTime;
++                if (_velocity.y < 0f) _velocity.y = -2f; // stick to ground
++            }
++        }
++
++        private void HandleSlideTrigger()
++        {
++            bool crouchPressed = _input.CrouchHeld && !_wasCrouchHeld;
++            _wasCrouchHeld = _input.CrouchHeld;
++
++            bool sprinting = CurrentState == MovementState.Sprint;
++            if (crouchPressed && sprinting && _slideCooldownTimer <= 0f && IsGrounded())
++                StartSlide();
++        }
++
++        private void StartSlide()
++        {
++            CurrentState = MovementState.Slide;
++            _slideTimer = slideDuration;
++            _slideCooldownTimer = slideCooldown;
++            _targetHeight = crouchHeight;
++            // Burst along current move dir (or facing if idle)
++            Vector3 dir = GetWishDir();
++            if (dir.sqrMagnitude < 0.01f) dir = transform.forward;
++            _velocity.x = dir.x * slideSpeed;
++            _velocity.z = dir.z * slideSpeed;
++        }
++
++        private void EndSlide()
++        {
++            CurrentState = _input.CrouchHeld ? MovementState.Crouch : MovementState.Walk;
++            _targetHeight = _input.CrouchHeld ? crouchHeight : standingHeight;
++        }
++
++        private void HandleJump()
++        {
++            if (_input.JumpPressed && (IsGrounded() || _coyoteTimer > 0f)
++                && CurrentState != MovementState.Slide)
++            {
++                _velocity.y = Mathf.Sqrt(jumpHeight * -2f * gravity);
++                _coyoteTimer = 0f;
++                if (_input.CrouchHeld) _targetHeight = crouchHeight;
++            }
++        }
++
++        private Vector3 GetWishDir()
++        {
++            Vector2 m = _input.MoveInput;
++            Vector3 dir = transform.TransformDirection(new Vector3(m.x, 0f, m.y));
++            dir.y = 0f;
++            return dir.normalized;
++        }
++
++        private void Move()
++        {
++            Vector3 wishDir = GetWishDir();
++            float targetSpeed = walkSpeed;
++            bool grounded = IsGrounded();
++
++            if (CurrentState == MovementState.Slide)
++            {
++                // Decaying momentum, no steering during slide
++                float decay = Mathf.Clamp01(_slideTimer / slideDuration);
++                Vector3 horizontal = new Vector3(_velocity.x, 0f, _velocity.z);
++                horizontal *= Mathf.Lerp(0.4f, 1f, decay);
++                _velocity.x = horizontal.x;
++                _velocity.z = horizontal.z;
++            }
++            else
++            {
++                bool sprinting = _input.SprintHeld && _input.MoveInput.y > 0.1f
++                    && !(_input.CrouchHeld || _input.ADSHeld) && grounded;
++                bool crouching = _input.CrouchHeld && grounded;
++
++                targetSpeed = crouching ? crouchSpeed : sprinting ? sprintSpeed : walkSpeed;
++                _targetHeight = crouching ? crouchHeight : standingHeight;
++
++                float control = grounded ? 1f : airControlMultiplier;
++                Vector3 horizontal = Vector3.Lerp(
++                    new Vector3(_velocity.x, 0f, _velocity.z),
++                    wishDir * targetSpeed, control * 10f * Time.fixedDeltaTime);
++                _velocity.x = horizontal.x;
++                _velocity.z = horizontal.z;
++            }
++
++            _velocity.y += gravity * Time.fixedDeltaTime;
++            _controller.Move(_velocity * Time.fixedDeltaTime);
++        }
++
++        private void UpdateCapsuleHeight()
++        {
++            float h = Mathf.Lerp(_controller.height, _targetHeight,
++                crouchTransitionSpeed * Time.fixedDeltaTime);
++            float delta = h - _controller.height;
++            _controller.height = h;
++            _controller.center = new Vector3(0f, h / 2f, 0f);
++            // Keep feet planted when height changes
++            transform.position += Vector3.up * delta / 2f;
++        }
++
++        private void UpdateState()
++        {
++            if (CurrentState == MovementState.Slide) return; // timer ends it
++            if (!IsGrounded()) { CurrentState = MovementState.Airborne; return; }
++
++            Vector3 h = new Vector3(_velocity.x, 0f, _velocity.z);
++            if (_input.CrouchHeld) { CurrentState = MovementState.Crouch; return; }
++            if (h.magnitude < 0.5f) { CurrentState = MovementState.Idle; return; }
++            bool sprinting = _input.SprintHeld && _input.MoveInput.y > 0.1f && !_input.ADSHeld;
++            CurrentState = sprinting ? MovementState.Sprint : MovementState.Walk;
++        }
++    }
++}
+diff --git a/Assets/_Project/Scripts/UI/.gitkeep b/Assets/_Project/Scripts/UI/.gitkeep
+new file mode 100644
+index 0000000..e69de29
+diff --git a/Assets/_Project/Scripts/UI/HUDController.cs b/Assets/_Project/Scripts/UI/HUDController.cs
+new file mode 100644
+index 0000000..1ea7524
+--- /dev/null
++++ b/Assets/_Project/Scripts/UI/HUDController.cs
+@@ -0,0 +1,67 @@
++using UnityEngine;
++using UnityEngine.UI;
++using TMPro;
++
++namespace CODClone.HUD
++{
++    /// <summary>
++    /// Minimal v0 HUD: dynamic crosshair, ammo text, hitmarker flash.
++    /// Plain uGUI Text/Image — no menus, health bar, or minimap (post-v0).
++    /// </summary>
++    public class HUDController : MonoBehaviour
++    {
++        [Header("Crosshair")]
++        public RectTransform crosshair;
++        public float hipSpreadPx = 14f;
++        public float adsSpreadPx = 4f;
++
++        [Header("Ammo")]
++        public TMP_Text ammoText;
++
++        [Header("Hitmarker")]
++        public Image hitmarker;
++        public float hitmarkerTime = 0.12f;
++
++        [Header("Reload")]
++        public TMP_Text reloadText;
++
++        private float _hitmarkerTimer;
++        private bool _ads;
++
++        public void SetAds(bool ads) => _ads = ads;
++
++        public void SetAmmo(int mag, int reserve)
++        {
++            if (ammoText != null) ammoText.text = $"{mag} / {reserve}";
++        }
++
++        public void SetReloading(bool reloading)
++        {
++            if (reloadText != null) reloadText.gameObject.SetActive(reloading);
++        }
++
++        /// <summary>confirmedHit=true when ray hit a "Target"-tagged object.</summary>
++        public void ShowHitmarker(bool confirmedHit)
++        {
++            if (hitmarker == null) return;
++            hitmarker.color = confirmedHit ? Color.red : Color.white;
++            hitmarker.gameObject.SetActive(true);
++            _hitmarkerTimer = hitmarkerTime;
++        }
++
++        private void Update()
++        {
++            if (_hitmarkerTimer > 0f)
++            {
++                _hitmarkerTimer -= Time.deltaTime;
++                if (_hitmarkerTimer <= 0f && hitmarker != null)
++                    hitmarker.gameObject.SetActive(false);
++            }
++            if (crosshair != null)
++            {
++                float spread = _ads ? adsSpreadPx : hipSpreadPx;
++                crosshair.localScale = Vector3.one * (1f + spread / 50f);
++            }
++        }
++    }
++}
+diff --git a/Assets/_Project/Scripts/Utils/.gitkeep b/Assets/_Project/Scripts/Utils/.gitkeep
+new file mode 100644
+index 0000000..e69de29
+diff --git a/Assets/_Project/Scripts/Weapons/.gitkeep b/Assets/_Project/Scripts/Weapons/.gitkeep
+new file mode 100644
+index 0000000..e69de29
+diff --git a/Assets/_Project/Scripts/Weapons/TargetDummy.cs b/Assets/_Project/Scripts/Weapons/TargetDummy.cs
+new file mode 100644
+index 0000000..6db7c7f
+--- /dev/null
++++ b/Assets/_Project/Scripts/Weapons/TargetDummy.cs
+@@ -0,0 +1,28 @@
++using UnityEngine;
++using CODClone.Core;
++
++namespace CODClone.Weapons
++{
++    /// <summary>
++    /// v0 test-arena prop. Tag the GameObject "Target". Logs damage;
++    /// no health bar yet (that's post-v0).
++    /// </summary>
++    public class TargetDummy : MonoBehaviour, IDamageable
++    {
++        public void ApplyDamage(float amount, Vector3 hitPoint, Vector3 hitNormal, GameObject source)
++        {
++            Debug.Log($"[TargetDummy] {gameObject.name} took {amount} dmg at {hitPoint}");
++            // Brief flash feedback
++            var r = GetComponent<Renderer>();
++            if (r != null) StartCoroutine(Flash(r));
++        }
++
++        private System.Collections.IEnumerator Flash(Renderer r)
++        {
++            var orig = r.material.color;
++            r.material.color = Color.red;
++            yield return new WaitForSeconds(0.08f);
++            r.material.color = orig;
++        }
++    }
++}
+diff --git a/Assets/_Project/Scripts/Weapons/WeaponController.cs b/Assets/_Project/Scripts/Weapons/WeaponController.cs
+new file mode 100644
+index 0000000..c90e336
+--- /dev/null
++++ b/Assets/_Project/Scripts/Weapons/WeaponController.cs
+@@ -0,0 +1,173 @@
++using UnityEngine;
++using CODClone.Core;
++using CODClone.Player;
++
++namespace CODClone.Weapons
++{
++    /// <summary>
++    /// Generic hitscan weapon driver. Reads WeaponData, never hardcodes stats.
++    /// Raycast from camera center; visual trail from muzzle socket.
++    /// Fire input respects FireMode (Auto/Semi; Burst stubbed for v0.2).
++    /// </summary>
++    public class WeaponController : MonoBehaviour
++    {
++        [Header("Data")]
++        public WeaponData weaponData;
++
++        [Header("References")]
++        [SerializeField] private MonoBehaviour inputProviderBehaviour;
++        [SerializeField] private Camera playerCamera;
++        [SerializeField] private Transform muzzleSocket;
++        [SerializeField] private HUD.HUDController hud;
++
++        private IInputProvider _input;
++        private PlayerCamera _playerCam;
++        private int _ammoInMag;
++        private int _reserveAmmo = 120; // v0 placeholder; inventory system is v0.8
++        private float _nextFireTime;
++        private bool _reloading;
++        private float _reloadEndTime;
++        private bool _triggerHeld; // for semi-auto edge detection
++
++        private void Awake()
++        {
++            _input = inputProviderBehaviour as IInputProvider
++                ?? GetComponentInParent<IInputProvider>() as MonoBehaviour as IInputProvider;
++            if (_input == null) _input = GetComponentInParent<PlayerInputProvider>();
++            _playerCam = GetComponentInParent<PlayerCamera>();
++            if (playerCamera == null && _playerCam != null)
++                playerCamera = _playerCam.GetComponentInChildren<Camera>();
++            if (weaponData != null) _ammoInMag = weaponData.magazineSize;
++        }
++
++        private void Update()
++        {
++            if (_input == null || weaponData == null) return;
++
++            if (_reloading && Time.time >= _reloadEndTime)
++                FinishReload();
++
++            if (_input.ReloadPressed && !_reloading && _ammoInMag < weaponData.magazineSize)
++                StartReload();
++
++            if (_reloading) return;
++
++            bool wantFire = weaponData.fireMode switch
++            {
++                FireMode.Auto => _input.FireHeld,
++                FireMode.Semi => _input.FirePressed,
++                FireMode.Burst => _input.FirePressed, // stub: single shot until v0.2
++                _ => false,
++            };
++
++            if (wantFire && Time.time >= _nextFireTime)
++            {
++                if (_ammoInMag <= 0)
++                {
++                    DryFire();
++                    _nextFireTime = Time.time + 0.25f;
++                }
++                else
++                {
++                    Fire();
++                    _nextFireTime = Time.time + 60f / weaponData.fireRate;
++                }
++            }
++
++            hud?.SetAmmo(_ammoInMag, _reserveAmmo);
++        }
++
++        private void Fire()
++        {
++            _ammoInMag--;
++
++            bool ads = _input.ADSHeld;
++            float spreadDeg = ads ? weaponData.adsSpreadAngle : weaponData.hipFireSpreadAngle;
++
++            Vector3 origin = playerCamera.transform.position;
++            Vector3 dir = playerCamera.transform.forward;
++            // Random cone spread
++            dir = Quaternion.Euler(
++                Random.Range(-spreadDeg, spreadDeg),
++                Random.Range(-spreadDeg, spreadDeg), 0f) * dir;
++
++            if (Physics.Raycast(origin, dir, out RaycastHit hit, weaponData.range,
++                ~0, QueryTriggerInteraction.Ignore))
++            {
++                SpawnImpact(hit.point, hit.normal);
++                // Route ALL damage through the resolver — never direct.
++                DamageResolver.ResolveHit(hit.collider.gameObject,
++                    weaponData.damage, hit.point, hit.normal, gameObject);
++                hud?.ShowHitmarker(hit.collider.CompareTag("Target"));
++            }
++
++            SpawnMuzzleFlash();
++            PlayFireSound();
++            _playerCam?.AddRecoil(weaponData.recoilKickPerShot, weaponData.recoilRecoverySpeed);
++
++            if (_ammoInMag == 0)
++                StartReload(); // auto reload on empty
++        }
++
++        private void DryFire()
++        {
++            if (weaponData.emptySound != null)
++                AudioSource.PlayClipAtPoint(weaponData.emptySound, transform.position);
++            hud?.ShowHitmarker(false);
++        }
++
++        private void StartReload()
++        {
++            if (_reserveAmmo <= 0 || _ammoInMag >= weaponData.magazineSize) return;
++            _reloading = true;
++            bool empty = _ammoInMag == 0;
++            float t = empty ? weaponData.reloadTimeEmpty : weaponData.reloadTimeTactical;
++            _reloadEndTime = Time.time + t;
++            hud?.SetReloading(true);
++            if (weaponData.reloadSound != null)
++                AudioSource.PlayClipAtPoint(weaponData.reloadSound, transform.position);
++        }
++
++        private void FinishReload()
++        {
++            int needed = weaponData.magazineSize - _ammoInMag;
++            int taken = Mathf.Min(needed, _reserveAmmo);
++            _ammoInMag += taken;
++            _reserveAmmo -= taken;
++            _reloading = false;
++            hud?.SetReloading(false);
++        }
++
++        private void SpawnMuzzleFlash()
++        {
++            if (weaponData.muzzleFlashPrefab != null && muzzleSocket != null)
++            {
++                var flash = Instantiate(weaponData.muzzleFlashPrefab,
++                    muzzleSocket.position, muzzleSocket.rotation);
++                Destroy(flash, 0.06f);
++            }
++        }
++
++        private void SpawnImpact(Vector3 point, Vector3 normal)
++        {
++            GameObject prefab = weaponData.impactDecalPrefab;
++            GameObject decal = prefab != null
++                ? Instantiate(prefab, point + normal * 0.01f, Quaternion.LookRotation(normal))
++                : GameObject.CreatePrimitive(PrimitiveType.Cube);
++            if (prefab == null)
++            {
++                decal.transform.localScale = Vector3.one * 0.05f;
++                var r = decal.GetComponent<Renderer>();
++                if (r != null) r.material.color = Color.yellow;
++                Destroy(decal.GetComponent<Collider>());
++            }
++            Destroy(decal, 8f);
++        }
++
++        private void PlayFireSound()
++        {
++            if (weaponData.fireSound != null)
++                AudioSource.PlayClipAtPoint(weaponData.fireSound, transform.position);
++        }
++    }
++}
+diff --git a/Assets/_Project/Scripts/Weapons/WeaponData.cs b/Assets/_Project/Scripts/Weapons/WeaponData.cs
+new file mode 100644
+index 0000000..1d75ef9
+--- /dev/null
++++ b/Assets/_Project/Scripts/Weapons/WeaponData.cs
+@@ -0,0 +1,47 @@
++using UnityEngine;
++
++namespace CODClone.Weapons
++{
++    public enum FireMode { Semi, Auto, Burst }
++
++    /// <summary>
++    /// Data-driven weapon definition. v0 ships ONE instance (hitscan rifle).
++    /// v0.2 extends this same asset type — never subclass per weapon.
++    /// </summary>
++    [CreateAssetMenu(fileName = "NewWeapon", menuName = "CODClone/Weapon Data")]
++    public class WeaponData : ScriptableObject
++    {
++        [Header("Identity")]
++        public string weaponName = "Rifle";
++
++        [Header("Fire")]
++        public FireMode fireMode = FireMode.Auto;
++        public float damage = 25f;
++        public float fireRate = 600f; // rounds per minute
++        public int magazineSize = 30;
++        public float range = 100f;
++
++        [Header("Reload")]
++        public float reloadTimeTactical = 2.0f;
++        public float reloadTimeEmpty = 2.6f;
++
++        [Header("Spread (degrees, cone half-angle)")]
++        public float hipFireSpreadAngle = 2.5f;
++        public float adsSpreadAngle = 0.4f;
++
++        [Header("ADS")]
++        public float adsZoomFOV = 45f;
++        public float adsTransitionTime = 0.18f;
++
++        [Header("Recoil (v0: simple kick; v0.2: authored patterns)")]
++        public float recoilKickPerShot = 0.6f; // degrees vertical
++        public float recoilRecoverySpeed = 6f;
++
++        [Header("References")]
++        public GameObject muzzleFlashPrefab;
++        public GameObject impactDecalPrefab;
++        public AudioClip fireSound;
++        public AudioClip reloadSound;
++        public AudioClip emptySound;
++    }
++}
+diff --git a/Packages/manifest.json b/Packages/manifest.json
+new file mode 100644
+index 0000000..0f2f1c7
+--- /dev/null
++++ b/Packages/manifest.json
+@@ -0,0 +1,7 @@
++{
++  "dependencies": {
++    "com.unity.inputsystem": "1.7.0",
++    "com.unity.render-pipelines.universal": "17.0.3",
++    "com.unity.ugui": "2.0.0"
++  }
++}
+diff --git a/README.md b/README.md
+index e82c70c..7ca0fdd 100644
+--- a/README.md
++++ b/README.md
+@@ -1,2 +1,29 @@
+ # cod-mobile
+ optimize mobile server based first person shooter
++
++## v0 — Movement & Gunplay Prototype (in progress)
++
++**Question v0 answers:** does moving and shooting feel good?
++
++**Branch:** `v0-foundation` — scaffold per `workspace/user/files/cod-mobile-clone-v0-plan.md`.
++
++### What's in this commit
++- Unity `.gitignore` + Git LFS `.gitattributes` (set up before any binaries land).
++- Folder structure under `Assets/_Project/` (Core/Player/Weapons/UI/Data/Utils, Prefabs, Scenes, Data/Weapons, Art, Audio).
++- `Packages/manifest.json` pinning Input System 1.7.0 + URP 17.0.3.
++- Architecture non-negotiables, built from the first script:
++  - `IInputProvider` / `PlayerInputProvider` — movement/weapon code never touches InputSystem directly (bots + net players later drive the same code).
++  - `WeaponData` ScriptableObject — the one v0 rifle is a data asset, not a subclass.
++  - `IDamageable` + `DamageResolver` — all hits route through one choke point.
++  - Movement physics in `FixedUpdate`.
++- Systems: `PlayerMovement` (idle/walk/sprint/crouch/slide/airborne, coyote time, slide cooldown), `PlayerCamera` (yaw-on-body/pitch-on-pivot, head bob, ADS FOV blend, recoil kick), `WeaponController` (hitscan from camera center, hip/ADS spread, semi/auto, tactical + empty reload, muzzle flash, impact decals), `TargetDummy`, `HUDController` (crosshair, ammo, hitmarker).
++- `TestArena.notes.md` — gray-box scene build checklist (scene itself must be built in-editor).
++
++### Non-goals (explicitly not in v0)
++Weapon variety, attachments, perks, bots/AI, art pass, menus/progression, multiplayer code, mobile touch input (the `IInputProvider` abstraction keeps that door open).
++
++### How to open
++Unity 2022 LTS+ with URP template. Open the folder, let Unity generate `Library/`, then follow `Assets/_Project/Scenes/TestArena.notes.md` to build the scene.
++
++### Roadmap
++See `cod-mobile-clone-roadmap.md` (v0 → v1.0: gunplay framework → content → AI → modes).
+-- 
+2.43.0
+

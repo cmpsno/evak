@@ -302,6 +302,7 @@ public static class BuildTestArena
         playerInput.defaultActionMap = "Player";
 
         var inputProvider = player.AddComponent<PlayerInputProvider>();
+        player.AddComponent<CODClone.Core.WebGLPointerLock>();
 
         var movement = player.AddComponent<PlayerMovement>();
         SetField(movement, "inputProviderBehaviour", inputProvider);
