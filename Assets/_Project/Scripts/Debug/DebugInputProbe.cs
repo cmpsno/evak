@@ -38,6 +38,17 @@ namespace CODClone.Diagnostics
             {
                 _t = 0f;
                 var provider = GetComponent<PlayerInputProvider>();
+                // Dual-system diagnosis: old Input Manager vs new Input System device vs action.
+                bool oldW = Input.GetKey(KeyCode.W);
+                bool newW = Keyboard.current != null && Keyboard.current.wKey.isPressed;
+                var pi = GetComponent<PlayerInput>();
+                string actionW = "n/a";
+                if (pi != null && pi.actions != null)
+                {
+                    var mv = pi.actions.FindAction("Move");
+                    if (mv != null) actionW = mv.ReadValue<Vector2>().ToString();
+                }
+                Debug.Log($"[InputProbe] DUAL old_GetKey(W)={oldW} new_Keyboard.w={newW} action_Move={actionW}");
                 if (provider != null)
                     Debug.Log($"[InputProbe] live move={provider.MoveInput} look={provider.LookInput} " +
                               $"interact={provider.InteractPressed} gate={provider.GameplayInputEnabled}");
