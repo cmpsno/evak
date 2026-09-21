@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 using CODClone.Core;
+using Debug = UnityEngine.Debug;
 
 namespace CODClone.Debug
 {
