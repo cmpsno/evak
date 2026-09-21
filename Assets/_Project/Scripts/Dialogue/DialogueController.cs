@@ -47,6 +47,10 @@ namespace Campusano.Dialogue
         {
             if (Instance != null && Instance != this) { Destroy(gameObject); return; }
             Instance = this;
+            // The scene builder no longer embeds the code-generated DB (its script
+            // ref went stale in builds). Build it fresh so dialogue never ships empty.
+            if (database == null)
+                database = Ep1DialogueBank.BuildDatabase();
         }
 
         private void OnDestroy()

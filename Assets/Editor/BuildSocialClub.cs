@@ -260,8 +260,10 @@ public static class BuildSocialClub
 
         var dialogueGO = new GameObject("DialogueController");
         var dialogue = dialogueGO.AddComponent<Campusano.Dialogue.DialogueController>();
-        dialogue.Configure(Campusano.Dialogue.Ep1DialogueBank.BuildDatabase(),
-                           holder.view, playerInputProvider);
+        // DB is built at runtime in DialogueController.Awake; embedding the
+        // code-generated ScriptableObject in the scene left a stale script ref
+        // (m_Script fileID 0) that broke dialogue in builds.
+        dialogue.Configure(null, holder.view, playerInputProvider);
 
         var routerGO = new GameObject("ChoiceRouter");
         var router = routerGO.AddComponent<Campusano.Missions.ChoiceRouter>();
@@ -280,6 +282,9 @@ public static class BuildSocialClub
         // Trigger volumes: hallway doorway (M1-S8) and back-room door (M2-S1).
         AddTriggerVolume("Vol_HallwayDoor", new Vector3(2f, 1f, 9f), new Vector3(2f, 3f, 1f));
         AddTriggerVolume("Vol_BackRoomDoor", new Vector3(9f, 1f, 12f), new Vector3(1f, 3f, 2f));
+
+        // UIHolder is editor-only: strip it so the saved scene has no dangling script ref.
+        GameObject.DestroyImmediate(holder);
     }
 
     static Campusano.Missions.StepTrigger[] BuildEp1Triggers()

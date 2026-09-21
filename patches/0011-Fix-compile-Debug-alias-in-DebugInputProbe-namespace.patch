@@ -1,0 +1,314 @@
+From ae402009824e89c08cc08c7cfc3017c62af3c356 Mon Sep 17 00:00:00 2001
+From: marvin <marvin@local>
+Date: Sun, 20 Sep 2026 23:30:18 -0400
+Subject: [PATCH 11/14] Fix compile: Debug alias in DebugInputProbe (namespace
+ collision)
+
+---
+ .../_Project/Scripts/Debug/DebugInputProbe.cs |   1 +
+ socialclub-webgl6.log                         | 196 +++++++-----------
+ 2 files changed, 72 insertions(+), 125 deletions(-)
+
+diff --git a/Assets/_Project/Scripts/Debug/DebugInputProbe.cs b/Assets/_Project/Scripts/Debug/DebugInputProbe.cs
+index 4a8d1d1..a6ae69a 100644
+--- a/Assets/_Project/Scripts/Debug/DebugInputProbe.cs
++++ b/Assets/_Project/Scripts/Debug/DebugInputProbe.cs
+@@ -1,6 +1,7 @@
+ using UnityEngine;
+ using UnityEngine.InputSystem;
+ using CODClone.Core;
++using Debug = UnityEngine.Debug;
+ 
+ namespace CODClone.Debug
+ {
+diff --git a/socialclub-webgl6.log b/socialclub-webgl6.log
+index 7ad37b8..db38b8d 100644
+--- a/socialclub-webgl6.log
++++ b/socialclub-webgl6.log
+@@ -9,18 +9,18 @@ Architecture:            x86_64
+ Available memory:        7935 MB
+ [Licensing::Module] Trying to connect to existing licensing client channel...
+ [Licensing::IpcConnector] Channel LicenseClient-root doesn't exist
+-[Licensing::Module] Successfully launched the LicensingClient (PId: 5433)
+-[Licensing::IpcConnector] Successfully connected to: "LicenseClient-root" at "2026-09-21T03:27:55.046652Z"
++[Licensing::Module] Successfully launched the LicensingClient (PId: 5700)
++[Licensing::IpcConnector] Successfully connected to: "LicenseClient-root" at "2026-09-21T03:29:15.601287Z"
+ [SignatureVerifier] Application signature verification not supported on this platform.
+ [Licensing::Client] Handshaking with LicensingClient:
+   Version:                 1.16.2+bdef8f5
+-  Session Id:              a68cb1d0611a452a8c080278f98134d7
+-  Correlation Id:          8dc51fddfa53eca85154db0e6f77c246
+-  External correlation Id: 4638570370484301541
++  Session Id:              a86a1120188141e6a0cbcb248fb89f68
++  Correlation Id:          0f3aec660cdfed0eb7a96aa879a5b6fe
++  External correlation Id: 8907776626549800674
+   Machine Id:              fe5f7XZ/1CQzW/AhDon7PebSsfU=
+-[Licensing::Module] Successfully connected to LicensingClient on channel: "LicenseClient-root" (connect: 3.05s, validation: 0.24s, handshake: 0.00s)
+-[Licensing::IpcConnector] Successfully connected to: "LicenseClient-root-notifications" at "2026-09-21T03:27:55.285565Z"
+-[Licensing::Module] Connected to LicensingClient (PId: 5433, launch time: 0.00, total connection time: 3.29s)
++[Licensing::Module] Successfully connected to LicensingClient on channel: "LicenseClient-root" (connect: 1.97s, validation: 0.33s, handshake: 0.00s)
++[Licensing::IpcConnector] Successfully connected to: "LicenseClient-root-notifications" at "2026-09-21T03:29:15.929523Z"
++[Licensing::Module] Connected to LicensingClient (PId: 5700, launch time: 0.00, total connection time: 2.30s)
+ [Licensing::Module] Error: Access token is unavailable; failed to update
+ [Licensing::Client] Error: Code 500 while processing request (status: Unable to update licenses. Errors: No ULF license found.,Token not found in cache)
+ [Licensing::Client] Error: Code 500 while updating license in client (status: Unable to update licenses. Errors: No ULF license found.,Token not found in cache)
+@@ -74,16 +74,16 @@ Successfully changed project path to: /home/hatch/workspace/cod-mobile
+     "memorysetup-temp-allocator-size-cloud-worker=32768"
+     "memorysetup-temp-allocator-size-gi-baking-worker=262144"
+     "memorysetup-temp-allocator-size-gfx=262144"
+-Player connection [130176665621504]  Target information:
++Player connection [124260336555008]  Target information:
+ 
+-Player connection [130176665621504]  * "[IP] 198.19.0.2 [Port] 55504 [Flags] 2 [Guid] 2658107520 [EditorId] 2658107520 [Version] 1048832 [Id] LinuxEditor(16,198.19.0.2) [Debug] 1 [PackageName] LinuxEditor [ProjectName] Editor" 
++Player connection [124260336555008]  * "[IP] 198.19.0.2 [Port] 55504 [Flags] 2 [Guid] 2275657364 [EditorId] 2275657364 [Version] 1048832 [Id] LinuxEditor(16,198.19.0.2) [Debug] 1 [PackageName] LinuxEditor [ProjectName] Editor" 
+ 
+-Player connection [130176665621504] Host joined multi-casting on [225.0.0.222:54997]...
+-Player connection [130176665621504] Host joined alternative multi-casting on [225.0.0.222:34997]...
++Player connection [124260336555008] Host joined multi-casting on [225.0.0.222:54997]...
++Player connection [124260336555008] Host joined alternative multi-casting on [225.0.0.222:34997]...
+ Input System module state changed to: Initialized.
+ [PhysX] Initialized MultithreadedTaskDispatcher with 2 workers.
+ Error opening a HTTP REST server port between 38000 and 38100
+-[Package Manager] UpmClient::Connect -- Connected to IPC stream "Upm-5427" after 0.6 seconds.
++[Package Manager] UpmClient::Connect -- Connected to IPC stream "Upm-5695" after 0.8 seconds.
+ [Package Manager] Restoring resolved packages state from cache
+ [Licensing::Client] Successfully resolved entitlement details
+ [Package Manager] Registered 59 packages:
+@@ -170,9 +170,8 @@ FMOD failed to initialize the output device.: "Error initializing output device.
+ FMOD initialized on nosound output
+ [Subsystems] No new subsystems found in resolved package list.
+ Package Manager log level set to [2]
+-[Package Manager] Done registering packages in 0.15 seconds
+-Artifact Garbage Collection - Removed 1 unused hashed content files
+-Refreshing native plugins compatible for Editor in 208.94 ms, found 0 plugins.
++[Package Manager] Done registering packages in 0.09 seconds
++Refreshing native plugins compatible for Editor in 37.37 ms, found 0 plugins.
+ Preloading 0 native plugins for Editor in 0.00 ms.
+ Initialize engine version: 2022.3.62f3 (96770f904ca7)
+ [Subsystems] Discovering subsystems at path /home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/Resources/UnitySubsystems
+@@ -189,7 +188,7 @@ Initialize mono
+ Mono path[0] = '/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/Managed'
+ Mono path[1] = '/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/MonoBleedingEdge/lib/mono/unityjit-linux'
+ Mono config path = '/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/MonoBleedingEdge/etc'
+-Using monoOptions --debugger-agent=transport=dt_socket,embedding=1,server=y,suspend=n,address=127.0.0.1:56427
++Using monoOptions --debugger-agent=transport=dt_socket,embedding=1,server=y,suspend=n,address=127.0.0.1:56695
+ Using cacheserver namespaces - metadata:defaultmetadata, artifacts:defaultartifacts
+ Using cacheserver namespaces - metadata:defaultmetadata, artifacts:defaultartifacts
+ ImportWorker Server TCP listen port: 0
+@@ -197,41 +196,41 @@ Begin MonoManager ReloadAssembly
+ Registering precompiled unity dll's ...
+ Register platform support module: /home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/PlaybackEngines/WebGLSupport/UnityEditor.WebGL.Extensions.dll
+ Register platform support module: /home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/PlaybackEngines/LinuxStandaloneSupport/UnityEditor.LinuxStandalone.Extensions.dll
+-Registered in 0.065837 seconds.
+-- Loaded All Assemblies, in  1.718 seconds
++Registered in 0.020116 seconds.
++- Loaded All Assemblies, in  0.733 seconds
+ Native extension for LinuxStandalone target not found
+ Native extension for WebGL target not found
+ Mono: successfully reloaded assembly
+-- Finished resetting the current domain, in  1.111 seconds
+-Domain Reload Profiling: 2830ms
+-	BeginReloadAssembly (745ms)
++- Finished resetting the current domain, in  1.081 seconds
++Domain Reload Profiling: 1814ms
++	BeginReloadAssembly (192ms)
+ 		ExecutionOrderSort (0ms)
+ 		DisableScriptedObjects (0ms)
+ 		BackupInstance (0ms)
+ 		ReleaseScriptingObjects (0ms)
+-		CreateAndSetChildDomain (1ms)
+-	RebuildCommonClasses (141ms)
+-	RebuildNativeTypeToScriptingClass (11ms)
+-	initialDomainReloadingComplete (214ms)
+-	LoadAllAssembliesAndSetupDomain (608ms)
+-		LoadAssemblies (752ms)
++		CreateAndSetChildDomain (3ms)
++	RebuildCommonClasses (53ms)
++	RebuildNativeTypeToScriptingClass (33ms)
++	initialDomainReloadingComplete (135ms)
++	LoadAllAssembliesAndSetupDomain (320ms)
++		LoadAssemblies (190ms)
+ 		RebuildTransferFunctionScriptingTraits (0ms)
+-		AnalyzeDomain (594ms)
+-			TypeCache.Refresh (590ms)
+-				TypeCache.ScanAssembly (540ms)
++		AnalyzeDomain (317ms)
++			TypeCache.Refresh (315ms)
++				TypeCache.ScanAssembly (294ms)
+ 			ScanForSourceGeneratedMonoScriptInfo (1ms)
+ 			ResolveRequiredComponents (1ms)
+-	FinalizeReload (1112ms)
++	FinalizeReload (1081ms)
+ 		ReleaseScriptCaches (0ms)
+ 		RebuildScriptCaches (0ms)
+-		SetupLoadedEditorAssemblies (971ms)
++		SetupLoadedEditorAssemblies (920ms)
+ 			LogAssemblyErrors (0ms)
+-			InitializePlatformSupportModulesInManaged (58ms)
+-			SetLoadedEditorAssemblies (20ms)
++			InitializePlatformSupportModulesInManaged (78ms)
++			SetLoadedEditorAssemblies (22ms)
+ 			RefreshPlugins (0ms)
+-			BeforeProcessingInitializeOnLoad (9ms)
+-			ProcessInitializeOnLoadAttributes (694ms)
+-			ProcessInitializeOnLoadMethodAttributes (191ms)
++			BeforeProcessingInitializeOnLoad (10ms)
++			ProcessInitializeOnLoadAttributes (611ms)
++			ProcessInitializeOnLoadMethodAttributes (199ms)
+ 			AfterProcessingInitializeOnLoad (0ms)
+ 			EditorAssembliesLoaded (0ms)
+ 		ExecutionOrderSort2 (0ms)
+@@ -254,18 +253,10 @@ Application.AssetDatabase Initial Refresh Start
+ [40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
+       Executed endpoint 'gRPC - /UnityILPP.PostProcessing/Ping'
+ [40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Hosting.Diagnostics[2]
+-      Request finished HTTP/2 POST http://ilpp/UnityILPP.PostProcessing/Ping application/grpc - - 200 - application/grpc 204.1134ms
++      Request finished HTTP/2 POST http://ilpp/UnityILPP.PostProcessing/Ping application/grpc - - 200 - application/grpc 260.4302ms
+ Starting: /home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/bee_backend --ipc --defer-dag-verification --dagfile="Library/Bee/2000b0aE.dag" --continue-on-failure --profile="Library/Bee/backend1.traceevents" ScriptAssemblies
+ WorkingDir: /home/hatch/workspace/cod-mobile
+ DisplayProgressbar: Compiling Scripts
+-Starting: /home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/Tools/netcorerun/netcorerun "/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/Tools/BuildPipeline/ScriptCompilationBuildProgram.exe" "Library/Bee/2000b0aE.dag.json" "Library/Bee/2000b0aE-inputdata.json" "Library/Bee/buildprogram0.traceevents"
+-WorkingDir: /home/hatch/workspace/cod-mobile
+-ExitCode: 4 Duration: 1s616ms
+-Rebuilding DAG because FileSignature timestamp changed: Library/Bee/2000b0aE-inputdata.json
+-*** Tundra requires additional run (1.43 seconds), 0 items updated, 0 evaluated
+-ExitCode: 0 Duration: 2s779ms
+-Starting: /home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/bee_backend --ipc --defer-dag-verification --dagfile="Library/Bee/2000b0aE.dag" --continue-on-failure --dagfilejson="Library/Bee/2000b0aE.dag.json" --profile="Library/Bee/backend2.traceevents" ScriptAssemblies
+-WorkingDir: /home/hatch/workspace/cod-mobile
+ [40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Hosting.Diagnostics[1]
+       Request starting HTTP/2 POST http://ilpp/UnityILPP.PostProcessing/ConfigurePostProcessors application/grpc -
+ [40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
+@@ -279,12 +270,10 @@ WorkingDir: /home/hatch/workspace/cod-mobile
+ [40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
+       Executed endpoint 'gRPC - /UnityILPP.PostProcessing/ConfigurePostProcessors'
+ [40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Hosting.Diagnostics[2]
+-      Request finished HTTP/2 POST http://ilpp/UnityILPP.PostProcessing/ConfigurePostProcessors application/grpc - - 200 - application/grpc 138.4934ms
+-ExitCode: 3 Duration: 6s146ms
+-Finished compiling graph: 917 nodes, 14215 flattened edges (11283 ToBuild, 166 ToUse), maximum node priority 933
+-[631/914    0s] WriteText Library/Bee/artifacts/2000b0aE.dag/Assembly-CSharp.rsp
++      Request finished HTTP/2 POST http://ilpp/UnityILPP.PostProcessing/ConfigurePostProcessors application/grpc - - 200 - application/grpc 77.8104ms
++ExitCode: 3 Duration: 4s217ms
+ [634/914    0s] ILPP-Configuration Library/ilpp-configuration.nevergeneratedoutput
+-[906/914    5s] Csc Library/Bee/artifacts/2000b0aE.dag/Assembly-CSharp.dll (+2 others)
++[906/914    2s] Csc Library/Bee/artifacts/2000b0aE.dag/Assembly-CSharp.dll (+2 others)
+ ##### CommandLine
+ "/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/NetCoreRuntime/dotnet" exec "/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/DotNetSdkRoslyn/csc.dll" /nostdlib /noconfig /shared "@Library/Bee/artifacts/2000b0aE.dag/Assembly-CSharp.rsp" "@Library/Bee/artifacts/2000b0aE.dag/Assembly-CSharp.rsp2"
+ ##### Contents of Library/Bee/artifacts/2000b0aE.dag/Assembly-CSharp.rsp
+@@ -704,84 +693,41 @@ DOTNET_MULTILEVEL_LOOKUP=0
+ ##### ExitCode
+ 1
+ ##### Output
+-Assets/_Project/Scripts/Player/PlayerMovement.cs(3,16): error CS0234: The type or namespace name 'UI' does not exist in the namespace 'CODClone' (are you missing an assembly reference?)
+-*** Tundra build failed (6.04 seconds), 3 items updated, 914 evaluated
++Assets/_Project/Scripts/Debug/DebugInputProbe.cs(15,13): error CS0234: The type or namespace name 'Log' does not exist in the namespace 'CODClone.Debug' (are you missing an assembly reference?)
++Assets/_Project/Scripts/Debug/DebugInputProbe.cs(18,31): error CS0234: The type or namespace name 'Log' does not exist in the namespace 'CODClone.Debug' (are you missing an assembly reference?)
++Assets/_Project/Scripts/Debug/DebugInputProbe.cs(20,13): error CS0234: The type or namespace name 'Log' does not exist in the namespace 'CODClone.Debug' (are you missing an assembly reference?)
++Assets/_Project/Scripts/Debug/DebugInputProbe.cs(24,21): error CS0234: The type or namespace name 'Log' does not exist in the namespace 'CODClone.Debug' (are you missing an assembly reference?)
++Assets/_Project/Scripts/Debug/DebugInputProbe.cs(26,17): error CS0234: The type or namespace name 'Log' does not exist in the namespace 'CODClone.Debug' (are you missing an assembly reference?)
++Assets/_Project/Scripts/Debug/DebugInputProbe.cs(30,17): error CS0234: The type or namespace name 'Log' does not exist in the namespace 'CODClone.Debug' (are you missing an assembly reference?)
++Assets/_Project/Scripts/Debug/DebugInputProbe.cs(42,21): error CS0234: The type or namespace name 'Log' does not exist in the namespace 'CODClone.Debug' (are you missing an assembly reference?)
++Assets/_Project/Scripts/Weapons/TargetDummy.cs(14,13): error CS0234: The type or namespace name 'Log' does not exist in the namespace 'CODClone.Debug' (are you missing an assembly reference?)
++Assets/_Project/Scripts/Interaction/InteractableNPC.cs(17,41): warning CS0414: The field 'InteractableNPC.repeatLine' is assigned but its value is never used
++*** Tundra build failed (4.14 seconds), 2 items updated, 914 evaluated
+ ## Script Compilation Error for: Csc Library/Bee/artifacts/2000b0aE.dag/Assembly-CSharp.dll (+2 others)
+ ## CmdLine: "/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/NetCoreRuntime/dotnet" exec "/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/DotNetSdkRoslyn/csc.dll" /nostdlib /noconfig /shared "@Library/Bee/artifacts/2000b0aE.dag/Assembly-CSharp.rsp" "@Library/Bee/artifacts/2000b0aE.dag/Assembly-CSharp.rsp2"
+ ## Output:
+-Assets/_Project/Scripts/Player/PlayerMovement.cs(3,16): error CS0234: The type or namespace name 'UI' does not exist in the namespace 'CODClone' (are you missing an assembly reference?)
+-artifacts/2000b0aE.dag/Unity.Services.Core.Components.ref.dll"
+--r:"Library/Bee/artifacts/2000b0aE.dag/Unity.Services.Core.Environments.ref.dll"
+--r:"Library/Bee/artifacts/2000b0aE.dag/Unity.Services.Core.ref.dll"
+--r:"Library/Bee/artifacts/2000b0aE.dag/Unity.ShaderGraph.Editor.ref.dll"
+--r:"Library/Bee/artifacts/2000b0aE.dag/Unity.TextMeshPro.Editor.ref.dll"
+--r:"Library/Bee/artifacts/2000b0aE.dag/Unity.TextMeshPro.ref.dll"
+--r:"Library/Bee/artifacts/2000b0aE.dag/Unity.Timeline.Editor.ref.dll"
+--r:"Library/Bee/artifacts/2000b0aE.dag/Unity.Timeline.ref.dll"
+--r:"Library/Bee/artifacts/2000b0aE.dag/Unity.VSCode.Editor.ref.dll"
+--r:"Library/Bee/artifacts/2000b0aE.dag/Unity.VisualStudio.Editor.ref.dll"
+--r:"Library/Bee/artifacts/2000b0aE.dag/UnityEditor.Purchasing.ref.dll"
+--r:"Library/Bee/artifacts/2000b0aE.dag/UnityEditor.SpatialTracking.ref.dll"
+--r:"Library/Bee/artifacts/2000b0aE.dag/UnityEditor.UI.ref.dll"
+--r:"Library/Bee/artifacts/2000b0aE.dag/UnityEditor.XR.LegacyInputHelpers.ref.dll"
+--r:"Library/Bee/artifacts/2000b0aE.dag/UnityEngine.Advertisements.Editor.ref.dll"
+--r:"Library/Bee/artifacts/2000b0aE.dag/UnityEngine.Advertisements.ref.dll"
+--r:"Library/Bee/artifacts/2000b0aE.dag/UnityEngine.Purchasing.Codeless.ref.dll"
+--r:"Library/Bee/artifacts/2000b0aE.dag/UnityEngine.Purchasing.SecurityCore.ref.dll"
+--r:"Library/Bee/artifacts/2000b0aE.dag/UnityEngine.Purchasing.SecurityStub.ref.dll"
+--r:"Library/Bee/artifacts/2000b0aE.dag/UnityEngine.Purchasing.Stores.ref.dll"
+--r:"Library/Bee/artifacts/2000b0aE.dag/UnityEngine.Purchasing.ref.dll"
+--r:"Library/Bee/artifacts/2000b0aE.dag/UnityEngine.SpatialTracking.ref.dll"
+--r:"Library/Bee/artifacts/2000b0aE.dag/UnityEngine.UI.ref.dll"
+--r:"Library/Bee/artifacts/2000b0aE.dag/UnityEngine.XR.LegacyInputHelpers.ref.dll"
+--analyzer:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/Tools/Unity.SourceGenerators/Unity.Properties.SourceGenerator.dll"
+--analyzer:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/Tools/Unity.SourceGenerators/Unity.SourceGenerators.dll"
+-"Assets/_Project/Scripts/Core/DamageResolver.cs"
+-"Assets/_Project/Scripts/Core/IDamageable.cs"
+-"Assets/_Project/Scripts/Core/IInputProvider.cs"
+-"Assets/_Project/Scripts/Core/IInteractable.cs"
+-"Assets/_Project/Scripts/Core/PlayerInputProvider.cs"
+-"Assets/_Project/Scripts/Core/WebGLPointerLock.cs"
+-"Assets/_Project/Scripts/Debug/DebugInputProbe.cs"
+-"Assets/_Project/Scripts/Debug/DebugPositionLogger.cs"
+-"Assets/_Project/Scripts/Dialogue/ChoiceRouter.cs"
+-"Assets/_Project/Scripts/Dialogue/DialogueController.cs"
+-"Assets/_Project/Scripts/Dialogue/DialogueData.cs"
+-"Assets/_Project/Scripts/Dialogue/Ep1DialogueBank.cs"
+-"Assets/_Project/Scripts/Economy/CashService.cs"
+-"Assets/_Project/Scripts/Interaction/InteractableNPC.cs"
+-"Assets/_Project/Scripts/Interaction/PlayerInteractor.cs"
+-"Assets/_Project/Scripts/Missions/EpisodeController.cs"
+-"Assets/_Project/Scripts/Missions/MissionStateMachine.cs"
+-"Assets/_Project/Scripts/Missions/TriggerVolume.cs"
+-"Assets/_Project/Scripts/Objectives/ObjectiveManager.cs"
+-"Assets/_Project/Scripts/Persistence/SaveData.cs"
+-"Assets/_Project/Scripts/Persistence/SaveManager.cs"
+-"Assets/_Project/Scripts/Player/PlayerCamera.cs"
+-"Assets/_Project/Scripts/Player/PlayerMovement.cs"
+-"Assets/_Project/Scripts/UI/DialogueUI.cs"
+-"Assets/_Project/Scripts/UI/HUDController.cs"
+-"Assets/_Project/Scripts/Weapons/TargetDummy.cs"
+-"Assets/_Project/Scripts/Weapons/WeaponController.cs"
+-"Assets/_Project/Scripts/Weapons/WeaponData.cs"
+--langversion:9.0
+-/deterministic
+-/optimize+
+-/debug:portable
+-/nologo
+-/RuntimeMetadataVersion:v4.0.30319
+-/nowarn:0169
+-/nowarn:0649
+-/nowarn:0282
+-/nowarn:1701
+-/nowarn:1702
+-/utf8output
+-/preferreduilang:en-US
+-/additionalfile:"Library/Bee/artifacts/2000b0aE.dag/Assembly-CSharp.UnityAdditionalFile.txt"
++Assets/_Project/Scripts/Debug/DebugInputProbe.cs(15,13): error CS0234: The type or namespace name 'Log' does not exist in the namespace 'CODClone.Debug' (are you missing an assembly reference?)
++Assets/_Project/Scripts/Debug/DebugInputProbe.cs(18,31): error CS0234: The type or namespace name 'Log' does not exist in the namespace 'CODClone.Debug' (are you missing an assembly reference?)
++Assets/_Project/Scripts/Debug/DebugInputProbe.cs(20,13): error CS0234: The type or namespace name 'Log' does not exist in the namespace 'CODClone.Debug' (are you missing an assembly reference?)
++Assets/_Project/Scripts/Debug/DebugInputProbe.cs(24,21): error CS0234: The type or namespace name 'Log' does not exist in the namespace 'CODClone.Debug' (are you missing an assembly reference?)
++Assets/_Project/Scripts/Debug/DebugInputProbe.cs(26,17): error CS0234: The type or namespace name 'Log' does not exist in the namespace 'CODClone.Debug' (are you missing an assembly reference?)
++Assets/_Project/Scripts/Debug/DebugInputProbe.cs(30,17): error CS0234: The type or namespace name 'Log' does not exist in the namespace 'CODClone.Debug' (are you missing an assembly reference?)
++Assets/_Project/Scripts/Debug/DebugInputProbe.cs(42,21): error CS0234: The type or namespace name 'Log' does not exist in the namespace 'CODClone.Debug' (are you missing an assembly reference?)
++Assets/_Project/Scripts/Weapons/TargetDummy.cs(14,13): error CS0234: The type or namespace name 'Log' does not exist in the namespace 'CODClone.Debug' (are you missing an assembly reference?)
++Assets/_Project/Scripts/Interaction/InteractableNPC.cs(17,41): warning CS0414: The field 'InteractableNPC.repeatLine' is assigned but its value is never used
++��g�
+ Total cache size 84474764
+ Total cache size after purge 84474764
+-Assets/_Project/Scripts/Player/PlayerMovement.cs(3,16): error CS0234: The type or namespace name 'UI' does not exist in the namespace 'CODClone' (are you missing an assembly reference?)
+-AssetDatabase: script compilation time: 13.000760s
++Assets/_Project/Scripts/Debug/DebugInputProbe.cs(15,13): error CS0234: The type or namespace name 'Log' does not exist in the namespace 'CODClone.Debug' (are you missing an assembly reference?)
++Assets/_Project/Scripts/Debug/DebugInputProbe.cs(18,31): error CS0234: The type or namespace name 'Log' does not exist in the namespace 'CODClone.Debug' (are you missing an assembly reference?)
++Assets/_Project/Scripts/Debug/DebugInputProbe.cs(20,13): error CS0234: The type or namespace name 'Log' does not exist in the namespace 'CODClone.Debug' (are you missing an assembly reference?)
++Assets/_Project/Scripts/Debug/DebugInputProbe.cs(24,21): error CS0234: The type or namespace name 'Log' does not exist in the namespace 'CODClone.Debug' (are you missing an assembly reference?)
++Assets/_Project/Scripts/Debug/DebugInputProbe.cs(26,17): error CS0234: The type or namespace name 'Log' does not exist in the namespace 'CODClone.Debug' (are you missing an assembly reference?)
++Assets/_Project/Scripts/Debug/DebugInputProbe.cs(30,17): error CS0234: The type or namespace name 'Log' does not exist in the namespace 'CODClone.Debug' (are you missing an assembly reference?)
++Assets/_Project/Scripts/Debug/DebugInputProbe.cs(42,21): error CS0234: The type or namespace name 'Log' does not exist in the namespace 'CODClone.Debug' (are you missing an assembly reference?)
++Assets/_Project/Scripts/Weapons/TargetDummy.cs(14,13): error CS0234: The type or namespace name 'Log' does not exist in the namespace 'CODClone.Debug' (are you missing an assembly reference?)
++Assets/_Project/Scripts/Interaction/InteractableNPC.cs(17,41): warning CS0414: The field 'InteractableNPC.repeatLine' is assigned but its value is never used
++AssetDatabase: script compilation time: 6.496373s
+ Scripts have compiler errors.
+ [40m[32minfo[39m[22m[49m: Microsoft.Hosting.Lifetime[0]
+       Application is shutting down...
+-- 
+2.43.0
+

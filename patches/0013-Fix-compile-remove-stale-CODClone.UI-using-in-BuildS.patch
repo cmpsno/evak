@@ -1,0 +1,646 @@
+From bce24b3615566c48b2f01b6f989f7dc52d9444e0 Mon Sep 17 00:00:00 2001
+From: marvin <marvin@local>
+Date: Sun, 20 Sep 2026 23:33:31 -0400
+Subject: [PATCH 13/14] Fix compile: remove stale CODClone.UI using in
+ BuildSocialClub
+
+---
+ Assets/Editor/BuildSocialClub.cs |   1 -
+ socialclub-webgl6.log            | 458 +++++++++++++++----------------
+ 2 files changed, 225 insertions(+), 234 deletions(-)
+
+diff --git a/Assets/Editor/BuildSocialClub.cs b/Assets/Editor/BuildSocialClub.cs
+index 5d2e857..8cb68cb 100644
+--- a/Assets/Editor/BuildSocialClub.cs
++++ b/Assets/Editor/BuildSocialClub.cs
+@@ -8,7 +8,6 @@ using UnityEngine;
+ using UnityEngine.UI;
+ using CODClone.Core;
+ using CODClone.Interaction;
+-using CODClone.UI;
+ using Campusano.Dialogue;
+ using Campusano.Missions;
+ using Campusano.Objectives;
+diff --git a/socialclub-webgl6.log b/socialclub-webgl6.log
+index 00c34b8..f313c25 100644
+--- a/socialclub-webgl6.log
++++ b/socialclub-webgl6.log
+@@ -9,18 +9,18 @@ Architecture:            x86_64
+ Available memory:        7935 MB
+ [Licensing::Module] Trying to connect to existing licensing client channel...
+ [Licensing::IpcConnector] Channel LicenseClient-root doesn't exist
+-[Licensing::Module] Successfully launched the LicensingClient (PId: 5943)
+-[Licensing::IpcConnector] Successfully connected to: "LicenseClient-root" at "2026-09-21T03:30:22.992382Z"
++[Licensing::Module] Successfully launched the LicensingClient (PId: 6240)
++[Licensing::IpcConnector] Successfully connected to: "LicenseClient-root" at "2026-09-21T03:32:01.494406Z"
+ [SignatureVerifier] Application signature verification not supported on this platform.
+ [Licensing::Client] Handshaking with LicensingClient:
+   Version:                 1.16.2+bdef8f5
+-  Session Id:              82f74c14d10d4ee5b32aa74264abfcf3
+-  Correlation Id:          7a98192a55101ae386fb4f2d0fd03bde
+-  External correlation Id: 6374463996555367426
++  Session Id:              e796fde9723440bab4ed30ac86a0e7c1
++  Correlation Id:          8ff315c0cfe8d7437b38088f456997bf
++  External correlation Id: 1783955797072918782
+   Machine Id:              fe5f7XZ/1CQzW/AhDon7PebSsfU=
+-[Licensing::Module] Successfully connected to LicensingClient on channel: "LicenseClient-root" (connect: 2.94s, validation: 0.36s, handshake: 0.00s)
+-[Licensing::IpcConnector] Successfully connected to: "LicenseClient-root-notifications" at "2026-09-21T03:30:23.355774Z"
+-[Licensing::Module] Connected to LicensingClient (PId: 5943, launch time: 0.01, total connection time: 3.30s)
++[Licensing::Module] Successfully connected to LicensingClient on channel: "LicenseClient-root" (connect: 2.94s, validation: 0.30s, handshake: 0.00s)
++[Licensing::IpcConnector] Successfully connected to: "LicenseClient-root-notifications" at "2026-09-21T03:32:01.794801Z"
++[Licensing::Module] Connected to LicensingClient (PId: 6240, launch time: 0.01, total connection time: 3.24s)
+ [Licensing::Module] Error: Access token is unavailable; failed to update
+ [Licensing::Client] Error: Code 500 while processing request (status: Unable to update licenses. Errors: No ULF license found.,Token not found in cache)
+ [Licensing::Client] Error: Code 500 while updating license in client (status: Unable to update licenses. Errors: No ULF license found.,Token not found in cache)
+@@ -74,16 +74,16 @@ Successfully changed project path to: /home/hatch/workspace/cod-mobile
+     "memorysetup-temp-allocator-size-cloud-worker=32768"
+     "memorysetup-temp-allocator-size-gi-baking-worker=262144"
+     "memorysetup-temp-allocator-size-gfx=262144"
+-Player connection [131311712199680]  Target information:
++Player connection [130244693120000]  Target information:
+ 
+-Player connection [131311712199680]  * "[IP] 198.19.0.2 [Port] 55504 [Flags] 2 [Guid] 2804890621 [EditorId] 2804890621 [Version] 1048832 [Id] LinuxEditor(16,198.19.0.2) [Debug] 1 [PackageName] LinuxEditor [ProjectName] Editor" 
++Player connection [130244693120000]  * "[IP] 198.19.0.2 [Port] 55504 [Flags] 2 [Guid] 1977444165 [EditorId] 1977444165 [Version] 1048832 [Id] LinuxEditor(16,198.19.0.2) [Debug] 1 [PackageName] LinuxEditor [ProjectName] Editor" 
+ 
+-Player connection [131311712199680] Host joined multi-casting on [225.0.0.222:54997]...
+-Player connection [131311712199680] Host joined alternative multi-casting on [225.0.0.222:34997]...
++Player connection [130244693120000] Host joined multi-casting on [225.0.0.222:54997]...
++Player connection [130244693120000] Host joined alternative multi-casting on [225.0.0.222:34997]...
+ Input System module state changed to: Initialized.
+ [PhysX] Initialized MultithreadedTaskDispatcher with 2 workers.
+ Error opening a HTTP REST server port between 38000 and 38100
+-[Package Manager] UpmClient::Connect -- Connected to IPC stream "Upm-5938" after 1.7 seconds.
++[Package Manager] UpmClient::Connect -- Connected to IPC stream "Upm-6235" after 2.0 seconds.
+ [Package Manager] Restoring resolved packages state from cache
+ [Licensing::Client] Successfully resolved entitlement details
+ [Package Manager] Registered 59 packages:
+@@ -170,8 +170,8 @@ FMOD failed to initialize the output device.: "Error initializing output device.
+ FMOD initialized on nosound output
+ [Subsystems] No new subsystems found in resolved package list.
+ Package Manager log level set to [2]
+-[Package Manager] Done registering packages in 0.14 seconds
+-Refreshing native plugins compatible for Editor in 45.79 ms, found 0 plugins.
++[Package Manager] Done registering packages in 0.17 seconds
++Refreshing native plugins compatible for Editor in 20.17 ms, found 0 plugins.
+ Preloading 0 native plugins for Editor in 0.00 ms.
+ Initialize engine version: 2022.3.62f3 (96770f904ca7)
+ [Subsystems] Discovering subsystems at path /home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/Resources/UnitySubsystems
+@@ -188,7 +188,7 @@ Initialize mono
+ Mono path[0] = '/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/Managed'
+ Mono path[1] = '/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/MonoBleedingEdge/lib/mono/unityjit-linux'
+ Mono config path = '/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/MonoBleedingEdge/etc'
+-Using monoOptions --debugger-agent=transport=dt_socket,embedding=1,server=y,suspend=n,address=127.0.0.1:56938
++Using monoOptions --debugger-agent=transport=dt_socket,embedding=1,server=y,suspend=n,address=127.0.0.1:56235
+ Using cacheserver namespaces - metadata:defaultmetadata, artifacts:defaultartifacts
+ Using cacheserver namespaces - metadata:defaultmetadata, artifacts:defaultartifacts
+ ImportWorker Server TCP listen port: 0
+@@ -196,41 +196,41 @@ Begin MonoManager ReloadAssembly
+ Registering precompiled unity dll's ...
+ Register platform support module: /home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/PlaybackEngines/WebGLSupport/UnityEditor.WebGL.Extensions.dll
+ Register platform support module: /home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/PlaybackEngines/LinuxStandaloneSupport/UnityEditor.LinuxStandalone.Extensions.dll
+-Registered in 0.015749 seconds.
+-- Loaded All Assemblies, in  0.828 seconds
++Registered in 0.073175 seconds.
++- Loaded All Assemblies, in  1.427 seconds
+ Native extension for LinuxStandalone target not found
+ Native extension for WebGL target not found
+ Mono: successfully reloaded assembly
+-- Finished resetting the current domain, in  1.127 seconds
+-Domain Reload Profiling: 1955ms
+-	BeginReloadAssembly (237ms)
++- Finished resetting the current domain, in  0.824 seconds
++Domain Reload Profiling: 2252ms
++	BeginReloadAssembly (299ms)
+ 		ExecutionOrderSort (0ms)
+ 		DisableScriptedObjects (0ms)
+ 		BackupInstance (0ms)
+ 		ReleaseScriptingObjects (0ms)
+-		CreateAndSetChildDomain (3ms)
+-	RebuildCommonClasses (105ms)
+-	RebuildNativeTypeToScriptingClass (12ms)
+-	initialDomainReloadingComplete (162ms)
+-	LoadAllAssembliesAndSetupDomain (312ms)
+-		LoadAssemblies (234ms)
++		CreateAndSetChildDomain (5ms)
++	RebuildCommonClasses (131ms)
++	RebuildNativeTypeToScriptingClass (22ms)
++	initialDomainReloadingComplete (382ms)
++	LoadAllAssembliesAndSetupDomain (592ms)
++		LoadAssemblies (296ms)
+ 		RebuildTransferFunctionScriptingTraits (0ms)
+-		AnalyzeDomain (309ms)
+-			TypeCache.Refresh (307ms)
+-				TypeCache.ScanAssembly (289ms)
+-			ScanForSourceGeneratedMonoScriptInfo (1ms)
++		AnalyzeDomain (584ms)
++			TypeCache.Refresh (578ms)
++				TypeCache.ScanAssembly (513ms)
++			ScanForSourceGeneratedMonoScriptInfo (2ms)
+ 			ResolveRequiredComponents (1ms)
+-	FinalizeReload (1128ms)
++	FinalizeReload (825ms)
+ 		ReleaseScriptCaches (0ms)
+ 		RebuildScriptCaches (0ms)
+-		SetupLoadedEditorAssemblies (1017ms)
++		SetupLoadedEditorAssemblies (686ms)
+ 			LogAssemblyErrors (0ms)
+-			InitializePlatformSupportModulesInManaged (25ms)
+-			SetLoadedEditorAssemblies (8ms)
++			InitializePlatformSupportModulesInManaged (22ms)
++			SetLoadedEditorAssemblies (9ms)
+ 			RefreshPlugins (0ms)
+-			BeforeProcessingInitializeOnLoad (3ms)
+-			ProcessInitializeOnLoadAttributes (780ms)
+-			ProcessInitializeOnLoadMethodAttributes (200ms)
++			BeforeProcessingInitializeOnLoad (4ms)
++			ProcessInitializeOnLoadAttributes (502ms)
++			ProcessInitializeOnLoadMethodAttributes (149ms)
+ 			AfterProcessingInitializeOnLoad (0ms)
+ 			EditorAssembliesLoaded (0ms)
+ 		ExecutionOrderSort2 (0ms)
+@@ -253,7 +253,7 @@ Application.AssetDatabase Initial Refresh Start
+ [40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
+       Executed endpoint 'gRPC - /UnityILPP.PostProcessing/Ping'
+ [40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Hosting.Diagnostics[2]
+-      Request finished HTTP/2 POST http://ilpp/UnityILPP.PostProcessing/Ping application/grpc - - 200 - application/grpc 215.9716ms
++      Request finished HTTP/2 POST http://ilpp/UnityILPP.PostProcessing/Ping application/grpc - - 200 - application/grpc 169.4763ms
+ Starting: /home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/bee_backend --ipc --defer-dag-verification --dagfile="Library/Bee/2000b0aE.dag" --continue-on-failure --profile="Library/Bee/backend1.traceevents" ScriptAssemblies
+ WorkingDir: /home/hatch/workspace/cod-mobile
+ DisplayProgressbar: Compiling Scripts
+@@ -270,16 +270,40 @@ DisplayProgressbar: Compiling Scripts
+ [40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
+       Executed endpoint 'gRPC - /UnityILPP.PostProcessing/ConfigurePostProcessors'
+ [40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Hosting.Diagnostics[2]
+-      Request finished HTTP/2 POST http://ilpp/UnityILPP.PostProcessing/ConfigurePostProcessors application/grpc - - 200 - application/grpc 44.5984ms
+-ExitCode: 3 Duration: 6s490ms
++      Request finished HTTP/2 POST http://ilpp/UnityILPP.PostProcessing/ConfigurePostProcessors application/grpc - - 200 - application/grpc 79.4281ms
++[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Hosting.Diagnostics[1]
++      Request starting HTTP/2 POST http://ilpp/UnityILPP.PostProcessing/PostProcessAssembly application/grpc -
++[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
++      Executing endpoint 'gRPC - /UnityILPP.PostProcessing/PostProcessAssembly'
++[40m[32minfo[39m[22m[49m: Unity.ILPP.Runner.PostProcessingPipeline[0]
++      Processing assembly Library/Bee/artifacts/2000b0aE.dag/Assembly-CSharp.dll, with 103 defines and 261 references
++[40m[32minfo[39m[22m[49m: Unity.ILPP.Runner.PostProcessingPipeline[0]
++      processors: zzzUnity.Burst.CodeGen.BurstILPostProcessor
++[40m[32minfo[39m[22m[49m: Unity.ILPP.Runner.PostProcessingPipeline[0]
++      running zzzUnity.Burst.CodeGen.BurstILPostProcessor
++[40m[32minfo[39m[22m[49m: Unity.ILPP.Runner.PostProcessingAssemblyLoadContext[0]
++      Resolved Unity.Burst.Cecil.Rocks, Version=0.11.4.0, Culture=neutral, PublicKeyToken=50cebf1cceb9d05e with Library/PackageCache/com.unity.burst@1.8.21/Unity.Burst.CodeGen/Unity.Burst.Cecil.Rocks.dll
++[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
++      Executed endpoint 'gRPC - /UnityILPP.PostProcessing/PostProcessAssembly'
++[40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Hosting.Diagnostics[2]
++      Request finished HTTP/2 POST http://ilpp/UnityILPP.PostProcessing/PostProcessAssembly application/grpc - - 200 - application/grpc 952.9105ms
++ExitCode: 3 Duration: 10s
+ [634/914    0s] ILPP-Configuration Library/ilpp-configuration.nevergeneratedoutput
+-[906/914    4s] Csc Library/Bee/artifacts/2000b0aE.dag/Assembly-CSharp.dll (+2 others)
++[906/914    5s] Csc Library/Bee/artifacts/2000b0aE.dag/Assembly-CSharp.dll (+2 others)
++Assets/_Project/Scripts/Interaction/InteractableNPC.cs(17,41): warning CS0414: The field 'InteractableNPC.repeatLine' is assigned but its value is never used
++[907/914    1s] ILPostProcess Library/Bee/artifacts/2000b0aE.dag/post-processed/Assembly-CSharp.dll (+pdb)
++Processing assembly Library/Bee/artifacts/2000b0aE.dag/Assembly-CSharp.dll, with 103 defines and 261 references
++processors: zzzUnity.Burst.CodeGen.BurstILPostProcessor
++running zzzUnity.Burst.CodeGen.BurstILPostProcessor
++[908/914    0s] CopyFiles Library/ScriptAssemblies/Assembly-CSharp.dll
++[909/914    0s] CopyFiles Library/ScriptAssemblies/Assembly-CSharp.pdb
++[910/914    3s] Csc Library/Bee/artifacts/2000b0aE.dag/Assembly-CSharp-Editor.dll (+2 others)
+ ##### CommandLine
+-"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/NetCoreRuntime/dotnet" exec "/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/DotNetSdkRoslyn/csc.dll" /nostdlib /noconfig /shared "@Library/Bee/artifacts/2000b0aE.dag/Assembly-CSharp.rsp" "@Library/Bee/artifacts/2000b0aE.dag/Assembly-CSharp.rsp2"
+-##### Contents of Library/Bee/artifacts/2000b0aE.dag/Assembly-CSharp.rsp
++"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/NetCoreRuntime/dotnet" exec "/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/DotNetSdkRoslyn/csc.dll" /nostdlib /noconfig /shared "@Library/Bee/artifacts/2000b0aE.dag/Assembly-CSharp-Editor.rsp" "@Library/Bee/artifacts/2000b0aE.dag/Assembly-CSharp-Editor.rsp2"
++##### Contents of Library/Bee/artifacts/2000b0aE.dag/Assembly-CSharp-Editor.rsp
+ -target:library
+--out:"Library/Bee/artifacts/2000b0aE.dag/Assembly-CSharp.dll"
+--refout:"Library/Bee/artifacts/2000b0aE.dag/Assembly-CSharp.ref.dll"
++-out:"Library/Bee/artifacts/2000b0aE.dag/Assembly-CSharp-Editor.dll"
++-refout:"Library/Bee/artifacts/2000b0aE.dag/Assembly-CSharp-Editor.ref.dll"
+ -define:UNITY_2022_3_62
+ -define:UNITY_2022_3
+ -define:UNITY_2022
+@@ -356,11 +380,8 @@ ExitCode: 3 Duration: 6s490ms
+ -define:ENABLE_CRUNCH_TEXTURE_COMPRESSION
+ -define:ENABLE_SPATIALTRACKING
+ -define:ENABLE_MONO
+--define:NET_STANDARD_2_0
+--define:NET_STANDARD
+--define:NET_STANDARD_2_1
+--define:NETSTANDARD
+--define:NETSTANDARD2_1
++-define:NET_4_6
++-define:NET_UNITY_4_8
+ -define:ENABLE_PROFILER
+ -define:DEBUG
+ -define:TRACE
+@@ -383,6 +404,8 @@ ExitCode: 3 Duration: 6s490ms
+ -define:TEXTCORE_FONT_ENGINE_1_5_OR_NEWER
+ -define:CSHARP_7_OR_LATER
+ -define:CSHARP_7_3_OR_NEWER
++-define:UNITY_EDITOR_ONLY_COMPILATION
++-r:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/Managed/UnityEditor.Graphs.dll"
+ -r:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/Managed/UnityEngine/UnityEditor.CoreModule.dll"
+ -r:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/Managed/UnityEngine/UnityEditor.DeviceSimulatorModule.dll"
+ -r:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/Managed/UnityEngine/UnityEditor.DiagnosticsModule.dll"
+@@ -400,12 +423,15 @@ ExitCode: 3 Duration: 6s490ms
+ -r:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/Managed/UnityEngine/UnityEditor.UnityConnectModule.dll"
+ -r:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/Managed/UnityEngine/UnityEditor.dll"
+ -r:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/Managed/UnityEngine/UnityEngine.AIModule.dll"
++-r:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/Managed/UnityEngine/UnityEngine.ARModule.dll"
+ -r:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/Managed/UnityEngine/UnityEngine.AccessibilityModule.dll"
+ -r:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/Managed/UnityEngine/UnityEngine.AndroidJNIModule.dll"
+ -r:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/Managed/UnityEngine/UnityEngine.AnimationModule.dll"
+ -r:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/Managed/UnityEngine/UnityEngine.AssetBundleModule.dll"
+ -r:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/Managed/UnityEngine/UnityEngine.AudioModule.dll"
+ -r:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/Managed/UnityEngine/UnityEngine.ClothModule.dll"
++-r:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/Managed/UnityEngine/UnityEngine.ClusterInputModule.dll"
++-r:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/Managed/UnityEngine/UnityEngine.ClusterRendererModule.dll"
+ -r:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/Managed/UnityEngine/UnityEngine.ContentLoadModule.dll"
+ -r:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/Managed/UnityEngine/UnityEngine.CoreModule.dll"
+ -r:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/Managed/UnityEngine/UnityEngine.CrashReportingModule.dll"
+@@ -421,6 +447,7 @@ ExitCode: 3 Duration: 6s490ms
+ -r:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/Managed/UnityEngine/UnityEngine.InputModule.dll"
+ -r:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/Managed/UnityEngine/UnityEngine.JSONSerializeModule.dll"
+ -r:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/Managed/UnityEngine/UnityEngine.LocalizationModule.dll"
++-r:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/Managed/UnityEngine/UnityEngine.NVIDIAModule.dll"
+ -r:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/Managed/UnityEngine/UnityEngine.ParticleSystemModule.dll"
+ -r:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/Managed/UnityEngine/UnityEngine.PerformanceReportingModule.dll"
+ -r:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/Managed/UnityEngine/UnityEngine.Physics2DModule.dll"
+@@ -459,137 +486,149 @@ ExitCode: 3 Duration: 6s490ms
+ -r:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/Managed/UnityEngine/UnityEngine.VRModule.dll"
+ -r:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/Managed/UnityEngine/UnityEngine.VehiclesModule.dll"
+ -r:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/Managed/UnityEngine/UnityEngine.VideoModule.dll"
++-r:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/Managed/UnityEngine/UnityEngine.VirtualTexturingModule.dll"
+ -r:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/Managed/UnityEngine/UnityEngine.WindModule.dll"
+ -r:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/Managed/UnityEngine/UnityEngine.XRModule.dll"
+ -r:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/Managed/UnityEngine/UnityEngine.dll"
+--r:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/NetStandard/Extensions/2.0.0/System.Runtime.InteropServices.WindowsRuntime.dll"
+--r:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/NetStandard/compat/2.1.0/shims/netfx/System.ComponentModel.Composition.dll"
+--r:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/NetStandard/compat/2.1.0/shims/netfx/System.Core.dll"
+--r:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/NetStandard/compat/2.1.0/shims/netfx/System.Data.dll"
+--r:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/NetStandard/compat/2.1.0/shims/netfx/System.Drawing.dll"
+--r:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/NetStandard/compat/2.1.0/shims/netfx/System.IO.Compression.FileSystem.dll"
+--r:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/NetStandard/compat/2.1.0/shims/netfx/System.Net.dll"
+--r:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/NetStandard/compat/2.1.0/shims/netfx/System.Numerics.dll"
+--r:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/NetStandard/compat/2.1.0/shims/netfx/System.Runtime.Serialization.dll"
+--r:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/NetStandard/compat/2.1.0/shims/netfx/System.ServiceModel.Web.dll"
+--r:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/NetStandard/compat/2.1.0/shims/netfx/System.Transactions.dll"
+--r:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/NetStandard/compat/2.1.0/shims/netfx/System.Web.dll"
+--r:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/NetStandard/compat/2.1.0/shims/netfx/System.Windows.dll"
+--r:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/NetStandard/compat/2.1.0/shims/netfx/System.Xml.Linq.dll"
+--r:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/NetStandard/compat/2.1.0/shims/netfx/System.Xml.Serialization.dll"
+--r:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/NetStandard/compat/2.1.0/shims/netfx/System.Xml.dll"
+--r:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/NetStandard/compat/2.1.0/shims/netfx/System.dll"
+--r:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/NetStandard/compat/2.1.0/shims/netfx/mscorlib.dll"
+--r:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/NetStandard/compat/2.1.0/shims/netstandard/Microsoft.Win32.Primitives.dll"
+--r:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/NetStandard/compat/2.1.0/shims/netstandard/System.AppContext.dll"
+--r:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/NetStandard/compat/2.1.0/shims/netstandard/System.Buffers.dll"
+--r:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/NetStandard/compat/2.1.0/shims/netstandard/System.Collections.Concurrent.dll"
+--r:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/NetStandard/compat/2.1.0/shims/netstandard/System.Collections.NonGeneric.dll"
+--r:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/NetStandard/compat/2.1.0/shims/netstandard/System.Collections.Specialized.dll"
+--r:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/NetStandard/compat/2.1.0/shims/netstandard/System.Collections.dll"
+--r:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/NetStandard/compat/2.1.0/shims/netstandard/System.ComponentModel.EventBasedAsync.dll"
+--r:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/NetStandard/compat/2.1.0/shims/netstandard/System.ComponentModel.Primitives.dll"
+--r:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/NetStandard/compat/2.1.0/shims/netstandard/System.ComponentModel.TypeConverter.dll"
+--r:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/NetStandard/compat/2.1.0/shims/netstandard/System.ComponentModel.dll"
+--r:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/NetStandard/compat/2.1.0/shims/netstandard/System.Console.dll"
+--r:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/NetStandard/compat/2.1.0/shims/netstandard/System.Data.Common.dll"
+--r:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/NetStandard/compat/2.1.0/shims/netstandard/System.Diagnostics.Contracts.dll"
+--r:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/NetStandard/compat/2.1.0/shims/netstandard/System.Diagnostics.Debug.dll"
+--r:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/NetStandard/compat/2.1.0/shims/netstandard/System.Diagnostics.FileVersionInfo.dll"
+--r:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/NetStandard/compat/2.1.0/shims/netstandard/System.Diagnostics.Process.dll"
+--r:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/NetStandard/compat/2.1.0/shims/netstandard/System.Diagnostics.StackTrace.dll"
+--r:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/NetStandard/compat/2.1.0/shims/netstandard/System.Diagnostics.TextWriterTraceListener.dll"
+--r:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/NetStandard/compat/2.1.0/shims/netstandard/System.Diagnostics.Tools.dll"
+--r:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/NetStandard/compat/2.1.0/shims/netstandard/System.Diagnostics.TraceSource.dll"
+--r:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/NetStandard/compat/2.1.0/shims/netstandard/System.Diagnostics.Tracing.dll"
+--r:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/NetStandard/compat/2.1.0/shims/netstandard/System.Drawing.Primitives.dll"
+--r:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/NetStandard/compat/2.1.0/shims/netstandard/System.Dynamic.Runtime.dll"
+--r:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/NetStandard/compat/2.1.0/shims/netstandard/System.Globalization.Calendars.dll"
+--r:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/NetStandard/compat/2.1.0/shims/netstandard/System.Globalization.Extensions.dll"
+--r:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/NetStandard/compat/2.1.0/shims/netstandard/System.Globalization.dll"
+--r:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/NetStandard/compat/2.1.0/shims/netstandard/System.IO.Compression.ZipFile.dll"
+--r:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/NetStandard/compat/2.1.0/shims/netstandard/System.IO.Compression.dll"
+--r:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/NetStandard/compat/2.1.0/shims/netstandard/System.IO.FileSystem.DriveInfo.dll"
+--r:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/NetStandard/compat/2.1.0/shims/netstandard/System.IO.FileSystem.Primitives.dll"
+--r:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/NetStandard/compat/2.1.0/shims/netstandard/System.IO.FileSystem.Watcher.dll"
+--r:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/NetStandard/compat/2.1.0/shims/netstandard/System.IO.FileSystem.dll"
+--r:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/NetStandard/compat/2.1.0/shims/netstandard/System.IO.IsolatedStorage.dll"
+--r:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/NetStandard/compat/2.1.0/shims/netstandard/System.IO.MemoryMappedFiles.dll"
+--r:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/NetStandard/compat/2.1.0/shims/netstandard/System.IO.Pipes.dll"
+--r:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/NetStandard/compat/2.1.0/shims/netstandard/System.IO.UnmanagedMemoryStream.dll"
+--r:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/NetStandard/compat/2.1.0/shims/netstandard/System.IO.dll"
+--r:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/NetStandard/compat/2.1.0/shims/netstandard/System.Linq.Expressions.dll"
+--r:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/NetStandard/compat/2.1.0/shims/netstandard/System.Linq.Parallel.dll"
+--r:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/NetStandard/compat/2.1.0/shims/netstandard/System.Linq.Queryable.dll"
+--r:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/NetStandard/compat/2.1.0/shims/netstandard/System.Linq.dll"
+--r:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/NetStandard/compat/2.1.0/shims/netstandard/System.Memory.dll"
+--r:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/NetStandard/compat/2.1.0/shims/netstandard/System.Net.Http.dll"
+--r:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/NetStandard/compat/2.1.0/shims/netstandard/System.Net.NameResolution.dll"
+--r:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/NetStandard/compat/2.1.0/shims/netstandard/System.Net.NetworkInformation.dll"
+--r:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/NetStandard/compat/2.1.0/shims/netstandard/System.Net.Ping.dll"
+--r:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/NetStandard/compat/2.1.0/shims/netstandard/System.Net.Primitives.dll"
+--r:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/NetStandard/compat/2.1.0/shims/netstandard/System.Net.Requests.dll"
+--r:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/NetStandard/compat/2.1.0/shims/netstandard/System.Net.Security.dll"
+--r:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/NetStandard/compat/2.1.0/shims/netstandard/System.Net.Sockets.dll"
+--r:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/NetStandard/compat/2.1.0/shims/netstandard/System.Net.WebHeaderCollection.dll"
+--r:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/NetStandard/compat/2.1.0/shims/netstandard/System.Net.WebSockets.Client.dll"
+--r:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/NetStandard/compat/2.1.0/shims/netstandard/System.Net.WebSockets.dll"
+--r:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/NetStandard/compat/2.1.0/shims/netstandard/System.Numerics.Vectors.dll"
+--r:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/NetStandard/compat/2.1.0/shims/netstandard/System.ObjectModel.dll"
+--r:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/NetStandard/compat/2.1.0/shims/netstandard/System.Reflection.DispatchProxy.dll"
+--r:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/NetStandard/compat/2.1.0/shims/netstandard/System.Reflection.Emit.ILGeneration.dll"
+--r:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/NetStandard/compat/2.1.0/shims/netstandard/System.Reflection.Emit.Lightweight.dll"
+--r:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/NetStandard/compat/2.1.0/shims/netstandard/System.Reflection.Emit.dll"
+--r:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/NetStandard/compat/2.1.0/shims/netstandard/System.Reflection.Extensions.dll"
+--r:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/NetStandard/compat/2.1.0/shims/netstandard/System.Reflection.Primitives.dll"
+--r:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/NetStandard/compat/2.1.0/shims/netstandard/System.Reflection.dll"
+--r:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/NetStandard/compat/2.1.0/shims/netstandard/System.Resources.Reader.dll"
+--r:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/NetStandard/compat/2.1.0/shims/netstandard/System.Resources.ResourceManager.dll"
+--r:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/NetStandard/compat/2.1.0/shims/netstandard/System.Resources.Writer.dll"
+--r:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/NetStandard/compat/2.1.0/shims/netstandard/System.Runtime.CompilerServices.VisualC.dll"
+--r:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/NetStandard/compat/2.1.0/shims/netstandard/System.Runtime.Extensions.dll"
+--r:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/NetStandard/compat/2.1.0/shims/netstandard/System.Runtime.Handles.dll"
+--r:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/NetStandard/compat/2.1.0/shims/netstandard/System.Runtime.InteropServices.RuntimeInformation.dll"
+--r:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/NetStandard/compat/2.1.0/shims/netstandard/System.Runtime.InteropServices.dll"
+--r:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/NetStandard/compat/2.1.0/shims/netstandard/System.Runtime.Numerics.dll"
+--r:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/NetStandard/compat/2.1.0/shims/netstandard/System.Runtime.Serialization.Formatters.dll"
+--r:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/NetStandard/compat/2.1.0/shims/netstandard/System.Runtime.Serialization.Json.dll"
+--r:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/NetStandard/compat/2.1.0/shims/netstandard/System.Runtime.Serialization.Primitives.dll"
+--r:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/NetStandard/compat/2.1.0/shims/netstandard/System.Runtime.Serialization.Xml.dll"
+--r:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/NetStandard/compat/2.1.0/shims/netstandard/System.Runtime.dll"
+--r:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/NetStandard/compat/2.1.0/shims/netstandard/System.Security.Claims.dll"
+--r:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/NetStandard/compat/2.1.0/shims/netstandard/System.Security.Cryptography.Algorithms.dll"
+--r:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/NetStandard/compat/2.1.0/shims/netstandard/System.Security.Cryptography.Csp.dll"
+--r:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/NetStandard/compat/2.1.0/shims/netstandard/System.Security.Cryptography.Encoding.dll"
+--r:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/NetStandard/compat/2.1.0/shims/netstandard/System.Security.Cryptography.Primitives.dll"
+--r:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/NetStandard/compat/2.1.0/shims/netstandard/System.Security.Cryptography.X509Certificates.dll"
+--r:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/NetStandard/compat/2.1.0/shims/netstandard/System.Security.Principal.dll"
+--r:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/NetStandard/compat/2.1.0/shims/netstandard/System.Security.SecureString.dll"
+--r:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/NetStandard/compat/2.1.0/shims/netstandard/System.Text.Encoding.Extensions.dll"
+--r:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/NetStandard/compat/2.1.0/shims/netstandard/System.Text.Encoding.dll"
+--r:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/NetStandard/compat/2.1.0/shims/netstandard/System.Text.RegularExpressions.dll"
+--r:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/NetStandard/compat/2.1.0/shims/netstandard/System.Threading.Overlapped.dll"
+--r:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/NetStandard/compat/2.1.0/shims/netstandard/System.Threading.Tasks.Extensions.dll"
+--r:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/NetStandard/compat/2.1.0/shims/netstandard/System.Threading.Tasks.Parallel.dll"
+--r:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/NetStandard/compat/2.1.0/shims/netstandard/System.Threading.Tasks.dll"
+--r:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/NetStandard/compat/2.1.0/shims/netstandard/System.Threading.Thread.dll"
+--r:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/NetStandard/compat/2.1.0/shims/netstandard/System.Threading.ThreadPool.dll"
+--r:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/NetStandard/compat/2.1.0/shims/netstandard/System.Threading.Timer.dll"
+--r:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/NetStandard/compat/2.1.0/shims/netstandard/System.Threading.dll"
+--r:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/NetStandard/compat/2.1.0/shims/netstandard/System.ValueTuple.dll"
+--r:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/NetStandard/compat/2.1.0/shims/netstandard/System.Xml.ReaderWriter.dll"
+--r:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/NetStandard/compat/2.1.0/shims/netstandard/System.Xml.XDocument.dll"
+--r:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/NetStandard/compat/2.1.0/shims/netstandard/System.Xml.XPath.XDocument.dll"
+--r:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/NetStandard/compat/2.1.0/shims/netstandard/System.Xml.XPath.dll"
+--r:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/NetStandard/compat/2.1.0/shims/netstandard/System.Xml.XmlDocument.dll"
+--r:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/NetStandard/compat/2.1.0/shims/netstandard/System.Xml.XmlSerializer.dll"
+--r:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/NetStandard/ref/2.1.0/netstandard.dll"
++-r:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/PlaybackEngines/LinuxStandaloneSupport/UnityEditor.LinuxStandalone.Extensions.dll"
+ -r:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/PlaybackEngines/WebGLSupport/Managed/UnityEngine.WebGLModule.dll"
++-r:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/PlaybackEngines/WebGLSupport/UnityEditor.WebGL.Extensions.dll"
++-r:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/UnityReferenceAssemblies/unity-4.8-api/Facades/Microsoft.Win32.Primitives.dll"
++-r:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/UnityReferenceAssemblies/unity-4.8-api/Facades/System.AppContext.dll"
++-r:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/UnityReferenceAssemblies/unity-4.8-api/Facades/System.Buffers.dll"
++-r:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/UnityReferenceAssemblies/unity-4.8-api/Facades/System.Collections.Concurrent.dll"
++-r:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/UnityReferenceAssemblies/unity-4.8-api/Facades/System.Collections.NonGeneric.dll"
++-r:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/UnityReferenceAssemblies/unity-4.8-api/Facades/System.Collections.Specialized.dll"
++-r:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/UnityReferenceAssemblies/unity-4.8-api/Facades/System.Collections.dll"
++-r:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/UnityReferenceAssemblies/unity-4.8-api/Facades/System.ComponentModel.Annotations.dll"
++-r:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/UnityReferenceAssemblies/unity-4.8-api/Facades/System.ComponentModel.EventBasedAsync.dll"
++-r:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/UnityReferenceAssemblies/unity-4.8-api/Facades/System.ComponentModel.Primitives.dll"
++-r:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/UnityReferenceAssemblies/unity-4.8-api/Facades/System.ComponentModel.TypeConverter.dll"
++-r:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/UnityReferenceAssemblies/unity-4.8-api/Facades/System.ComponentModel.dll"
++-r:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/UnityReferenceAssemblies/unity-4.8-api/Facades/System.Console.dll"
++-r:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/UnityReferenceAssemblies/unity-4.8-api/Facades/System.Data.Common.dll"
++-r:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/UnityReferenceAssemblies/unity-4.8-api/Facades/System.Diagnostics.Contracts.dll"
++-r:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/UnityReferenceAssemblies/unity-4.8-api/Facades/System.Diagnostics.Debug.dll"
++-r:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/UnityReferenceAssemblies/unity-4.8-api/Facades/System.Diagnostics.FileVersionInfo.dll"
++-r:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/UnityReferenceAssemblies/unity-4.8-api/Facades/System.Diagnostics.Process.dll"
++-r:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/UnityReferenceAssemblies/unity-4.8-api/Facades/System.Diagnostics.StackTrace.dll"
++-r:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/UnityReferenceAssemblies/unity-4.8-api/Facades/System.Diagnostics.TextWriterTraceListener.dll"
++-r:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/UnityReferenceAssemblies/unity-4.8-api/Facades/System.Diagnostics.Tools.dll"
++-r:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/UnityReferenceAssemblies/unity-4.8-api/Facades/System.Diagnostics.TraceSource.dll"
++-r:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/UnityReferenceAssemblies/unity-4.8-api/Facades/System.Drawing.Primitives.dll"
++-r:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/UnityReferenceAssemblies/unity-4.8-api/Facades/System.Dynamic.Runtime.dll"
++-r:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/UnityReferenceAssemblies/unity-4.8-api/Facades/System.Globalization.Calendars.dll"
++-r:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/UnityReferenceAssemblies/unity-4.8-api/Facades/System.Globalization.Extensions.dll"
++-r:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/UnityReferenceAssemblies/unity-4.8-api/Facades/System.Globalization.dll"
++-r:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/UnityReferenceAssemblies/unity-4.8-api/Facades/System.IO.Compression.ZipFile.dll"
++-r:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/UnityReferenceAssemblies/unity-4.8-api/Facades/System.IO.FileSystem.DriveInfo.dll"
++-r:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/UnityReferenceAssemblies/unity-4.8-api/Facades/System.IO.FileSystem.Primitives.dll"
++-r:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/UnityReferenceAssemblies/unity-4.8-api/Facades/System.IO.FileSystem.Watcher.dll"
++-r:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/UnityReferenceAssemblies/unity-4.8-api/Facades/System.IO.FileSystem.dll"
++-r:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/UnityReferenceAssemblies/unity-4.8-api/Facades/System.IO.IsolatedStorage.dll"
++-r:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/UnityReferenceAssemblies/unity-4.8-api/Facades/System.IO.MemoryMappedFiles.dll"
++-r:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/UnityReferenceAssemblies/unity-4.8-api/Facades/System.IO.Pipes.dll"
++-r:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/UnityReferenceAssemblies/unity-4.8-api/Facades/System.IO.UnmanagedMemoryStream.dll"
++-r:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/UnityReferenceAssemblies/unity-4.8-api/Facades/System.IO.dll"
++-r:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/UnityReferenceAssemblies/unity-4.8-api/Facades/System.Linq.Expressions.dll"
++-r:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/UnityReferenceAssemblies/unity-4.8-api/Facades/System.Linq.Parallel.dll"
++-r:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/UnityReferenceAssemblies/unity-4.8-api/Facades/System.Linq.Queryable.dll"
++-r:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/UnityReferenceAssemblies/unity-4.8-api/Facades/System.Linq.dll"
++-r:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/UnityReferenceAssemblies/unity-4.8-api/Facades/System.Memory.dll"
++-r:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/UnityReferenceAssemblies/unity-4.8-api/Facades/System.Net.Http.Rtc.dll"
++-r:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/UnityReferenceAssemblies/unity-4.8-api/Facades/System.Net.NameResolution.dll"
++-r:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/UnityReferenceAssemblies/unity-4.8-api/Facades/System.Net.NetworkInformation.dll"
++-r:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/UnityReferenceAssemblies/unity-4.8-api/Facades/System.Net.Ping.dll"
++-r:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/UnityReferenceAssemblies/unity-4.8-api/Facades/System.Net.Primitives.dll"
++-r:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/UnityReferenceAssemblies/unity-4.8-api/Facades/System.Net.Requests.dll"
++-r:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/UnityReferenceAssemblies/unity-4.8-api/Facades/System.Net.Security.dll"
++-r:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/UnityReferenceAssemblies/unity-4.8-api/Facades/System.Net.Sockets.dll"
++-r:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/UnityReferenceAssemblies/unity-4.8-api/Facades/System.Net.WebHeaderCollection.dll"
++-r:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/UnityReferenceAssemblies/unity-4.8-api/Facades/System.Net.WebSockets.Client.dll"
++-r:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/UnityReferenceAssemblies/unity-4.8-api/Facades/System.Net.WebSockets.dll"
++-r:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/UnityReferenceAssemblies/unity-4.8-api/Facades/System.ObjectModel.dll"
++-r:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/UnityReferenceAssemblies/unity-4.8-api/Facades/System.Reflection.DispatchProxy.dll"
++-r:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/UnityReferenceAssemblies/unity-4.8-api/Facades/System.Reflection.Emit.ILGeneration.dll"
++-r:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/UnityReferenceAssemblies/unity-4.8-api/Facades/System.Reflection.Emit.Lightweight.dll"
++-r:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/UnityReferenceAssemblies/unity-4.8-api/Facades/System.Reflection.Emit.dll"
++-r:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/UnityReferenceAssemblies/unity-4.8-api/Facades/System.Reflection.Extensions.dll"
++-r:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/UnityReferenceAssemblies/unity-4.8-api/Facades/System.Reflection.Primitives.dll"
++-r:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/UnityReferenceAssemblies/unity-4.8-api/Facades/System.Reflection.dll"
++-r:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/UnityReferenceAssemblies/unity-4.8-api/Facades/System.Resources.Reader.dll"
++-r:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/UnityReferenceAssemblies/unity-4.8-api/Facades/System.Resources.ResourceManager.dll"
++-r:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/UnityReferenceAssemblies/unity-4.8-api/Facades/System.Resources.Writer.dll"
++-r:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/UnityReferenceAssemblies/unity-4.8-api/Facades/System.Runtime.CompilerServices.VisualC.dll"
++-r:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/UnityReferenceAssemblies/unity-4.8-api/Facades/System.Runtime.Extensions.dll"
++-r:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/UnityReferenceAssemblies/unity-4.8-api/Facades/System.Runtime.Handles.dll"
++-r:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/UnityReferenceAssemblies/unity-4.8-api/Facades/System.Runtime.InteropServices.RuntimeInformation.dll"
++-r:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/UnityReferenceAssemblies/unity-4.8-api/Facades/System.Runtime.InteropServices.WindowsRuntime.dll"
++-r:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/UnityReferenceAssemblies/unity-4.8-api/Facades/System.Runtime.InteropServices.dll"
++-r:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/UnityReferenceAssemblies/unity-4.8-api/Facades/System.Runtime.Numerics.dll"
++-r:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/UnityReferenceAssemblies/unity-4.8-api/Facades/System.Runtime.Serialization.Formatters.dll"
++-r:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/UnityReferenceAssemblies/unity-4.8-api/Facades/System.Runtime.Serialization.Json.dll"
++-r:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/UnityReferenceAssemblies/unity-4.8-api/Facades/System.Runtime.Serialization.Primitives.dll"
++-r:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/UnityReferenceAssemblies/unity-4.8-api/Facades/System.Runtime.Serialization.Xml.dll"
++-r:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/UnityReferenceAssemblies/unity-4.8-api/Facades/System.Runtime.dll"
++-r:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/UnityReferenceAssemblies/unity-4.8-api/Facades/System.Security.Claims.dll"
++-r:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/UnityReferenceAssemblies/unity-4.8-api/Facades/System.Security.Cryptography.Algorithms.dll"
++-r:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/UnityReferenceAssemblies/unity-4.8-api/Facades/System.Security.Cryptography.Csp.dll"
++-r:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/UnityReferenceAssemblies/unity-4.8-api/Facades/System.Security.Cryptography.Encoding.dll"
++-r:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/UnityReferenceAssemblies/unity-4.8-api/Facades/System.Security.Cryptography.Primitives.dll"
++-r:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/UnityReferenceAssemblies/unity-4.8-api/Facades/System.Security.Cryptography.X509Certificates.dll"
++-r:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/UnityReferenceAssemblies/unity-4.8-api/Facades/System.Security.Principal.dll"
++-r:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/UnityReferenceAssemblies/unity-4.8-api/Facades/System.Security.SecureString.dll"
++-r:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/UnityReferenceAssemblies/unity-4.8-api/Facades/System.ServiceModel.Duplex.dll"
++-r:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/UnityReferenceAssemblies/unity-4.8-api/Facades/System.ServiceModel.Http.dll"
++-r:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/UnityReferenceAssemblies/unity-4.8-api/Facades/System.ServiceModel.NetTcp.dll"
++-r:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/UnityReferenceAssemblies/unity-4.8-api/Facades/System.ServiceModel.Primitives.dll"
++-r:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/UnityReferenceAssemblies/unity-4.8-api/Facades/System.ServiceModel.Security.dll"
++-r:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/UnityReferenceAssemblies/unity-4.8-api/Facades/System.Text.Encoding.Extensions.dll"
++-r:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/UnityReferenceAssemblies/unity-4.8-api/Facades/System.Text.Encoding.dll"
++-r:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/UnityReferenceAssemblies/unity-4.8-api/Facades/System.Text.RegularExpressions.dll"
++-r:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/UnityReferenceAssemblies/unity-4.8-api/Facades/System.Threading.Overlapped.dll"
++-r:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/UnityReferenceAssemblies/unity-4.8-api/Facades/System.Threading.Tasks.Extensions.dll"
++-r:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/UnityReferenceAssemblies/unity-4.8-api/Facades/System.Threading.Tasks.Parallel.dll"
++-r:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/UnityReferenceAssemblies/unity-4.8-api/Facades/System.Threading.Tasks.dll"
++-r:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/UnityReferenceAssemblies/unity-4.8-api/Facades/System.Threading.Thread.dll"
++-r:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/UnityReferenceAssemblies/unity-4.8-api/Facades/System.Threading.ThreadPool.dll"
++-r:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/UnityReferenceAssemblies/unity-4.8-api/Facades/System.Threading.Timer.dll"
++-r:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/UnityReferenceAssemblies/unity-4.8-api/Facades/System.Threading.dll"
++-r:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/UnityReferenceAssemblies/unity-4.8-api/Facades/System.ValueTuple.dll"
++-r:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/UnityReferenceAssemblies/unity-4.8-api/Facades/System.Xml.ReaderWriter.dll"
++-r:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/UnityReferenceAssemblies/unity-4.8-api/Facades/System.Xml.XDocument.dll"
++-r:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/UnityReferenceAssemblies/unity-4.8-api/Facades/System.Xml.XPath.XDocument.dll"
++-r:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/UnityReferenceAssemblies/unity-4.8-api/Facades/System.Xml.XPath.dll"
++-r:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/UnityReferenceAssemblies/unity-4.8-api/Facades/System.Xml.XmlDocument.dll"
++-r:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/UnityReferenceAssemblies/unity-4.8-api/Facades/System.Xml.XmlSerializer.dll"
++-r:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/UnityReferenceAssemblies/unity-4.8-api/Facades/netstandard.dll"
++-r:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/UnityReferenceAssemblies/unity-4.8-api/Microsoft.CSharp.dll"
++-r:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/UnityReferenceAssemblies/unity-4.8-api/System.ComponentModel.Composition.dll"
++-r:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/UnityReferenceAssemblies/unity-4.8-api/System.Core.dll"
++-r:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/UnityReferenceAssemblies/unity-4.8-api/System.Data.DataSetExtensions.dll"
++-r:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/UnityReferenceAssemblies/unity-4.8-api/System.Data.dll"
++-r:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/UnityReferenceAssemblies/unity-4.8-api/System.Drawing.dll"
++-r:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/UnityReferenceAssemblies/unity-4.8-api/System.IO.Compression.FileSystem.dll"
++-r:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/UnityReferenceAssemblies/unity-4.8-api/System.IO.Compression.dll"
++-r:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/UnityReferenceAssemblies/unity-4.8-api/System.Net.Http.dll"
++-r:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/UnityReferenceAssemblies/unity-4.8-api/System.Numerics.Vectors.dll"
++-r:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/UnityReferenceAssemblies/unity-4.8-api/System.Numerics.dll"
++-r:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/UnityReferenceAssemblies/unity-4.8-api/System.Runtime.Serialization.dll"
++-r:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/UnityReferenceAssemblies/unity-4.8-api/System.Transactions.dll"
++-r:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/UnityReferenceAssemblies/unity-4.8-api/System.Xml.Linq.dll"
++-r:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/UnityReferenceAssemblies/unity-4.8-api/System.Xml.dll"
++-r:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/UnityReferenceAssemblies/unity-4.8-api/System.dll"
++-r:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/UnityReferenceAssemblies/unity-4.8-api/mscorlib.dll"
+ -r:"Library/PackageCache/com.unity.analytics@3.8.1/AnalyticsStandardEvents/Unity.Analytics.StandardEvents.dll"
+ -r:"Library/PackageCache/com.unity.analytics@3.8.1/Unity.Analytics.Editor.dll"
+ -r:"Library/PackageCache/com.unity.analytics@3.8.1/Unity.Analytics.Tracker.dll"
++-r:"Library/PackageCache/com.unity.collab-proxy@2.7.1/Lib/Editor/Unity.Plastic.Antlr3.Runtime.dll"
++-r:"Library/PackageCache/com.unity.collab-proxy@2.7.1/Lib/Editor/Unity.Plastic.Newtonsoft.Json.dll"
++-r:"Library/PackageCache/com.unity.collab-proxy@2.7.1/Lib/Editor/log4netPlastic.dll"
++-r:"Library/PackageCache/com.unity.collab-proxy@2.7.1/Lib/Editor/unityplastic.dll"
++-r:"Library/PackageCache/com.unity.ext.nunit@1.0.6/net35/unity-custom/nunit.framework.dll"
+ -r:"Library/PackageCache/com.unity.nuget.newtonsoft-json@3.2.1/Runtime/Newtonsoft.Json.dll"
+ -r:"Library/Bee/artifacts/2000b0aE.dag/Analytics.ref.dll"
++-r:"Library/Bee/artifacts/2000b0aE.dag/Assembly-CSharp.ref.dll"
+ -r:"Library/Bee/artifacts/2000b0aE.dag/PPv2URPConverters.ref.dll"
+ -r:"Library/Bee/artifacts/2000b0aE.dag/Purchasing.Common.ref.dll"
+ -r:"Library/Bee/artifacts/2000b0aE.dag/Unity.2D.Sprite.Editor.ref.dll"
+@@ -632,6 +671,7 @@ ExitCode: 3 Duration: 6s490ms
+ -r:"Library/Bee/artifacts/2000b0aE.dag/Unity.VisualStudio.Editor.ref.dll"
+ -r:"Library/Bee/artifacts/2000b0aE.dag/UnityEditor.Purchasing.ref.dll"
+ -r:"Library/Bee/artifacts/2000b0aE.dag/UnityEditor.SpatialTracking.ref.dll"
++-r:"Library/Bee/artifacts/2000b0aE.dag/UnityEditor.TestRunner.ref.dll"
+ -r:"Library/Bee/artifacts/2000b0aE.dag/UnityEditor.UI.ref.dll"
+ -r:"Library/Bee/artifacts/2000b0aE.dag/UnityEditor.XR.LegacyInputHelpers.ref.dll"
+ -r:"Library/Bee/artifacts/2000b0aE.dag/UnityEngine.Advertisements.Editor.ref.dll"
+@@ -642,38 +682,13 @@ ExitCode: 3 Duration: 6s490ms
+ -r:"Library/Bee/artifacts/2000b0aE.dag/UnityEngine.Purchasing.Stores.ref.dll"
+ -r:"Library/Bee/artifacts/2000b0aE.dag/UnityEngine.Purchasing.ref.dll"
+ -r:"Library/Bee/artifacts/2000b0aE.dag/UnityEngine.SpatialTracking.ref.dll"
++-r:"Library/Bee/artifacts/2000b0aE.dag/UnityEngine.TestRunner.ref.dll"
+ -r:"Library/Bee/artifacts/2000b0aE.dag/UnityEngine.UI.ref.dll"
+ -r:"Library/Bee/artifacts/2000b0aE.dag/UnityEngine.XR.LegacyInputHelpers.ref.dll"
+ -analyzer:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/Tools/Unity.SourceGenerators/Unity.Properties.SourceGenerator.dll"
+ -analyzer:"/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/Tools/Unity.SourceGenerators/Unity.SourceGenerators.dll"
+-"Assets/_Project/Scripts/Core/DamageResolver.cs"
+-"Assets/_Project/Scripts/Core/IDamageable.cs"
+-"Assets/_Project/Scripts/Core/IInputProvider.cs"
+-"Assets/_Project/Scripts/Core/IInteractable.cs"
+-"Assets/_Project/Scripts/Core/PlayerInputProvider.cs"
+-"Assets/_Project/Scripts/Core/WebGLPointerLock.cs"
+-"Assets/_Project/Scripts/Debug/DebugInputProbe.cs"
+-"Assets/_Project/Scripts/Debug/DebugPositionLogger.cs"
+-"Assets/_Project/Scripts/Dialogue/ChoiceRouter.cs"
+-"Assets/_Project/Scripts/Dialogue/DialogueController.cs"
+-"Assets/_Project/Scripts/Dialogue/DialogueData.cs"
+-"Assets/_Project/Scripts/Dialogue/Ep1DialogueBank.cs"
+-"Assets/_Project/Scripts/Economy/CashService.cs"
+-"Assets/_Project/Scripts/Interaction/InteractableNPC.cs"
+-"Assets/_Project/Scripts/Interaction/PlayerInteractor.cs"
+-"Assets/_Project/Scripts/Missions/EpisodeController.cs"
+-"Assets/_Project/Scripts/Missions/MissionStateMachine.cs"
+-"Assets/_Project/Scripts/Missions/TriggerVolume.cs"
+-"Assets/_Project/Scripts/Objectives/ObjectiveManager.cs"
+-"Assets/_Project/Scripts/Persistence/SaveData.cs"
+-"Assets/_Project/Scripts/Persistence/SaveManager.cs"
+-"Assets/_Project/Scripts/Player/PlayerCamera.cs"
+-"Assets/_Project/Scripts/Player/PlayerMovement.cs"
+-"Assets/_Project/Scripts/UI/DialogueUI.cs"
+-"Assets/_Project/Scripts/UI/HUDController.cs"
+-"Assets/_Project/Scripts/Weapons/TargetDummy.cs"
+-"Assets/_Project/Scripts/Weapons/WeaponController.cs"
+-"Assets/_Project/Scripts/Weapons/WeaponData.cs"
++"Assets/Editor/BuildSocialClub.cs"
++"Assets/Editor/BuildTestArena.cs"
+ -langversion:9.0
+ /deterministic
+ /optimize+
+@@ -687,47 +702,24 @@ ExitCode: 3 Duration: 6s490ms
+ /nowarn:1702
+ /utf8output
+ /preferreduilang:en-US
+-/additionalfile:"Library/Bee/artifacts/2000b0aE.dag/Assembly-CSharp.UnityAdditionalFile.txt"
++/additionalfile:"Library/Bee/artifacts/2000b0aE.dag/Assembly-CSharp-Editor.UnityAdditionalFile.txt"
+ ##### Custom Environment Variables
+ DOTNET_MULTILEVEL_LOOKUP=0
+ ##### ExitCode
+ 1
+ ##### Output
+-Assets/_Project/Scripts/Weapons/TargetDummy.cs(14,13): error CS0234: The type or namespace name 'Log' does not exist in the namespace 'CODClone.Debug' (are you missing an assembly reference?)
+-Assets/_Project/Scripts/Debug/DebugInputProbe.cs(16,13): error CS0234: The type or namespace name 'Log' does not exist in the namespace 'CODClone.Debug' (are you missing an assembly reference?)
+-Assets/_Project/Scripts/Debug/DebugInputProbe.cs(19,31): error CS0234: The type or namespace name 'Log' does not exist in the namespace 'CODClone.Debug' (are you missing an assembly reference?)
+-Assets/_Project/Scripts/Debug/DebugInputProbe.cs(21,13): error CS0234: The type or namespace name 'Log' does not exist in the namespace 'CODClone.Debug' (are you missing an assembly reference?)
+-Assets/_Project/Scripts/Debug/DebugInputProbe.cs(25,21): error CS0234: The type or namespace name 'Log' does not exist in the namespace 'CODClone.Debug' (are you missing an assembly reference?)
+-Assets/_Project/Scripts/Debug/DebugInputProbe.cs(27,17): error CS0234: The type or namespace name 'Log' does not exist in the namespace 'CODClone.Debug' (are you missing an assembly reference?)
+-Assets/_Project/Scripts/Debug/DebugInputProbe.cs(31,17): error CS0234: The type or namespace name 'Log' does not exist in the namespace 'CODClone.Debug' (are you missing an assembly reference?)
+-Assets/_Project/Scripts/Debug/DebugInputProbe.cs(43,21): error CS0234: The type or namespace name 'Log' does not exist in the namespace 'CODClone.Debug' (are you missing an assembly reference?)
+-Assets/_Project/Scripts/Interaction/InteractableNPC.cs(17,41): warning CS0414: The field 'InteractableNPC.repeatLine' is assigned but its value is never used
+-*** Tundra build failed (6.39 seconds), 2 items updated, 914 evaluated
+-## Script Compilation Error for: Csc Library/Bee/artifacts/2000b0aE.dag/Assembly-CSharp.dll (+2 others)
+-## CmdLine: "/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/NetCoreRuntime/dotnet" exec "/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/DotNetSdkRoslyn/csc.dll" /nostdlib /noconfig /shared "@Library/Bee/artifacts/2000b0aE.dag/Assembly-CSharp.rsp" "@Library/Bee/artifacts/2000b0aE.dag/Assembly-CSharp.rsp2"
++Assets/Editor/BuildSocialClub.cs(11,16): error CS0234: The type or namespace name 'UI' does not exist in the namespace 'CODClone' (are you missing an assembly reference?)
++*** Tundra build failed (10.84 seconds), 6 items updated, 914 evaluated
++## Script Compilation Error for: Csc Library/Bee/artifacts/2000b0aE.dag/Assembly-CSharp-Editor.dll (+2 others)
++## CmdLine: "/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/NetCoreRuntime/dotnet" exec "/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/DotNetSdkRoslyn/csc.dll" /nostdlib /noconfig /shared "@Library/Bee/artifacts/2000b0aE.dag/Assembly-CSharp-Editor.rsp" "@Library/Bee/artifacts/2000b0aE.dag/Assembly-CSharp-Editor.rsp2"
+ ## Output:
+-Assets/_Project/Scripts/Weapons/TargetDummy.cs(14,13): error CS0234: The type or namespace name 'Log' does not exist in the namespace 'CODClone.Debug' (are you missing an assembly reference?)
+-Assets/_Project/Scripts/Debug/DebugInputProbe.cs(16,13): error CS0234: The type or namespace name 'Log' does not exist in the namespace 'CODClone.Debug' (are you missing an assembly reference?)
+-Assets/_Project/Scripts/Debug/DebugInputProbe.cs(19,31): error CS0234: The type or namespace name 'Log' does not exist in the namespace 'CODClone.Debug' (are you missing an assembly reference?)
+-Assets/_Project/Scripts/Debug/DebugInputProbe.cs(21,13): error CS0234: The type or namespace name 'Log' does not exist in the namespace 'CODClone.Debug' (are you missing an assembly reference?)
+-Assets/_Project/Scripts/Debug/DebugInputProbe.cs(25,21): error CS0234: The type or namespace name 'Log' does not exist in the namespace 'CODClone.Debug' (are you missing an assembly reference?)
+-Assets/_Project/Scripts/Debug/DebugInputProbe.cs(27,17): error CS0234: The type or namespace name 'Log' does not exist in the namespace 'CODClone.Debug' (are you missing an assembly reference?)
+-Assets/_Project/Scripts/Debug/DebugInputProbe.cs(31,17): error CS0234: The type or namespace name 'Log' does not exist in the namespace 'CODClone.Debug' (are you missing an assembly reference?)
+-Assets/_Project/Scripts/Debug/DebugInputProbe.cs(43,21): error CS0234: The type or namespace name 'Log' does not exist in the namespace 'CODClone.Debug' (are you missing an assembly reference?)
+-Assets/_Project/Scripts/Interaction/InteractableNPC.cs(17,41): warning CS0414: The field 'InteractableNPC.repeatLine' is assigned but its value is never used
+-&Y
++Assets/Editor/BuildSocialClub.cs(11,16): error CS0234: The type or namespace name 'UI' does not exist in the namespace 'CODClone' (are you missing an assembly reference?)
++
+ Total cache size 84474764
+ Total cache size after purge 84474764
+-Assets/_Project/Scripts/Weapons/TargetDummy.cs(14,13): error CS0234: The type or namespace name 'Log' does not exist in the namespace 'CODClone.Debug' (are you missing an assembly reference?)
+-Assets/_Project/Scripts/Debug/DebugInputProbe.cs(16,13): error CS0234: The type or namespace name 'Log' does not exist in the namespace 'CODClone.Debug' (are you missing an assembly reference?)
+-Assets/_Project/Scripts/Debug/DebugInputProbe.cs(19,31): error CS0234: The type or namespace name 'Log' does not exist in the namespace 'CODClone.Debug' (are you missing an assembly reference?)
+-Assets/_Project/Scripts/Debug/DebugInputProbe.cs(21,13): error CS0234: The type or namespace name 'Log' does not exist in the namespace 'CODClone.Debug' (are you missing an assembly reference?)
+-Assets/_Project/Scripts/Debug/DebugInputProbe.cs(25,21): error CS0234: The type or namespace name 'Log' does not exist in the namespace 'CODClone.Debug' (are you missing an assembly reference?)
+-Assets/_Project/Scripts/Debug/DebugInputProbe.cs(27,17): error CS0234: The type or namespace name 'Log' does not exist in the namespace 'CODClone.Debug' (are you missing an assembly reference?)
+-Assets/_Project/Scripts/Debug/DebugInputProbe.cs(31,17): error CS0234: The type or namespace name 'Log' does not exist in the namespace 'CODClone.Debug' (are you missing an assembly reference?)
+-Assets/_Project/Scripts/Debug/DebugInputProbe.cs(43,21): error CS0234: The type or namespace name 'Log' does not exist in the namespace 'CODClone.Debug' (are you missing an assembly reference?)
+ Assets/_Project/Scripts/Interaction/InteractableNPC.cs(17,41): warning CS0414: The field 'InteractableNPC.repeatLine' is assigned but its value is never used
+-AssetDatabase: script compilation time: 8.448659s
++Assets/Editor/BuildSocialClub.cs(11,16): error CS0234: The type or namespace name 'UI' does not exist in the namespace 'CODClone' (are you missing an assembly reference?)
++AssetDatabase: script compilation time: 13.092903s
+ Scripts have compiler errors.
+ [40m[32minfo[39m[22m[49m: Microsoft.Hosting.Lifetime[0]
+       Application is shutting down...
+-- 
+2.43.0
+
