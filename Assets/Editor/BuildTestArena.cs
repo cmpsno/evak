@@ -57,6 +57,9 @@ public static class BuildTestArena
         if (!EditorUserBuildSettings.SwitchActiveBuildTarget(BuildTargetGroup.WebGL, BuildTarget.WebGL))
             throw new System.Exception("Could not switch to WebGL target — is the WebGL module installed?");
 
+        // No-compression output: plain http.server can serve it, no gzip headers needed.
+        PlayerSettings.WebGL.compressionFormat = WebGLCompressionFormat.Disabled;
+
         string outDir = Path.GetFullPath(Path.Combine(Application.dataPath, "..", "..", "cod-mobile-webgl"));
         Directory.CreateDirectory(outDir);
 
