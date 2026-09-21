@@ -1,13 +1,15 @@
 using UnityEngine;
 using CODClone.Core;
-using CODClone.UI;
+using Campusano.Dialogue;
+using Campusano.UI;
 
 namespace CODClone.Interaction
 {
     /// <summary>
     /// Attach to the player. Each frame finds the nearest IInteractable within
     /// range in front of the camera, shows its prompt, and routes E presses.
-    /// While a dialogue box is open, E belongs to the dialogue — no re-trigger.
+    /// TICKET-EP1-01 v2: while dialogue is active the input gate kills
+    /// InteractPressed, and this also bails out explicitly — no re-trigger.
     /// </summary>
     public class PlayerInteractor : MonoBehaviour
     {
@@ -17,30 +19,33 @@ namespace CODClone.Interaction
 
         private IInputProvider _input;
         private IInteractable _current;
+        private DialogueUI _ui;
 
         private void Awake()
         {
             _input = inputProviderBehaviour as IInputProvider
                 ?? InputProviderLookup.FindOnSelf(this);
+            _ui = FindObjectOfType<DialogueUI>();
         }
 
         private void Update()
         {
-            if (DialogueUI.Instance != null && DialogueUI.Instance.IsDialogueOpen)
+            var runner = DialogueController.Instance;
+            if (runner != null && runner.IsDialogueActive)
             {
                 _current = null;
-                return; // E advances dialogue; don't start new interactions
+                return; // taps belong to the dialogue; don't start new interactions
             }
 
             _current = FindNearest();
-            if (_current != null && DialogueUI.Instance != null)
-                DialogueUI.Instance.ShowPrompt("E — " + _current.PromptText);
-            else if (DialogueUI.Instance != null)
-                DialogueUI.Instance.HidePrompt();
+            if (_current != null && _ui != null)
+                _ui.ShowPrompt("E — " + _current.PromptText);
+            else if (_ui != null)
+                _ui.HidePrompt();
 
             if (_current != null && _input != null && _input.InteractPressed)
             {
-                if (DialogueUI.Instance != null) DialogueUI.Instance.HidePrompt();
+                if (_ui != null) _ui.HidePrompt();
                 _current.Interact(gameObject);
                 _current = null;
             }

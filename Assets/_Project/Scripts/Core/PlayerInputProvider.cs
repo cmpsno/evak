@@ -28,19 +28,24 @@ namespace CODClone.Core
 
         private PlayerInput _playerInput;
 
-        public Vector2 MoveInput => ReadVector(moveAction);
-        public Vector2 LookInput => ReadVector(lookAction);
-        public bool JumpPressed => ReadButtonPressed(jumpAction);
-        public bool SprintHeld => ReadButtonHeld(sprintAction);
-        public bool CrouchHeld => ReadButtonHeld(crouchAction);
-        public bool FirePressed => ReadButtonPressed(fireAction);
-        public bool FireHeld => ReadButtonHeld(fireAction);
-        public bool ReloadPressed => ReadButtonPressed(reloadAction);
-        public bool ADSHeld => ReadButtonHeld(adsAction);
-        public bool InteractPressed => ReadButtonPressed(interactAction);
+        public bool GameplayInputEnabled { get; set; } = true;
+
+        public Vector2 MoveInput => _gated ? Vector2.zero : ReadVector(moveAction);
+        public Vector2 LookInput => _gated ? Vector2.zero : ReadVector(lookAction);
+        public bool JumpPressed => !_gated && ReadButtonPressed(jumpAction);
+        public bool SprintHeld => !_gated && ReadButtonHeld(sprintAction);
+        public bool CrouchHeld => !_gated && ReadButtonHeld(crouchAction);
+        public bool FirePressed => !_gated && ReadButtonPressed(fireAction);
+        public bool FireHeld => !_gated && ReadButtonHeld(fireAction);
+        public bool ReloadPressed => !_gated && ReadButtonPressed(reloadAction);
+        public bool ADSHeld => !_gated && ReadButtonHeld(adsAction);
+        public bool InteractPressed => !_gated && ReadButtonPressed(interactAction);
+        // Choice keys stay live during dialogue (the gate only kills gameplay input).
         public bool Choice1Pressed => ReadButtonPressed(choice1Action);
         public bool Choice2Pressed => ReadButtonPressed(choice2Action);
         public bool Choice3Pressed => ReadButtonPressed(choice3Action);
+
+        private bool _gated => !GameplayInputEnabled;
 
         private void Awake()
         {

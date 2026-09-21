@@ -3,17 +3,23 @@ using UnityEngine;
 namespace Campusano.Missions
 {
     /// <summary>
-    /// Invisible trigger box that advances the mission state machine when the
-    /// player walks in. One-shot by default (no double-triggering).
+    /// TICKET-EP1-01 v2. Invisible trigger box. One-shot by default.
+    /// Routes through MissionStateMachine.AdvanceOnVolumeEntered(volumeId).
     /// </summary>
     [RequireComponent(typeof(BoxCollider))]
     public class TriggerVolume : MonoBehaviour
     {
-        [Tooltip("Mapped to an Ep1Step in MissionStateMachine.volumeSteps.")]
+        [Tooltip("Volume id mapped in MissionStateMachine StepTriggers.")]
         [SerializeField] private string volumeId = "";
         [SerializeField] private bool oneShot = true;
 
         private bool _fired;
+
+        public void Configure(string id, bool oneShot = true)
+        {
+            volumeId = id;
+            this.oneShot = oneShot;
+        }
 
         private void Reset()
         {
@@ -28,7 +34,7 @@ namespace Campusano.Missions
             var machine = MissionStateMachine.Instance;
             if (machine == null) return;
             _fired = true;
-            machine.TriggerStepFromVolume(volumeId);
+            machine.AdvanceOnVolumeEntered(volumeId);
         }
     }
 }

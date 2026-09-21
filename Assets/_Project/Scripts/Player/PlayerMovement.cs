@@ -60,17 +60,9 @@ namespace CODClone.Player
         {
             if (_input == null) return;
 
-            // Ep1: dialogue freezes the player (gravity still applies).
-            if (DialogueUI.Instance != null && DialogueUI.Instance.IsDialogueOpen)
-            {
-                _velocity.x = 0f;
-                _velocity.z = 0f;
-                _velocity.y += gravity * Time.fixedDeltaTime;
-                _controller.Move(_velocity * Time.fixedDeltaTime);
-                CurrentState = MovementState.Idle;
-                return;
-            }
-
+            // TICKET-EP1-01 v2: dialogue freezes the player via the IInputProvider
+            // gate (DialogueController sets GameplayInputEnabled=false), so
+            // MoveInput reads zero here. Gravity still applies.
             UpdateTimers();
             UpdateGroundState();
             HandleSlideTrigger();

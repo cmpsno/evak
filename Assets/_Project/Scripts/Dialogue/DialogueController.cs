@@ -1,50 +1,52 @@
 using System;
-using System.Collections.Generic;
 using UnityEngine;
 using CODClone.Core;
-using CODClone.UI;
 
 namespace Campusano.Dialogue
 {
     /// <summary>
-    /// Branching dialogue engine for Episode 1. Holds a node lookup (inspector
-    /// list + runtime-registered banks), drives DialogueUI line-by-line, renders
-    /// up to 3 choice buttons (tap on mobile, keys 1-3 on desktop), and raises
-    /// OnChoiceSelected so the mission machine can persist story flags.
-    /// Movement is frozen while active (PlayerMovement watches DialogueUI).
+    /// TICKET-EP1-01 v2 branching dialogue runner.
+    /// Emits events only — never writes to JobState, ObjectiveManager, or missions.
+    /// Only this class (and the future CinematicPlayer) may write Time.timeScale.
     /// </summary>
     public class DialogueController : MonoBehaviour, IDialogueRunner
     {
         public static DialogueController Instance { get; private set; }
 
-        [Header("Node bank (inspector-authored or registered at runtime)")]
-        [SerializeField] private List<DialogueNode> nodes = new List<DialogueNode>();
+        [SerializeField] private DialogueDatabase database;
+
+        // Wired by the scene builder: view + gameplay input gate.
+        private Campusano.UI.DialogueUI _view;
+        private IInputProvider _input;
 
         public event Action<DialogueNode> OnNodeStarted;
-        public event Action<DialogueChoiceFlag> OnChoiceSelected;
-        public event Action OnDialogueEnded;
-        /// <summary>Extra: last node of the finished tree + the root it started from.</summary>
-        public event Action<DialogueNode, string> OnTreeEnded;
+        public event Action<DialogueLine> OnLineStarted;
+        public event Action<string, string> OnChoiceSelected;
+        public event Action<DialogueEndReason> OnDialogueEnded;
 
-        public bool IsDialogueActive => _active;
-
-        private readonly Dictionary<string, DialogueNode> _lookup =
-            new Dictionary<string, DialogueNode>(StringComparer.Ordinal);
-        private IInputProvider _input;
-        private DialogueNode _current;
-        private string _rootId;
+        private DialogueNode _currentNode;
         private int _lineIndex;
         private bool _active;
-        private bool _choicesShown;
-        private bool _openedThisFrame;
-        private DialogueUI _ui;
+        private bool _awaitingChoice;
+        private float _autoAdvanceTimer;
+        private bool _timeScaleZeroed;
+
+        public bool IsDialogueActive => _active;
+        public DialogueDatabase Database => database;
+        public string CurrentNodeId => _currentNode != null ? _currentNode.nodeId : null;
+
+        public void Configure(DialogueDatabase db, Campusano.UI.DialogueUI view, IInputProvider input)
+        {
+            database = db;
+            _view = view;
+            _input = input;
+            if (database != null) database.Validate();
+        }
 
         private void Awake()
         {
             if (Instance != null && Instance != this) { Destroy(gameObject); return; }
             Instance = this;
-            _ui = DialogueUI.Instance ?? FindObjectOfType<DialogueUI>();
-            RebuildLookup();
         }
 
         private void OnDestroy()
@@ -52,133 +54,190 @@ namespace Campusano.Dialogue
             if (Instance == this) Instance = null;
         }
 
-        /// <summary>Add nodes at runtime (e.g. Ep1DialogueBank). Safe to call before/after Awake.</summary>
-        public void RegisterNodes(IEnumerable<DialogueNode> more)
-        {
-            if (more == null) return;
-            foreach (var n in more)
-            {
-                if (n == null || string.IsNullOrEmpty(n.nodeId)) continue;
-                _lookup[n.nodeId] = n;
-            }
-        }
-
-        private void RebuildLookup()
-        {
-            _lookup.Clear();
-            RegisterNodes(nodes);
-        }
-
         private void Update()
         {
-            if (!_active) return;
-            if (_openedThisFrame) { _openedThisFrame = false; return; }
-            if (_input == null)
+            if (!_active || _awaitingChoice) return;
+            var line = CurrentLine();
+            if (line.HasValue && line.Value.autoAdvance)
             {
-                var provider = FindObjectOfType<PlayerInputProvider>();
-                if (provider != null) _input = provider;
-                else return;
+                // Unscaled: timeScale is 0 during InScene nodes.
+                _autoAdvanceTimer -= Time.unscaledDeltaTime;
+                if (_autoAdvanceTimer <= 0f) AdvanceLine();
             }
 
-            if (_choicesShown)
+            // Desktop choice shortcuts (1/2/3 stay live — the gate only kills gameplay input).
+            if (_awaitingChoice && _input != null)
             {
                 if (_input.Choice1Pressed) SelectChoice(0);
                 else if (_input.Choice2Pressed) SelectChoice(1);
                 else if (_input.Choice3Pressed) SelectChoice(2);
-                return;
             }
-
-            if (_input.InteractPressed) AdvanceLine();
         }
 
         public void StartDialogueTree(string rootNodeId)
         {
-            if (string.IsNullOrEmpty(rootNodeId) || !_lookup.TryGetValue(rootNodeId, out var root))
+            if (_active) ForceClose(DialogueEndReason.PlayerSkipped);
+            if (database == null)
             {
-                Debug.LogWarning("[Dialogue] Unknown root node: " + rootNodeId);
+                Debug.LogError("[Dialogue] StartDialogueTree: no database configured.");
+                DialogueDebug.Fire(DialogueDebugEvent.MissingRootNode, rootNodeId);
+                OnDialogueEnded?.Invoke(DialogueEndReason.Error);
                 return;
             }
-            if (_active) return;
+            var node = database.GetNode(rootNodeId);
+            if (node == null)
+            {
+                Debug.LogError($"[Dialogue] Missing root node: '{rootNodeId}'.");
+                DialogueDebug.Fire(DialogueDebugEvent.MissingRootNode, rootNodeId);
+                OnDialogueEnded?.Invoke(DialogueEndReason.Error);
+                return;
+            }
             _active = true;
-            _rootId = rootNodeId;
-            _openedThisFrame = true; // the E that opened this must not skip line 0
-            EnterNode(root);
+            SetGameplayInput(false);
+            LoadNode(node);
         }
 
         public void AdvanceLine()
         {
-            if (!_active || _choicesShown || _current == null) return;
-            _lineIndex++;
-            if (_current.lines != null && _lineIndex < _current.lines.Length)
+            if (!_active || _awaitingChoice) return;
+            var node = _currentNode;
+            if (node == null || node.lines == null) { EndDialogue(DialogueEndReason.Error); return; }
+
+            if (_lineIndex < node.lines.Length - 1)
             {
+                _lineIndex++;
                 ShowCurrentLine();
                 return;
             }
-            // Node exhausted: choices, next node, or tree end.
-            if (_current.choices != null && _current.choices.Length > 0)
+
+            // Last line.
+            bool hasChoices = node.choices != null && node.choices.Length > 0;
+            if (hasChoices)
             {
-                _choicesShown = true;
-                _ui?.ShowChoices(_current.choices, SelectChoice);
+                _awaitingChoice = true;
+                if (_view != null)
+                {
+                    _view.SetTapHandler(null); // taps must hit a choice button
+                    var texts = new string[node.choices.Length];
+                    for (int i = 0; i < texts.Length; i++) texts[i] = node.choices[i].choiceText;
+                    _view.ShowChoices(texts, SelectChoice);
+                }
                 return;
             }
-            if (!string.IsNullOrEmpty(_current.nextNodeId)
-                && _lookup.TryGetValue(_current.nextNodeId, out var next))
+
+            if (!string.IsNullOrEmpty(node.nextNodeId))
             {
-                EnterNode(next);
+                var next = database.GetNode(node.nextNodeId);
+                if (next == null)
+                {
+                    Debug.LogError($"[Dialogue] Missing next node: '{node.nextNodeId}' (from '{node.nodeId}').");
+                    DialogueDebug.Fire(DialogueDebugEvent.MissingNextNode, node.nextNodeId);
+                    EndDialogue(DialogueEndReason.Error);
+                    return;
+                }
+                LoadNode(next);
                 return;
             }
-            EndTree();
+
+            EndDialogue(DialogueEndReason.ReachedTerminalNode);
         }
 
         public void SelectChoice(int choiceIndex)
         {
-            if (!_active || !_choicesShown || _current == null) return;
-            if (_current.choices == null || choiceIndex < 0 || choiceIndex >= _current.choices.Length) return;
-            var choice = _current.choices[choiceIndex];
-            _choicesShown = false;
-            _ui?.HideChoices();
-            if (choice.flagToSet != DialogueChoiceFlag.None)
-                OnChoiceSelected?.Invoke(choice.flagToSet);
-            if (!string.IsNullOrEmpty(choice.targetNodeId)
-                && _lookup.TryGetValue(choice.targetNodeId, out var next))
+            if (!_active || !_awaitingChoice) return;
+            var node = _currentNode;
+            if (node == null || node.choices == null || choiceIndex < 0 || choiceIndex >= node.choices.Length) return;
+            var choice = node.choices[choiceIndex];
+            var result = database.GetNode(choice.resultNodeId);
+            if (result == null)
             {
-                EnterNode(next);
+                Debug.LogError($"[Dialogue] Missing result node: '{choice.resultNodeId}' (choice '{choice.choiceId}').");
+                DialogueDebug.Fire(DialogueDebugEvent.MissingResultNode, choice.resultNodeId);
+                EndDialogue(DialogueEndReason.Error);
+                return;
             }
-            else
-            {
-                EndTree();
-            }
+            _awaitingChoice = false;
+            OnChoiceSelected?.Invoke(node.nodeId, choice.choiceId);
+            LoadNode(result);
         }
 
-        private void EnterNode(DialogueNode node)
+        public void ForceClose(DialogueEndReason reason)
         {
-            _current = node;
+            if (!_active) return;
+            DialogueDebug.Fire(DialogueDebugEvent.ForceClosed, _currentNode != null ? _currentNode.nodeId : "");
+            EndDialogue(reason);
+        }
+
+        // ------------------------------------------------------------- internals
+
+        private void LoadNode(DialogueNode node)
+        {
+            _currentNode = node;
             _lineIndex = 0;
-            _choicesShown = false;
+            _awaitingChoice = false;
+            ApplyTimeScale(node.presentation);
             OnNodeStarted?.Invoke(node);
             ShowCurrentLine();
         }
 
         private void ShowCurrentLine()
         {
-            if (_ui == null) return;
-            var line = _current.lines[_lineIndex];
-            string speaker = string.IsNullOrEmpty(line.speakerName) ? "" : line.speakerName;
-            _ui.ShowDialogueNode(speaker, line.text);
-            // TODO(Ep1-VO): play line.voiceClip via audio source when ElevenLabs lines land.
+            var line = CurrentLine();
+            if (!line.HasValue) { EndDialogue(DialogueEndReason.Error); return; }
+            var l = line.Value;
+            var speaker = database.GetSpeaker(l.speakerId); // null + warning if missing; cosmetic only
+            string name = speaker != null ? speaker.displayName : "";
+            Color color = speaker != null ? speaker.subtitleColor : Color.white;
+            bool isNarrator = _currentNode.presentation == DialoguePresentation.Narrator;
+            if (_view != null)
+            {
+                _view.ShowLine(name, color, l.text, isNarrator);
+                _view.SetTapHandler(AdvanceLine); // tap anywhere advances
+            }
+            OnLineStarted?.Invoke(l);
+            _autoAdvanceTimer = l.autoAdvanceDelay;
+            if (l.autoAdvance && _autoAdvanceTimer <= 0f)
+            {
+                // 0 = advance instantly.
+                AdvanceLine();
+            }
         }
 
-        private void EndTree()
+        private DialogueLine? CurrentLine()
         {
-            var last = _current;
-            var root = _rootId;
+            if (_currentNode == null || _currentNode.lines == null ||
+                _lineIndex < 0 || _lineIndex >= _currentNode.lines.Length)
+                return null;
+            return _currentNode.lines[_lineIndex];
+        }
+
+        private void ApplyTimeScale(DialoguePresentation presentation)
+        {
+            if (presentation == DialoguePresentation.InScene)
+            {
+                Time.timeScale = 0f;
+                _timeScaleZeroed = true;
+            }
+            else
+            {
+                if (_timeScaleZeroed) { Time.timeScale = 1f; _timeScaleZeroed = false; }
+            }
+        }
+
+        private void EndDialogue(DialogueEndReason reason)
+        {
             _active = false;
-            _choicesShown = false;
-            _current = null;
-            _rootId = null;
-            _ui?.CloseDialogue();
-            if (last != null) OnTreeEnded?.Invoke(last, root);
-            OnDialogueEnded?.Invoke();
+            _awaitingChoice = false;
+            _currentNode = null;
+            if (_timeScaleZeroed) { Time.timeScale = 1f; _timeScaleZeroed = false; }
+            SetGameplayInput(true);
+            if (_view != null) _view.HideDialogue();
+            OnDialogueEnded?.Invoke(reason);
+        }
+
+        private void SetGameplayInput(bool enabled)
+        {
+            if (_input != null) _input.GameplayInputEnabled = enabled;
         }
     }
 }

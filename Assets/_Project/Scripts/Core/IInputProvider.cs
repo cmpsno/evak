@@ -23,6 +23,14 @@ namespace CODClone.Core
         bool Choice1Pressed { get; }
         bool Choice2Pressed { get; }
         bool Choice3Pressed { get; }
+
+        /// <summary>
+        /// TICKET-EP1-01 v2 input gate. When false, all GAMEPLAY input
+        /// (move/look/jump/sprint/crouch/fire/reload/ads/interact) reads zero.
+        /// Choice1/2/3 stay live so dialogue choices remain selectable.
+        /// Written only by DialogueController (and future CinematicPlayer).
+        /// </summary>
+        bool GameplayInputEnabled { get; set; }
     }
 
     /// <summary>

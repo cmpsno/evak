@@ -46,6 +46,7 @@ public static class BuildSocialClub
         var interactor = player.AddComponent<PlayerInteractor>();
         BuildTestArena.SetField(interactor, "inputProviderBehaviour", inputProvider);
         player.AddComponent<DebugPositionLogger>(); // TEMP: verification only, delete before ship
+        player.AddComponent<CODClone.Debug.DebugInputProbe>(); // TEMP: input diagnosis, delete before ship
 
         BuildNpcC();
         BuildDialogueUI(inputProvider);
@@ -166,6 +167,8 @@ public static class BuildSocialClub
 
     // ------------------------------------------------------------------ UI
 
+    // ------------------------------------------------- v2 dialogue UI + HUD
+
     static void BuildDialogueUI(PlayerInputProvider inputProvider)
     {
         var canvasGO = new GameObject("DialogueUI");
@@ -173,115 +176,139 @@ public static class BuildSocialClub
         canvas.renderMode = RenderMode.ScreenSpaceOverlay;
         canvasGO.AddComponent<CanvasScaler>();
         canvasGO.AddComponent<GraphicRaycaster>();
+
+        // v2 DialogueUI builds its own children (subtitle, choices, prompt, popup).
+        var view = canvasGO.AddComponent<Campusano.UI.DialogueUI>();
+
+        // Objective HUD: top-left panel (title + description).
         var font = Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
+        var hudGO = new GameObject("ObjectiveHUD");
+        hudGO.transform.SetParent(canvasGO.transform, false);
+        var hudRect = hudGO.AddComponent<RectTransform>();
+        hudRect.anchorMin = new Vector2(0f, 1f); hudRect.anchorMax = new Vector2(0f, 1f);
+        hudRect.pivot = new Vector2(0f, 1f);
+        hudRect.anchoredPosition = new Vector2(20f, -20f);
+        hudRect.sizeDelta = new Vector2(460f, 90f);
+        var hudBg = hudGO.AddComponent<Image>();
+        hudBg.color = new Color(0f, 0f, 0f, 0.55f);
+        var titleGO = new GameObject("ObjectiveTitle");
+        titleGO.transform.SetParent(hudGO.transform, false);
+        var titleText = titleGO.AddComponent<Text>();
+        titleText.font = font; titleText.fontSize = 20;
+        titleText.color = new Color(1f, 0.85f, 0.4f);
+        var titleRect = titleGO.GetComponent<RectTransform>();
+        titleRect.anchorMin = new Vector2(0f, 0.5f); titleRect.anchorMax = new Vector2(1f, 1f);
+        titleRect.offsetMin = new Vector2(12f, 0f); titleRect.offsetMax = new Vector2(-12f, -6f);
+        var descGO = new GameObject("ObjectiveDesc");
+        descGO.transform.SetParent(hudGO.transform, false);
+        var descText = descGO.AddComponent<Text>();
+        descText.font = font; descText.fontSize = 16;
+        descText.color = Color.white;
+        var descRect = descGO.GetComponent<RectTransform>();
+        descRect.anchorMin = Vector2.zero; descRect.anchorMax = new Vector2(1f, 0.5f);
+        descRect.offsetMin = new Vector2(12f, 6f); descRect.offsetMax = new Vector2(-12f, 0f);
+        hudGO.SetActive(false);
 
-        // Prompt: centered, hidden by default
-        var promptGO = new GameObject("InteractPrompt");
-        promptGO.transform.SetParent(canvasGO.transform, false);
-        var promptRect = promptGO.AddComponent<RectTransform>();
-        promptRect.anchorMin = promptRect.anchorMax = new Vector2(0.5f, 0.5f);
-        promptRect.sizeDelta = new Vector2(400f, 40f);
-        promptRect.anchoredPosition = new Vector2(0f, 60f);
-        var promptText = promptGO.AddComponent<Text>();
-        promptText.font = font;
-        promptText.fontSize = 24;
-        promptText.alignment = TextAnchor.MiddleCenter;
-        promptText.text = "";
-        promptGO.SetActive(false);
+        // Waypoint beacon: small floating marker, hidden by default.
+        var beacon = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+        beacon.name = "WaypointBeacon";
+        beacon.transform.localScale = Vector3.one * 0.4f;
+        var beaconMat = new Material(Shader.Find("Universal Render Pipeline/Lit"));
+        beaconMat.color = new Color(1f, 0.85f, 0.3f);
+        beacon.GetComponent<Renderer>().sharedMaterial = beaconMat;
+        var beaconCol = beacon.GetComponent<Collider>();
+        if (beaconCol != null) GameObject.DestroyImmediate(beaconCol);
+        beacon.SetActive(false);
 
-        // Dialogue panel: bottom third
-        var panelGO = new GameObject("DialoguePanel");
-        panelGO.transform.SetParent(canvasGO.transform, false);
-        var panelRect = panelGO.AddComponent<RectTransform>();
-        panelRect.anchorMin = new Vector2(0f, 0f);
-        panelRect.anchorMax = new Vector2(1f, 0f);
-        panelRect.sizeDelta = new Vector2(0f, 180f);
-        panelRect.anchoredPosition = new Vector2(0f, 90f);
-        var panelImg = panelGO.AddComponent<Image>();
-        panelImg.color = new Color(0f, 0f, 0f, 0.85f);
-
-        var speakerGO = new GameObject("SpeakerText");
-        speakerGO.transform.SetParent(panelGO.transform, false);
-        var speakerRect = speakerGO.AddComponent<RectTransform>();
-        speakerRect.anchorMin = new Vector2(0f, 1f);
-        speakerRect.anchorMax = new Vector2(1f, 1f);
-        speakerRect.sizeDelta = new Vector2(-40f, 36f);
-        speakerRect.anchoredPosition = new Vector2(0f, -28f);
-        var speakerText = speakerGO.AddComponent<Text>();
-        speakerText.font = font;
-        speakerText.fontSize = 22;
-        speakerText.color = new Color(1f, 0.85f, 0.4f);
-        speakerText.text = "";
-
-        var lineGO = new GameObject("LineText");
-        lineGO.transform.SetParent(panelGO.transform, false);
-        var lineRect = lineGO.AddComponent<RectTransform>();
-        lineRect.anchorMin = new Vector2(0f, 0f);
-        lineRect.anchorMax = new Vector2(1f, 1f);
-        lineRect.sizeDelta = new Vector2(-40f, -70f);
-        lineRect.anchoredPosition = new Vector2(0f, -15f);
-        var lineText = lineGO.AddComponent<Text>();
-        lineText.font = font;
-        lineText.fontSize = 20;
-        lineText.color = Color.white;
-        lineText.text = "";
-        panelGO.SetActive(false);
-
-        // Job popup: centered, hidden by default
-        var jobGO = new GameObject("JobPopup");
-        jobGO.transform.SetParent(canvasGO.transform, false);
-        var jobRect = jobGO.AddComponent<RectTransform>();
-        jobRect.anchorMin = jobRect.anchorMax = new Vector2(0.5f, 0.6f);
-        jobRect.sizeDelta = new Vector2(560f, 60f);
-        jobRect.anchoredPosition = Vector2.zero;
-        var jobImg = jobGO.AddComponent<Image>();
-        jobImg.color = new Color(0f, 0f, 0f, 0.8f);
-        var jobTextGO = new GameObject("JobText");
-        jobTextGO.transform.SetParent(jobGO.transform, false);
-        var jobTextRect = jobTextGO.AddComponent<RectTransform>();
-        jobTextRect.anchorMin = Vector2.zero;
-        jobTextRect.anchorMax = Vector2.one;
-        jobTextRect.sizeDelta = Vector2.zero;
-        jobTextRect.anchoredPosition = Vector2.zero;
-        var jobText = jobTextGO.AddComponent<Text>();
-        jobText.font = font;
-        jobText.fontSize = 24;
-        jobText.alignment = TextAnchor.MiddleCenter;
-        jobText.color = new Color(1f, 0.85f, 0.4f);
-        jobGO.SetActive(false);
-
-        var ui = canvasGO.AddComponent<DialogueUI>();
-        var so = new SerializedObject(ui);
-        so.FindProperty("inputProviderBehaviour").objectReferenceValue = inputProvider;
-        so.FindProperty("promptText").objectReferenceValue = promptText;
-        so.FindProperty("dialoguePanel").objectReferenceValue = panelGO;
-        so.FindProperty("speakerText").objectReferenceValue = speakerText;
-        so.FindProperty("lineText").objectReferenceValue = lineText;
-        so.FindProperty("jobPopup").objectReferenceValue = jobGO;
-        so.FindProperty("jobText").objectReferenceValue = jobText;
-        so.ApplyModifiedProperties();
+        // Stash refs for BuildEpisodeSystems via a holder on the canvas.
+        var holder = canvasGO.AddComponent<UIHolder>();
+        holder.view = view;
+        holder.objectivePanel = hudGO;
+        holder.objectiveTitle = titleText;
+        holder.objectiveDesc = descText;
+        holder.waypointBeacon = beacon;
     }
 
-    // ------------------------------------------------- Ep1 systems
+    // Tiny holder so BuildEpisodeSystems can find the UI refs.
+    class UIHolder : MonoBehaviour
+    {
+        public Campusano.UI.DialogueUI view;
+        public GameObject objectivePanel;
+        public Text objectiveTitle;
+        public Text objectiveDesc;
+        public GameObject waypointBeacon;
+    }
+
+    // ------------------------------------------------- Ep1 v2 systems
 
     static void BuildEpisodeSystems()
     {
-        var saves = new GameObject("SaveManager");
-        saves.AddComponent<SaveManager>();
+        var holder = GameObject.Find("DialogueUI").GetComponent<UIHolder>();
+        var playerInputProvider = GameObject.Find("Player").GetComponent<PlayerInputProvider>();
 
-        var objectives = new GameObject("ObjectiveManager");
-        objectives.AddComponent<ObjectiveManager>();
+        var savesGO = new GameObject("SaveManager");
+        var saves = savesGO.AddComponent<Campusano.Persistence.SaveManager>();
 
-        var missions = new GameObject("MissionStateMachine");
-        missions.AddComponent<MissionStateMachine>();
+        var objectivesGO = new GameObject("ObjectiveManager");
+        var objectives = objectivesGO.AddComponent<Campusano.Objectives.ObjectiveManager>();
+        objectives.Configure(holder.objectiveTitle, holder.objectiveDesc,
+                             holder.objectivePanel, holder.waypointBeacon);
 
-        var dialogue = new GameObject("DialogueController");
-        var controller = dialogue.AddComponent<DialogueController>();
-        controller.RegisterNodes(Ep1DialogueBank.Build());
+        var missionsGO = new GameObject("MissionStateMachine");
+        var missions = missionsGO.AddComponent<Campusano.Missions.MissionStateMachine>();
+        missions.Configure(BuildEp1Triggers(), saves, 1);
+
+        var dialogueGO = new GameObject("DialogueController");
+        var dialogue = dialogueGO.AddComponent<Campusano.Dialogue.DialogueController>();
+        dialogue.Configure(Campusano.Dialogue.Ep1DialogueBank.BuildDatabase(),
+                           holder.view, playerInputProvider);
+
+        var routerGO = new GameObject("ChoiceRouter");
+        var router = routerGO.AddComponent<Campusano.Missions.ChoiceRouter>();
+        router.dialogueController = dialogue;
+        router.missionStateMachine = missions;
+        router.saveManager = saves;
+
+        var cashGO = new GameObject("CashService");
+        var cash = cashGO.AddComponent<Campusano.Economy.CashService>();
+        cash.Configure(saves);
+
+        var epGO = new GameObject("EpisodeController");
+        var ep = epGO.AddComponent<Campusano.Missions.EpisodeController>();
+        ep.Configure(missions, dialogue, objectives, saves, cash, 1);
 
         // Trigger volumes: hallway doorway (M1-S8) and back-room door (M2-S1).
         AddTriggerVolume("Vol_HallwayDoor", new Vector3(2f, 1f, 9f), new Vector3(2f, 3f, 1f));
         AddTriggerVolume("Vol_BackRoomDoor", new Vector3(9f, 1f, 12f), new Vector3(1f, 3f, 2f));
+    }
+
+    static Campusano.Missions.StepTrigger[] BuildEp1Triggers()
+    {
+        var T = new System.Collections.Generic.List<Campusano.Missions.StepTrigger>();
+        void Add(Campusano.Missions.Ep1Step from, Campusano.Missions.Ep1Step to,
+                 Campusano.Missions.TriggerKind kind, string id)
+        {
+            T.Add(new Campusano.Missions.StepTrigger
+            {
+                fromStep = from, toStep = to, kind = kind, triggerId = id, timerSeconds = 0f
+            });
+        }
+        Add(Campusano.Missions.Ep1Step.Ep1_M1_S1_Spawn,
+            Campusano.Missions.Ep1Step.Ep1_M1_S5_ApproachC,
+            Campusano.Missions.TriggerKind.Signal, "GameStart");
+        Add(Campusano.Missions.Ep1Step.Ep1_M1_S5_ApproachC,
+            Campusano.Missions.Ep1Step.Ep1_M1_S6_DialogueC,
+            Campusano.Missions.TriggerKind.Signal, "TalkedToC");
+        Add(Campusano.Missions.Ep1Step.Ep1_M1_S6_DialogueC,
+            Campusano.Missions.Ep1Step.Ep1_M1_S7_CollectFromMook,
+            Campusano.Missions.TriggerKind.DialogueComplete, "C_First_Talk");
+        Add(Campusano.Missions.Ep1Step.Ep1_M1_S7_CollectFromMook,
+            Campusano.Missions.Ep1Step.Ep1_M1_S8_WalkToBackRoom,
+            Campusano.Missions.TriggerKind.Volume, "Vol_HallwayDoor");
+        Add(Campusano.Missions.Ep1Step.Ep1_M1_S8_WalkToBackRoom,
+            Campusano.Missions.Ep1Step.Ep1_M2_S1_BackRoomSetup,
+            Campusano.Missions.TriggerKind.Volume, "Vol_BackRoomDoor");
+        return T.ToArray();
     }
 
     static void AddTriggerVolume(string volumeId, Vector3 center, Vector3 size)
