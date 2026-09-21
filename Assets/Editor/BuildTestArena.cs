@@ -156,10 +156,17 @@ public static class BuildTestArena
         AddButton(map, "ADS", "<Mouse>/rightButton", "<Gamepad>/leftTrigger");
 
         Directory.CreateDirectory("Assets/_Project/Data");
-        if (AssetDatabase.LoadAssetAtPath<InputActionAsset>(InputActionsPath) != null)
+        // Write JSON, not via AssetDatabase.CreateAsset: the .inputactions importer
+        // parses JSON, and CreateAsset writes YAML which fails import (asset loads as
+        // null => every input action silently dead).
+        if (File.Exists(InputActionsPath))
             AssetDatabase.DeleteAsset(InputActionsPath);
-        AssetDatabase.CreateAsset(asset, InputActionsPath);
-        return AssetDatabase.LoadAssetAtPath<InputActionAsset>(InputActionsPath);
+        File.WriteAllText(InputActionsPath, asset.ToJson());
+        AssetDatabase.ImportAsset(InputActionsPath);
+        var loaded = AssetDatabase.LoadAssetAtPath<InputActionAsset>(InputActionsPath);
+        if (loaded == null)
+            throw new System.Exception("PlayerInputActions.inputactions failed to import.");
+        return loaded;
     }
 
     static void AddButton(InputActionMap map, string name, params string[] paths)
