@@ -91,7 +91,8 @@ namespace Campusano.Missions
 
         public Ep1Step CurrentStep { get; private set; } = Ep1Step.Ep1_M1_S1_Spawn;
 
-        private SaveManager _saves;
+        // Set by the scene builder's Configure(); serialized so it survives builds.
+        [SerializeField] private SaveManager _saves;
         private bool _inLoadFlow;
 
         public void Configure(StepTrigger[] stepTriggers, SaveManager saves, int episode = 1)

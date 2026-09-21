@@ -16,11 +16,13 @@ namespace Campusano.Missions
     {
         [SerializeField] private int episodeNumber = 1;
 
-        private MissionStateMachine _missions;
-        private DialogueController _dialogue;
-        private ObjectiveManager _objectives;
-        private SaveManager _saves;
-        private CashService _cash;
+        // Set by the scene builder's Configure(); [SerializeField] so the refs
+        // survive into builds (Configure runs in the editor only).
+        [SerializeField] private MissionStateMachine _missions;
+        [SerializeField] private DialogueController _dialogue;
+        [SerializeField] private ObjectiveManager _objectives;
+        [SerializeField] private SaveManager _saves;
+        [SerializeField] private CashService _cash;
 
         // nodeId -> (signal or direct step advance, objective, cash)
         private string _lastEndedNode;

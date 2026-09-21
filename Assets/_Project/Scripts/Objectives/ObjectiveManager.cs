@@ -48,11 +48,11 @@ namespace Campusano.Objectives
 
         public ObjectiveData CurrentObjective { get; private set; }
 
-        // Wired by builder.
-        private UnityEngine.UI.Text _titleText;
-        private UnityEngine.UI.Text _descText;
-        private GameObject _panel;
-        private GameObject _waypointBeacon;
+        // Wired by builder. Serialized so the refs survive into builds.
+        [SerializeField] private UnityEngine.UI.Text _titleText;
+        [SerializeField] private UnityEngine.UI.Text _descText;
+        [SerializeField] private GameObject _panel;
+        [SerializeField] private GameObject _waypointBeacon;
 
         public void Configure(UnityEngine.UI.Text titleText, UnityEngine.UI.Text descText,
                               GameObject panel, GameObject waypointBeacon)

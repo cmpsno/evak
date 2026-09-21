@@ -16,7 +16,10 @@ namespace Campusano.Dialogue
         [SerializeField] private DialogueDatabase database;
 
         // Wired by the scene builder: view + gameplay input gate.
-        private Campusano.UI.DialogueUI _view;
+        // [SerializeField] so the editor-time Configure() survives into builds
+        // (private fields without it are null at runtime).
+        [SerializeField] private Campusano.UI.DialogueUI _view;
+        [SerializeField] private PlayerInputProvider _inputProvider;
         private IInputProvider _input;
 
         public event Action<DialogueNode> OnNodeStarted;
@@ -40,6 +43,7 @@ namespace Campusano.Dialogue
             database = db;
             _view = view;
             _input = input;
+            _inputProvider = input as PlayerInputProvider;
             if (database != null) database.Validate();
         }
 
@@ -51,6 +55,13 @@ namespace Campusano.Dialogue
             // ref went stale in builds). Build it fresh so dialogue never ships empty.
             if (database == null)
                 database = Ep1DialogueBank.BuildDatabase();
+            // Re-establish the editor-time wiring (Configure ran in the editor only).
+            _input ??= _inputProvider;
+            if (_input == null)
+            {
+                var player = GameObject.FindGameObjectWithTag("Player");
+                _input = player?.GetComponent<PlayerInputProvider>();
+            }
         }
 
         private void OnDestroy()
