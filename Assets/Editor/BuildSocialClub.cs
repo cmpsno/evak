@@ -8,7 +8,6 @@ using UnityEngine;
 using UnityEngine.UI;
 using CODClone.Core;
 using CODClone.Interaction;
-using CODClone.UI;
 using Campusano.Dialogue;
 using Campusano.Missions;
 using Campusano.Objectives;
