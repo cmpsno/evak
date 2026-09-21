@@ -1,7 +1,7 @@
 From c6ad08deaf14b77e55804e2b76d48cda59fc7cb5 Mon Sep 17 00:00:00 2001
 From: marvin <marvin@local>
 Date: Sun, 20 Sep 2026 18:22:04 -0400
-Subject: [PATCH 3/3] v0 webgl build: TestArena scene, build fixes, webgl
+Subject: [PATCH 3/5] v0 webgl build: TestArena scene, build fixes, webgl
  output verified
 
 ---

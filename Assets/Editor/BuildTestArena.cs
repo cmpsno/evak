@@ -301,8 +301,15 @@ public static class BuildTestArena
         cc.stepOffset = 0.3f;
 
         var playerInput = player.AddComponent<PlayerInput>();
-        playerInput.actions = inputAsset;
-        playerInput.defaultActionMap = "Player";
+        // Assign via SerializedObject, NOT the `actions` property setter: the setter
+        // clones the asset into a transient in-memory copy when the component is
+        // enabled, and that reference is lost on scene save (m_Actions == null in
+        // the built scene => every input action silently dead). This is what the
+        // Inspector does.
+        var piSO = new SerializedObject(playerInput);
+        piSO.FindProperty("m_Actions").objectReferenceValue = inputAsset;
+        piSO.FindProperty("m_DefaultActionMap").stringValue = "Player";
+        piSO.ApplyModifiedProperties();
 
         var inputProvider = player.AddComponent<PlayerInputProvider>();
         player.AddComponent<CODClone.Core.WebGLPointerLock>();
