@@ -9,18 +9,18 @@ Architecture:            x86_64
 Available memory:        7935 MB
 [Licensing::Module] Trying to connect to existing licensing client channel...
 [Licensing::IpcConnector] Channel LicenseClient-root doesn't exist
-[Licensing::Module] Successfully launched the LicensingClient (PId: 5700)
-[Licensing::IpcConnector] Successfully connected to: "LicenseClient-root" at "2026-09-21T03:29:15.601287Z"
+[Licensing::Module] Successfully launched the LicensingClient (PId: 5943)
+[Licensing::IpcConnector] Successfully connected to: "LicenseClient-root" at "2026-09-21T03:30:22.992382Z"
 [SignatureVerifier] Application signature verification not supported on this platform.
 [Licensing::Client] Handshaking with LicensingClient:
   Version:                 1.16.2+bdef8f5
-  Session Id:              a86a1120188141e6a0cbcb248fb89f68
-  Correlation Id:          0f3aec660cdfed0eb7a96aa879a5b6fe
-  External correlation Id: 8907776626549800674
+  Session Id:              82f74c14d10d4ee5b32aa74264abfcf3
+  Correlation Id:          7a98192a55101ae386fb4f2d0fd03bde
+  External correlation Id: 6374463996555367426
   Machine Id:              fe5f7XZ/1CQzW/AhDon7PebSsfU=
-[Licensing::Module] Successfully connected to LicensingClient on channel: "LicenseClient-root" (connect: 1.97s, validation: 0.33s, handshake: 0.00s)
-[Licensing::IpcConnector] Successfully connected to: "LicenseClient-root-notifications" at "2026-09-21T03:29:15.929523Z"
-[Licensing::Module] Connected to LicensingClient (PId: 5700, launch time: 0.00, total connection time: 2.30s)
+[Licensing::Module] Successfully connected to LicensingClient on channel: "LicenseClient-root" (connect: 2.94s, validation: 0.36s, handshake: 0.00s)
+[Licensing::IpcConnector] Successfully connected to: "LicenseClient-root-notifications" at "2026-09-21T03:30:23.355774Z"
+[Licensing::Module] Connected to LicensingClient (PId: 5943, launch time: 0.01, total connection time: 3.30s)
 [Licensing::Module] Error: Access token is unavailable; failed to update
 [Licensing::Client] Error: Code 500 while processing request (status: Unable to update licenses. Errors: No ULF license found.,Token not found in cache)
 [Licensing::Client] Error: Code 500 while updating license in client (status: Unable to update licenses. Errors: No ULF license found.,Token not found in cache)
@@ -74,16 +74,16 @@ Successfully changed project path to: /home/hatch/workspace/cod-mobile
     "memorysetup-temp-allocator-size-cloud-worker=32768"
     "memorysetup-temp-allocator-size-gi-baking-worker=262144"
     "memorysetup-temp-allocator-size-gfx=262144"
-Player connection [124260336555008]  Target information:
+Player connection [131311712199680]  Target information:
 
-Player connection [124260336555008]  * "[IP] 198.19.0.2 [Port] 55504 [Flags] 2 [Guid] 2275657364 [EditorId] 2275657364 [Version] 1048832 [Id] LinuxEditor(16,198.19.0.2) [Debug] 1 [PackageName] LinuxEditor [ProjectName] Editor" 
+Player connection [131311712199680]  * "[IP] 198.19.0.2 [Port] 55504 [Flags] 2 [Guid] 2804890621 [EditorId] 2804890621 [Version] 1048832 [Id] LinuxEditor(16,198.19.0.2) [Debug] 1 [PackageName] LinuxEditor [ProjectName] Editor" 
 
-Player connection [124260336555008] Host joined multi-casting on [225.0.0.222:54997]...
-Player connection [124260336555008] Host joined alternative multi-casting on [225.0.0.222:34997]...
+Player connection [131311712199680] Host joined multi-casting on [225.0.0.222:54997]...
+Player connection [131311712199680] Host joined alternative multi-casting on [225.0.0.222:34997]...
 Input System module state changed to: Initialized.
 [PhysX] Initialized MultithreadedTaskDispatcher with 2 workers.
 Error opening a HTTP REST server port between 38000 and 38100
-[Package Manager] UpmClient::Connect -- Connected to IPC stream "Upm-5695" after 0.8 seconds.
+[Package Manager] UpmClient::Connect -- Connected to IPC stream "Upm-5938" after 1.7 seconds.
 [Package Manager] Restoring resolved packages state from cache
 [Licensing::Client] Successfully resolved entitlement details
 [Package Manager] Registered 59 packages:
@@ -170,8 +170,8 @@ FMOD failed to initialize the output device.: "Error initializing output device.
 FMOD initialized on nosound output
 [Subsystems] No new subsystems found in resolved package list.
 Package Manager log level set to [2]
-[Package Manager] Done registering packages in 0.09 seconds
-Refreshing native plugins compatible for Editor in 37.37 ms, found 0 plugins.
+[Package Manager] Done registering packages in 0.14 seconds
+Refreshing native plugins compatible for Editor in 45.79 ms, found 0 plugins.
 Preloading 0 native plugins for Editor in 0.00 ms.
 Initialize engine version: 2022.3.62f3 (96770f904ca7)
 [Subsystems] Discovering subsystems at path /home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/Resources/UnitySubsystems
@@ -188,7 +188,7 @@ Initialize mono
 Mono path[0] = '/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/Managed'
 Mono path[1] = '/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/MonoBleedingEdge/lib/mono/unityjit-linux'
 Mono config path = '/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/MonoBleedingEdge/etc'
-Using monoOptions --debugger-agent=transport=dt_socket,embedding=1,server=y,suspend=n,address=127.0.0.1:56695
+Using monoOptions --debugger-agent=transport=dt_socket,embedding=1,server=y,suspend=n,address=127.0.0.1:56938
 Using cacheserver namespaces - metadata:defaultmetadata, artifacts:defaultartifacts
 Using cacheserver namespaces - metadata:defaultmetadata, artifacts:defaultartifacts
 ImportWorker Server TCP listen port: 0
@@ -196,41 +196,41 @@ Begin MonoManager ReloadAssembly
 Registering precompiled unity dll's ...
 Register platform support module: /home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/PlaybackEngines/WebGLSupport/UnityEditor.WebGL.Extensions.dll
 Register platform support module: /home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/PlaybackEngines/LinuxStandaloneSupport/UnityEditor.LinuxStandalone.Extensions.dll
-Registered in 0.020116 seconds.
-- Loaded All Assemblies, in  0.733 seconds
+Registered in 0.015749 seconds.
+- Loaded All Assemblies, in  0.828 seconds
 Native extension for LinuxStandalone target not found
 Native extension for WebGL target not found
 Mono: successfully reloaded assembly
-- Finished resetting the current domain, in  1.081 seconds
-Domain Reload Profiling: 1814ms
-	BeginReloadAssembly (192ms)
+- Finished resetting the current domain, in  1.127 seconds
+Domain Reload Profiling: 1955ms
+	BeginReloadAssembly (237ms)
 		ExecutionOrderSort (0ms)
 		DisableScriptedObjects (0ms)
 		BackupInstance (0ms)
 		ReleaseScriptingObjects (0ms)
 		CreateAndSetChildDomain (3ms)
-	RebuildCommonClasses (53ms)
-	RebuildNativeTypeToScriptingClass (33ms)
-	initialDomainReloadingComplete (135ms)
-	LoadAllAssembliesAndSetupDomain (320ms)
-		LoadAssemblies (190ms)
+	RebuildCommonClasses (105ms)
+	RebuildNativeTypeToScriptingClass (12ms)
+	initialDomainReloadingComplete (162ms)
+	LoadAllAssembliesAndSetupDomain (312ms)
+		LoadAssemblies (234ms)
 		RebuildTransferFunctionScriptingTraits (0ms)
-		AnalyzeDomain (317ms)
-			TypeCache.Refresh (315ms)
-				TypeCache.ScanAssembly (294ms)
+		AnalyzeDomain (309ms)
+			TypeCache.Refresh (307ms)
+				TypeCache.ScanAssembly (289ms)
 			ScanForSourceGeneratedMonoScriptInfo (1ms)
 			ResolveRequiredComponents (1ms)
-	FinalizeReload (1081ms)
+	FinalizeReload (1128ms)
 		ReleaseScriptCaches (0ms)
 		RebuildScriptCaches (0ms)
-		SetupLoadedEditorAssemblies (920ms)
+		SetupLoadedEditorAssemblies (1017ms)
 			LogAssemblyErrors (0ms)
-			InitializePlatformSupportModulesInManaged (78ms)
-			SetLoadedEditorAssemblies (22ms)
+			InitializePlatformSupportModulesInManaged (25ms)
+			SetLoadedEditorAssemblies (8ms)
 			RefreshPlugins (0ms)
-			BeforeProcessingInitializeOnLoad (10ms)
-			ProcessInitializeOnLoadAttributes (611ms)
-			ProcessInitializeOnLoadMethodAttributes (199ms)
+			BeforeProcessingInitializeOnLoad (3ms)
+			ProcessInitializeOnLoadAttributes (780ms)
+			ProcessInitializeOnLoadMethodAttributes (200ms)
 			AfterProcessingInitializeOnLoad (0ms)
 			EditorAssembliesLoaded (0ms)
 		ExecutionOrderSort2 (0ms)
@@ -253,7 +253,7 @@ Application.AssetDatabase Initial Refresh Start
 [40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
       Executed endpoint 'gRPC - /UnityILPP.PostProcessing/Ping'
 [40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Hosting.Diagnostics[2]
-      Request finished HTTP/2 POST http://ilpp/UnityILPP.PostProcessing/Ping application/grpc - - 200 - application/grpc 260.4302ms
+      Request finished HTTP/2 POST http://ilpp/UnityILPP.PostProcessing/Ping application/grpc - - 200 - application/grpc 215.9716ms
 Starting: /home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/bee_backend --ipc --defer-dag-verification --dagfile="Library/Bee/2000b0aE.dag" --continue-on-failure --profile="Library/Bee/backend1.traceevents" ScriptAssemblies
 WorkingDir: /home/hatch/workspace/cod-mobile
 DisplayProgressbar: Compiling Scripts
@@ -270,10 +270,10 @@ DisplayProgressbar: Compiling Scripts
 [40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
       Executed endpoint 'gRPC - /UnityILPP.PostProcessing/ConfigurePostProcessors'
 [40m[32minfo[39m[22m[49m: Microsoft.AspNetCore.Hosting.Diagnostics[2]
-      Request finished HTTP/2 POST http://ilpp/UnityILPP.PostProcessing/ConfigurePostProcessors application/grpc - - 200 - application/grpc 77.8104ms
-ExitCode: 3 Duration: 4s217ms
+      Request finished HTTP/2 POST http://ilpp/UnityILPP.PostProcessing/ConfigurePostProcessors application/grpc - - 200 - application/grpc 44.5984ms
+ExitCode: 3 Duration: 6s490ms
 [634/914    0s] ILPP-Configuration Library/ilpp-configuration.nevergeneratedoutput
-[906/914    2s] Csc Library/Bee/artifacts/2000b0aE.dag/Assembly-CSharp.dll (+2 others)
+[906/914    4s] Csc Library/Bee/artifacts/2000b0aE.dag/Assembly-CSharp.dll (+2 others)
 ##### CommandLine
 "/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/NetCoreRuntime/dotnet" exec "/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/DotNetSdkRoslyn/csc.dll" /nostdlib /noconfig /shared "@Library/Bee/artifacts/2000b0aE.dag/Assembly-CSharp.rsp" "@Library/Bee/artifacts/2000b0aE.dag/Assembly-CSharp.rsp2"
 ##### Contents of Library/Bee/artifacts/2000b0aE.dag/Assembly-CSharp.rsp
@@ -693,41 +693,41 @@ DOTNET_MULTILEVEL_LOOKUP=0
 ##### ExitCode
 1
 ##### Output
-Assets/_Project/Scripts/Debug/DebugInputProbe.cs(15,13): error CS0234: The type or namespace name 'Log' does not exist in the namespace 'CODClone.Debug' (are you missing an assembly reference?)
-Assets/_Project/Scripts/Debug/DebugInputProbe.cs(18,31): error CS0234: The type or namespace name 'Log' does not exist in the namespace 'CODClone.Debug' (are you missing an assembly reference?)
-Assets/_Project/Scripts/Debug/DebugInputProbe.cs(20,13): error CS0234: The type or namespace name 'Log' does not exist in the namespace 'CODClone.Debug' (are you missing an assembly reference?)
-Assets/_Project/Scripts/Debug/DebugInputProbe.cs(24,21): error CS0234: The type or namespace name 'Log' does not exist in the namespace 'CODClone.Debug' (are you missing an assembly reference?)
-Assets/_Project/Scripts/Debug/DebugInputProbe.cs(26,17): error CS0234: The type or namespace name 'Log' does not exist in the namespace 'CODClone.Debug' (are you missing an assembly reference?)
-Assets/_Project/Scripts/Debug/DebugInputProbe.cs(30,17): error CS0234: The type or namespace name 'Log' does not exist in the namespace 'CODClone.Debug' (are you missing an assembly reference?)
-Assets/_Project/Scripts/Debug/DebugInputProbe.cs(42,21): error CS0234: The type or namespace name 'Log' does not exist in the namespace 'CODClone.Debug' (are you missing an assembly reference?)
 Assets/_Project/Scripts/Weapons/TargetDummy.cs(14,13): error CS0234: The type or namespace name 'Log' does not exist in the namespace 'CODClone.Debug' (are you missing an assembly reference?)
+Assets/_Project/Scripts/Debug/DebugInputProbe.cs(16,13): error CS0234: The type or namespace name 'Log' does not exist in the namespace 'CODClone.Debug' (are you missing an assembly reference?)
+Assets/_Project/Scripts/Debug/DebugInputProbe.cs(19,31): error CS0234: The type or namespace name 'Log' does not exist in the namespace 'CODClone.Debug' (are you missing an assembly reference?)
+Assets/_Project/Scripts/Debug/DebugInputProbe.cs(21,13): error CS0234: The type or namespace name 'Log' does not exist in the namespace 'CODClone.Debug' (are you missing an assembly reference?)
+Assets/_Project/Scripts/Debug/DebugInputProbe.cs(25,21): error CS0234: The type or namespace name 'Log' does not exist in the namespace 'CODClone.Debug' (are you missing an assembly reference?)
+Assets/_Project/Scripts/Debug/DebugInputProbe.cs(27,17): error CS0234: The type or namespace name 'Log' does not exist in the namespace 'CODClone.Debug' (are you missing an assembly reference?)
+Assets/_Project/Scripts/Debug/DebugInputProbe.cs(31,17): error CS0234: The type or namespace name 'Log' does not exist in the namespace 'CODClone.Debug' (are you missing an assembly reference?)
+Assets/_Project/Scripts/Debug/DebugInputProbe.cs(43,21): error CS0234: The type or namespace name 'Log' does not exist in the namespace 'CODClone.Debug' (are you missing an assembly reference?)
 Assets/_Project/Scripts/Interaction/InteractableNPC.cs(17,41): warning CS0414: The field 'InteractableNPC.repeatLine' is assigned but its value is never used
-*** Tundra build failed (4.14 seconds), 2 items updated, 914 evaluated
+*** Tundra build failed (6.39 seconds), 2 items updated, 914 evaluated
 ## Script Compilation Error for: Csc Library/Bee/artifacts/2000b0aE.dag/Assembly-CSharp.dll (+2 others)
 ## CmdLine: "/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/NetCoreRuntime/dotnet" exec "/home/hatch/workspace/unity-setup/Unity-2022.3.62f3/Editor/Data/DotNetSdkRoslyn/csc.dll" /nostdlib /noconfig /shared "@Library/Bee/artifacts/2000b0aE.dag/Assembly-CSharp.rsp" "@Library/Bee/artifacts/2000b0aE.dag/Assembly-CSharp.rsp2"
 ## Output:
-Assets/_Project/Scripts/Debug/DebugInputProbe.cs(15,13): error CS0234: The type or namespace name 'Log' does not exist in the namespace 'CODClone.Debug' (are you missing an assembly reference?)
-Assets/_Project/Scripts/Debug/DebugInputProbe.cs(18,31): error CS0234: The type or namespace name 'Log' does not exist in the namespace 'CODClone.Debug' (are you missing an assembly reference?)
-Assets/_Project/Scripts/Debug/DebugInputProbe.cs(20,13): error CS0234: The type or namespace name 'Log' does not exist in the namespace 'CODClone.Debug' (are you missing an assembly reference?)
-Assets/_Project/Scripts/Debug/DebugInputProbe.cs(24,21): error CS0234: The type or namespace name 'Log' does not exist in the namespace 'CODClone.Debug' (are you missing an assembly reference?)
-Assets/_Project/Scripts/Debug/DebugInputProbe.cs(26,17): error CS0234: The type or namespace name 'Log' does not exist in the namespace 'CODClone.Debug' (are you missing an assembly reference?)
-Assets/_Project/Scripts/Debug/DebugInputProbe.cs(30,17): error CS0234: The type or namespace name 'Log' does not exist in the namespace 'CODClone.Debug' (are you missing an assembly reference?)
-Assets/_Project/Scripts/Debug/DebugInputProbe.cs(42,21): error CS0234: The type or namespace name 'Log' does not exist in the namespace 'CODClone.Debug' (are you missing an assembly reference?)
 Assets/_Project/Scripts/Weapons/TargetDummy.cs(14,13): error CS0234: The type or namespace name 'Log' does not exist in the namespace 'CODClone.Debug' (are you missing an assembly reference?)
+Assets/_Project/Scripts/Debug/DebugInputProbe.cs(16,13): error CS0234: The type or namespace name 'Log' does not exist in the namespace 'CODClone.Debug' (are you missing an assembly reference?)
+Assets/_Project/Scripts/Debug/DebugInputProbe.cs(19,31): error CS0234: The type or namespace name 'Log' does not exist in the namespace 'CODClone.Debug' (are you missing an assembly reference?)
+Assets/_Project/Scripts/Debug/DebugInputProbe.cs(21,13): error CS0234: The type or namespace name 'Log' does not exist in the namespace 'CODClone.Debug' (are you missing an assembly reference?)
+Assets/_Project/Scripts/Debug/DebugInputProbe.cs(25,21): error CS0234: The type or namespace name 'Log' does not exist in the namespace 'CODClone.Debug' (are you missing an assembly reference?)
+Assets/_Project/Scripts/Debug/DebugInputProbe.cs(27,17): error CS0234: The type or namespace name 'Log' does not exist in the namespace 'CODClone.Debug' (are you missing an assembly reference?)
+Assets/_Project/Scripts/Debug/DebugInputProbe.cs(31,17): error CS0234: The type or namespace name 'Log' does not exist in the namespace 'CODClone.Debug' (are you missing an assembly reference?)
+Assets/_Project/Scripts/Debug/DebugInputProbe.cs(43,21): error CS0234: The type or namespace name 'Log' does not exist in the namespace 'CODClone.Debug' (are you missing an assembly reference?)
 Assets/_Project/Scripts/Interaction/InteractableNPC.cs(17,41): warning CS0414: The field 'InteractableNPC.repeatLine' is assigned but its value is never used
-��g�
+&Y
 Total cache size 84474764
 Total cache size after purge 84474764
-Assets/_Project/Scripts/Debug/DebugInputProbe.cs(15,13): error CS0234: The type or namespace name 'Log' does not exist in the namespace 'CODClone.Debug' (are you missing an assembly reference?)
-Assets/_Project/Scripts/Debug/DebugInputProbe.cs(18,31): error CS0234: The type or namespace name 'Log' does not exist in the namespace 'CODClone.Debug' (are you missing an assembly reference?)
-Assets/_Project/Scripts/Debug/DebugInputProbe.cs(20,13): error CS0234: The type or namespace name 'Log' does not exist in the namespace 'CODClone.Debug' (are you missing an assembly reference?)
-Assets/_Project/Scripts/Debug/DebugInputProbe.cs(24,21): error CS0234: The type or namespace name 'Log' does not exist in the namespace 'CODClone.Debug' (are you missing an assembly reference?)
-Assets/_Project/Scripts/Debug/DebugInputProbe.cs(26,17): error CS0234: The type or namespace name 'Log' does not exist in the namespace 'CODClone.Debug' (are you missing an assembly reference?)
-Assets/_Project/Scripts/Debug/DebugInputProbe.cs(30,17): error CS0234: The type or namespace name 'Log' does not exist in the namespace 'CODClone.Debug' (are you missing an assembly reference?)
-Assets/_Project/Scripts/Debug/DebugInputProbe.cs(42,21): error CS0234: The type or namespace name 'Log' does not exist in the namespace 'CODClone.Debug' (are you missing an assembly reference?)
 Assets/_Project/Scripts/Weapons/TargetDummy.cs(14,13): error CS0234: The type or namespace name 'Log' does not exist in the namespace 'CODClone.Debug' (are you missing an assembly reference?)
+Assets/_Project/Scripts/Debug/DebugInputProbe.cs(16,13): error CS0234: The type or namespace name 'Log' does not exist in the namespace 'CODClone.Debug' (are you missing an assembly reference?)
+Assets/_Project/Scripts/Debug/DebugInputProbe.cs(19,31): error CS0234: The type or namespace name 'Log' does not exist in the namespace 'CODClone.Debug' (are you missing an assembly reference?)
+Assets/_Project/Scripts/Debug/DebugInputProbe.cs(21,13): error CS0234: The type or namespace name 'Log' does not exist in the namespace 'CODClone.Debug' (are you missing an assembly reference?)
+Assets/_Project/Scripts/Debug/DebugInputProbe.cs(25,21): error CS0234: The type or namespace name 'Log' does not exist in the namespace 'CODClone.Debug' (are you missing an assembly reference?)
+Assets/_Project/Scripts/Debug/DebugInputProbe.cs(27,17): error CS0234: The type or namespace name 'Log' does not exist in the namespace 'CODClone.Debug' (are you missing an assembly reference?)
+Assets/_Project/Scripts/Debug/DebugInputProbe.cs(31,17): error CS0234: The type or namespace name 'Log' does not exist in the namespace 'CODClone.Debug' (are you missing an assembly reference?)
+Assets/_Project/Scripts/Debug/DebugInputProbe.cs(43,21): error CS0234: The type or namespace name 'Log' does not exist in the namespace 'CODClone.Debug' (are you missing an assembly reference?)
 Assets/_Project/Scripts/Interaction/InteractableNPC.cs(17,41): warning CS0414: The field 'InteractableNPC.repeatLine' is assigned but its value is never used
-AssetDatabase: script compilation time: 6.496373s
+AssetDatabase: script compilation time: 8.448659s
 Scripts have compiler errors.
 [40m[32minfo[39m[22m[49m: Microsoft.Hosting.Lifetime[0]
       Application is shutting down...

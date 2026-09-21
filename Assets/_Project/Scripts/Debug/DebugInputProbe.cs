@@ -1,9 +1,8 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 using CODClone.Core;
-using Debug = UnityEngine.Debug;
 
-namespace CODClone.Debug
+namespace CODClone.Diagnostics
 {
     /// <summary>
     /// TEMP verification probe (delete before ship). Logs Input System device

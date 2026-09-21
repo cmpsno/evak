@@ -46,7 +46,7 @@ public static class BuildSocialClub
         var interactor = player.AddComponent<PlayerInteractor>();
         BuildTestArena.SetField(interactor, "inputProviderBehaviour", inputProvider);
         player.AddComponent<DebugPositionLogger>(); // TEMP: verification only, delete before ship
-        player.AddComponent<CODClone.Debug.DebugInputProbe>(); // TEMP: input diagnosis, delete before ship
+        player.AddComponent<CODClone.Diagnostics.DebugInputProbe>(); // TEMP: input diagnosis, delete before ship
 
         BuildNpcC();
         BuildDialogueUI(inputProvider);
