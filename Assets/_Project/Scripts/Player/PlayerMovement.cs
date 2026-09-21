@@ -1,6 +1,5 @@
 using UnityEngine;
 using CODClone.Core;
-using CODClone.UI;
 
 namespace CODClone.Player
 {
