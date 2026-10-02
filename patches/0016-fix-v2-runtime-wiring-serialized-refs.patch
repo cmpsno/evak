@@ -1,0 +1,118 @@
+From e1a300e3a7c21547f2f9a3425e2debaf7fc31eda Mon Sep 17 00:00:00 2001
+From: marvin <marvin@local>
+Date: Mon, 21 Sep 2026 00:35:58 -0400
+Subject: [PATCH] Fix v2 runtime wiring: serialize editor Configure() refs
+
+EpisodeController, MissionStateMachine, DialogueController, and
+ObjectiveManager all received their cross-references via Configure()
+calls that run in the editor only. The private fields weren't
+[SerializeField], so they were null in builds: mission stuck at
+S1_Spawn (GameStart signal no-op), dialogue had no view/input,
+objectives and saves silently dead. Now serialized; DialogueController
+also falls back to a runtime player lookup for the IInputProvider.
+---
+ .../_Project/Scripts/Dialogue/DialogueController.cs | 13 ++++++++++++-
+ .../_Project/Scripts/Missions/EpisodeController.cs  | 12 +++++++-----
+ .../Scripts/Missions/MissionStateMachine.cs         |  3 ++-
+ .../_Project/Scripts/Objectives/ObjectiveManager.cs | 10 +++++-----
+ 4 files changed, 26 insertions(+), 12 deletions(-)
+
+diff --git a/Assets/_Project/Scripts/Dialogue/DialogueController.cs b/Assets/_Project/Scripts/Dialogue/DialogueController.cs
+index 448e742..07cd150 100644
+--- a/Assets/_Project/Scripts/Dialogue/DialogueController.cs
++++ b/Assets/_Project/Scripts/Dialogue/DialogueController.cs
+@@ -16,7 +16,10 @@ namespace Campusano.Dialogue
+         [SerializeField] private DialogueDatabase database;
+ 
+         // Wired by the scene builder: view + gameplay input gate.
+-        private Campusano.UI.DialogueUI _view;
++        // [SerializeField] so the editor-time Configure() survives into builds
++        // (private fields without it are null at runtime).
++        [SerializeField] private Campusano.UI.DialogueUI _view;
++        [SerializeField] private PlayerInputProvider _inputProvider;
+         private IInputProvider _input;
+ 
+         public event Action<DialogueNode> OnNodeStarted;
+@@ -40,6 +43,7 @@ namespace Campusano.Dialogue
+             database = db;
+             _view = view;
+             _input = input;
++            _inputProvider = input as PlayerInputProvider;
+             if (database != null) database.Validate();
+         }
+ 
+@@ -51,6 +55,13 @@ namespace Campusano.Dialogue
+             // ref went stale in builds). Build it fresh so dialogue never ships empty.
+             if (database == null)
+                 database = Ep1DialogueBank.BuildDatabase();
++            // Re-establish the editor-time wiring (Configure ran in the editor only).
++            _input ??= _inputProvider;
++            if (_input == null)
++            {
++                var player = GameObject.FindGameObjectWithTag("Player");
++                _input = player?.GetComponent<PlayerInputProvider>();
++            }
+         }
+ 
+         private void OnDestroy()
+diff --git a/Assets/_Project/Scripts/Missions/EpisodeController.cs b/Assets/_Project/Scripts/Missions/EpisodeController.cs
+index 4b1652b..a4f22dd 100644
+--- a/Assets/_Project/Scripts/Missions/EpisodeController.cs
++++ b/Assets/_Project/Scripts/Missions/EpisodeController.cs
+@@ -16,11 +16,13 @@ namespace Campusano.Missions
+     {
+         [SerializeField] private int episodeNumber = 1;
+ 
+-        private MissionStateMachine _missions;
+-        private DialogueController _dialogue;
+-        private ObjectiveManager _objectives;
+-        private SaveManager _saves;
+-        private CashService _cash;
++        // Set by the scene builder's Configure(); [SerializeField] so the refs
++        // survive into builds (Configure runs in the editor only).
++        [SerializeField] private MissionStateMachine _missions;
++        [SerializeField] private DialogueController _dialogue;
++        [SerializeField] private ObjectiveManager _objectives;
++        [SerializeField] private SaveManager _saves;
++        [SerializeField] private CashService _cash;
+ 
+         // nodeId -> (signal or direct step advance, objective, cash)
+         private string _lastEndedNode;
+diff --git a/Assets/_Project/Scripts/Missions/MissionStateMachine.cs b/Assets/_Project/Scripts/Missions/MissionStateMachine.cs
+index dc3c983..1570eb4 100644
+--- a/Assets/_Project/Scripts/Missions/MissionStateMachine.cs
++++ b/Assets/_Project/Scripts/Missions/MissionStateMachine.cs
+@@ -91,7 +91,8 @@ namespace Campusano.Missions
+ 
+         public Ep1Step CurrentStep { get; private set; } = Ep1Step.Ep1_M1_S1_Spawn;
+ 
+-        private SaveManager _saves;
++        // Set by the scene builder's Configure(); serialized so it survives builds.
++        [SerializeField] private SaveManager _saves;
+         private bool _inLoadFlow;
+ 
+         public void Configure(StepTrigger[] stepTriggers, SaveManager saves, int episode = 1)
+diff --git a/Assets/_Project/Scripts/Objectives/ObjectiveManager.cs b/Assets/_Project/Scripts/Objectives/ObjectiveManager.cs
+index 12e0055..8db753a 100644
+--- a/Assets/_Project/Scripts/Objectives/ObjectiveManager.cs
++++ b/Assets/_Project/Scripts/Objectives/ObjectiveManager.cs
+@@ -48,11 +48,11 @@ namespace Campusano.Objectives
+ 
+         public ObjectiveData CurrentObjective { get; private set; }
+ 
+-        // Wired by builder.
+-        private UnityEngine.UI.Text _titleText;
+-        private UnityEngine.UI.Text _descText;
+-        private GameObject _panel;
+-        private GameObject _waypointBeacon;
++        // Wired by builder. Serialized so the refs survive into builds.
++        [SerializeField] private UnityEngine.UI.Text _titleText;
++        [SerializeField] private UnityEngine.UI.Text _descText;
++        [SerializeField] private GameObject _panel;
++        [SerializeField] private GameObject _waypointBeacon;
+ 
+         public void Configure(UnityEngine.UI.Text titleText, UnityEngine.UI.Text descText,
+                               GameObject panel, GameObject waypointBeacon)
+-- 
+2.43.0
+
