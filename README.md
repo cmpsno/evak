@@ -1,5 +1,5 @@
-# cod-mobile
-optimize mobile server based first person shooter
+# caude
+optimize multiplayer browser shooter collab
 
 ## v0 — Movement & Gunplay Prototype (in progress)
 
