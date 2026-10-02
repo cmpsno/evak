@@ -10,7 +10,7 @@ namespace Campusano.Interaction
     /// the mission advance + job flag happen via ChoiceRouter / EpisodeController,
     /// not here. Repeat line once the job is assigned.
     /// </summary>
-    public class InteractableNPC : MonoBehaviour, CODClone.Core.IInteractable
+    public class InteractableNPC : MonoBehaviour, Evak.Core.IInteractable
     {
         [SerializeField] private string npcName = "C";
         [SerializeField] private string dialogueTreeRoot = "C_First_Talk";

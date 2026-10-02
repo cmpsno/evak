@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace CODClone.Core
+namespace Evak.Core
 {
     /// <summary>
     /// Anything that can take damage implements this. All weapon hits route

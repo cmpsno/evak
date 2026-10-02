@@ -11,10 +11,10 @@ using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
-using CODClone.Core;
-using CODClone.HUD;
-using CODClone.Player;
-using CODClone.Weapons;
+using Evak.Core;
+using Evak.HUD;
+using Evak.Player;
+using Evak.Weapons;
 
 public static class BuildTestArena
 {
@@ -23,7 +23,7 @@ public static class BuildTestArena
     const string InputActionsPath = "Assets/_Project/Data/PlayerInputActions.inputactions";
     const string UrpAssetPath = "Assets/_Project/Settings/URP.asset";
 
-    [MenuItem("CODClone/Build TestArena")]
+    [MenuItem("Evak/Build TestArena")]
     public static void Build()
     {
         EnsureTag("Target");
@@ -49,7 +49,7 @@ public static class BuildTestArena
         Debug.Log("[BuildTestArena] Scene saved to " + ScenePath);
     }
 
-    [MenuItem("CODClone/Build WebGL")]
+    [MenuItem("Evak/Build WebGL")]
     public static void BuildWebGL()
     {
         Build(); // ensure scene + assets exist first
@@ -60,7 +60,7 @@ public static class BuildTestArena
         // No-compression output: plain http.server can serve it, no gzip headers needed.
         PlayerSettings.WebGL.compressionFormat = WebGLCompressionFormat.Disabled;
 
-        string outDir = Path.GetFullPath(Path.Combine(Application.dataPath, "..", "..", "cod-mobile-webgl"));
+        string outDir = Path.GetFullPath(Path.Combine(Application.dataPath, "..", "..", "evak-webgl"));
         Directory.CreateDirectory(outDir);
 
         var opts = new BuildPlayerOptions
@@ -324,7 +324,7 @@ public static class BuildTestArena
         piSO.ApplyModifiedProperties();
 
         var inputProvider = player.AddComponent<PlayerInputProvider>();
-        player.AddComponent<CODClone.Core.WebGLPointerLock>();
+        player.AddComponent<Evak.Core.WebGLPointerLock>();
 
         var movement = player.AddComponent<PlayerMovement>();
         SetField(movement, "inputProviderBehaviour", inputProvider);

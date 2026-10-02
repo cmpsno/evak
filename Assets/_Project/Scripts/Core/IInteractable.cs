@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace CODClone.Core
+namespace Evak.Core
 {
     /// <summary>
     /// Anything the player can press E on: NPCs, pickups, doors.

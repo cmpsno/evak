@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace CODClone.Core
+namespace Evak.Core
 {
     /// <summary>
     /// Abstraction over all input sources. Movement/weapon code must ONLY

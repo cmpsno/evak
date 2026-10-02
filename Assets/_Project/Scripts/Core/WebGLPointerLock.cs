@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-namespace CODClone.Core
+namespace Evak.Core
 {
     /// <summary>
     /// WebGL pointer lock. Browsers only grant mouse-look capture (pointer lock)

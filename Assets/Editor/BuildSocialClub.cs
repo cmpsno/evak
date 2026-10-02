@@ -6,8 +6,8 @@ using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEngine;
 using UnityEngine.UI;
-using CODClone.Core;
-using CODClone.Interaction;
+using Evak.Core;
+using Evak.Interaction;
 using Campusano.Dialogue;
 using Campusano.Interaction;
 using Campusano.Missions;
@@ -18,7 +18,7 @@ public static class BuildSocialClub
 {
     const string ScenePath = "Assets/_Project/Scenes/SocialClub.unity";
 
-    [MenuItem("CODClone/Build SocialClub")]
+    [MenuItem("Evak/Build SocialClub")]
     public static void Build()
     {
         BuildTestArena.EnsureTag("Target");
@@ -46,7 +46,7 @@ public static class BuildSocialClub
         var interactor = player.AddComponent<PlayerInteractor>();
         BuildTestArena.SetField(interactor, "inputProviderBehaviour", inputProvider);
         player.AddComponent<DebugPositionLogger>(); // TEMP: verification only, delete before ship
-        player.AddComponent<CODClone.Diagnostics.DebugInputProbe>(); // TEMP: input diagnosis, delete before ship
+        player.AddComponent<Evak.Diagnostics.DebugInputProbe>(); // TEMP: input diagnosis, delete before ship
 
         BuildNpcC();
         BuildDialogueUI(inputProvider);
@@ -62,7 +62,7 @@ public static class BuildSocialClub
         Debug.Log("[BuildSocialClub] Scene saved to " + ScenePath);
     }
 
-    [MenuItem("CODClone/Build WebGL SocialClub")]
+    [MenuItem("Evak/Build WebGL SocialClub")]
     public static void BuildWebGL()
     {
         Build();
@@ -72,7 +72,7 @@ public static class BuildSocialClub
 
         PlayerSettings.WebGL.compressionFormat = WebGLCompressionFormat.Disabled;
 
-        string outDir = Path.GetFullPath(Path.Combine(Application.dataPath, "..", "..", "cod-mobile-webgl"));
+        string outDir = Path.GetFullPath(Path.Combine(Application.dataPath, "..", "..", "evak-webgl"));
         Directory.CreateDirectory(outDir);
 
         var opts = new BuildPlayerOptions

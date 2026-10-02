@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-namespace CODClone.Core
+namespace Evak.Core
 {
     /// <summary>
     /// Local-player implementation of IInputProvider backed by the new Input System.

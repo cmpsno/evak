@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace CODClone.HUD
+namespace Evak.HUD
 {
     /// <summary>
     /// Minimal v0 HUD: dynamic crosshair, ammo text, hitmarker flash.

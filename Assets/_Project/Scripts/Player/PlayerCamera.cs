@@ -1,7 +1,7 @@
 using UnityEngine;
-using CODClone.Core;
+using Evak.Core;
 
-namespace CODClone.Player
+namespace Evak.Player
 {
     /// <summary>
     /// FPS camera on a dedicated pivot at head height. Capsule yaw only;

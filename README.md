@@ -1,29 +1,27 @@
-# cod-mobile
-optimize mobile server based first person shooter
+# evak
 
-## v0 — Movement & Gunplay Prototype (in progress)
+A browser FPS mechanics project: CoD-calibrated gunplay and movement, built natively in Unity, playable on the web.
 
-**Question v0 answers:** does moving and shooting feel good?
+> Original implementation of common FPS mechanics. No Activision assets, trademarks, or copyrighted material.
 
-**Branch:** `v0-foundation` — scaffold per `workspace/user/files/cod-mobile-clone-v0-plan.md`.
+## v0.1 — Feel Range (in progress)
 
-### What's in this commit
-- Unity `.gitignore` + Git LFS `.gitattributes` (set up before any binaries land).
-- Folder structure under `Assets/_Project/` (Core/Player/Weapons/UI/Data/Utils, Prefabs, Scenes, Data/Weapons, Art, Audio).
-- `Packages/manifest.json` pinning Input System 1.7.0 + URP 17.0.3.
-- Architecture non-negotiables, built from the first script:
-  - `IInputProvider` / `PlayerInputProvider` — movement/weapon code never touches InputSystem directly (bots + net players later drive the same code).
-  - `WeaponData` ScriptableObject — the one v0 rifle is a data asset, not a subclass.
-  - `IDamageable` + `DamageResolver` — all hits route through one choke point.
-  - Movement physics in `FixedUpdate`.
-- Systems: `PlayerMovement` (idle/walk/sprint/crouch/slide/airborne, coyote time, slide cooldown), `PlayerCamera` (yaw-on-body/pitch-on-pivot, head bob, ADS FOV blend, recoil kick), `WeaponController` (hitscan from camera center, hip/ADS spread, semi/auto, tactical + empty reload, muzzle flash, impact decals), `TargetDummy`, `HUDController` (crosshair, ammo, hitmarker).
-- `TestArena.notes.md` — gray-box scene build checklist (scene itself must be built in-editor).
+**Question v0.1 answers:** does it feel like a real FPS within 60 seconds of picking up the rifle?
 
-### Non-goals (explicitly not in v0)
-Weapon variety, attachments, perks, bots/AI, art pass, menus/progression, multiplayer code, mobile touch input (the `IInputProvider` abstraction keeps that door open).
+**Branch:** `v0.1-feel-range` — sprint board: `evak-sprint-board-v0.1.md`.
+
+One scene, one rifle, static humanoid target dummies with full player-identical hitboxes, one wall-pattern target at 25 m, movement timing gates. Scope is frozen: movement + deterministic recoil + bloom + hitmarker + WebGL deploy.
+
+### Architecture non-negotiables
+- `IInputProvider` / `PlayerInputProvider` — movement/weapon code never touches InputSystem directly.
+- `WeaponData` ScriptableObject — the rifle is a data asset, not a subclass.
+- `IDamageable` + `DamageResolver` — all hits route through one choke point.
+- `DamageInfo` struct — no per-shot allocation on the fire path.
+- Gameplay tick at 60 Hz fixed timestep.
+- Deterministic recoil via seeded xorshift PRNG — never `UnityEngine.Random` in gameplay.
 
 ### How to open
-Unity 2022 LTS+ with URP template. Open the folder, let Unity generate `Library/`, then follow `Assets/_Project/Scenes/TestArena.notes.md` to build the scene.
+Unity 2022.3.62f3. Open the folder, let Unity generate `Library/`, then follow `Assets/_Project/Scenes/TestArena.notes.md` to build the scene.
 
 ### Roadmap
-See `cod-mobile-clone-roadmap.md` (v0 → v1.0: gunplay framework → content → AI → modes).
+v0.1 (feel range) → v0.2 (second weapon class, score-attack loop) → later (vertical slice).

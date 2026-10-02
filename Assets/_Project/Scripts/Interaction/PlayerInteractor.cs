@@ -1,9 +1,9 @@
 using UnityEngine;
-using CODClone.Core;
+using Evak.Core;
 using Campusano.Dialogue;
 using Campusano.UI;
 
-namespace CODClone.Interaction
+namespace Evak.Interaction
 {
     /// <summary>
     /// Attach to the player. Each frame finds the nearest IInteractable within

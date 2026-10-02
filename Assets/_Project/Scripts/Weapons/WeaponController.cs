@@ -1,8 +1,8 @@
 using UnityEngine;
-using CODClone.Core;
-using CODClone.Player;
+using Evak.Core;
+using Evak.Player;
 
-namespace CODClone.Weapons
+namespace Evak.Weapons
 {
     /// <summary>
     /// Generic hitscan weapon driver. Reads WeaponData, never hardcodes stats.

@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace CODClone.Core
+namespace Evak.Core
 {
     /// <summary>
     /// Single choke point for all damage. v0: just forwards to IDamageable.

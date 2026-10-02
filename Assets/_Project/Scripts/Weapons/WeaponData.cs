@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace CODClone.Weapons
+namespace Evak.Weapons
 {
     public enum FireMode { Semi, Auto, Burst }
 
@@ -8,7 +8,7 @@ namespace CODClone.Weapons
     /// Data-driven weapon definition. v0 ships ONE instance (hitscan rifle).
     /// v0.2 extends this same asset type — never subclass per weapon.
     /// </summary>
-    [CreateAssetMenu(fileName = "NewWeapon", menuName = "CODClone/Weapon Data")]
+    [CreateAssetMenu(fileName = "NewWeapon", menuName = "Evak/Weapon Data")]
     public class WeaponData : ScriptableObject
     {
         [Header("Identity")]

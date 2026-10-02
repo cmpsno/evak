@@ -1,8 +1,8 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
-using CODClone.Core;
+using Evak.Core;
 
-namespace CODClone.Diagnostics
+namespace Evak.Diagnostics
 {
     /// <summary>
     /// TEMP verification probe (delete before ship). Logs Input System device

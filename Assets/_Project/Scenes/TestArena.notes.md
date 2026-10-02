@@ -17,7 +17,7 @@ Scene: `Assets/_Project/Scenes/TestArena.unity` (build in-editor; not committabl
 ## Player prefab wiring
 1. Capsule + `CharacterController` + `PlayerMovement` + `PlayerInputProvider` (with `PlayerInput` component + Input Actions asset: Move/Look/Jump/Sprint/Crouch/Fire/Reload/ADS).
 2. Child camera pivot at 1.6m with `PlayerCamera`; Camera child of pivot.
-3. Weapon child with `WeaponController`, muzzle socket transform; assign `WeaponData` instance (create via Create > CODClone > Weapon Data).
+3. Weapon child with `WeaponController`, muzzle socket transform; assign `WeaponData` instance (create via Create > Evak > Weapon Data).
 4. Canvas with `HUDController` refs: crosshair RectTransform, ammo TMP_Text, hitmarker Image, reload TMP_Text.
 
 ## Exit criteria

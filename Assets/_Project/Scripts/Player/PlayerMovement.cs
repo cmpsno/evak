@@ -1,7 +1,7 @@
 using UnityEngine;
-using CODClone.Core;
+using Evak.Core;
 
-namespace CODClone.Player
+namespace Evak.Player
 {
     public enum MovementState { Idle, Walk, Sprint, Crouch, Slide, Airborne }
 

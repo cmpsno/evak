@@ -1,7 +1,7 @@
 using UnityEngine;
-using CODClone.Core;
+using Evak.Core;
 
-namespace CODClone.Weapons
+namespace Evak.Weapons
 {
     /// <summary>
     /// v0 test-arena prop. Tag the GameObject "Target". Logs damage;

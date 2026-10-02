@@ -1,6 +1,6 @@
 using System;
 using UnityEngine;
-using CODClone.Core;
+using Evak.Core;
 
 namespace Campusano.Dialogue
 {
